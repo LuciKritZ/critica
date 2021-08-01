@@ -1,7 +1,5 @@
-import React from "react";
+import React from 'react';
 
-const App = () => {
-  return <div>CRITICA</div>;
-};
+const App = () => <div>CRITICA</div>;
 
 export default App;
