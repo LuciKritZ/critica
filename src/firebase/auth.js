@@ -5,6 +5,5 @@ export const doGooleSignIn = () => auth.signInWithPopup(googleProvider);
 
 export const doFacebookSignIn = () => auth.signInWithPopup(facebookProvider);
 
-//signout
 //sign out
 export const doSignOut = () => auth.signOut();
