@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { db } from './firebase';
 
 const userRef = db.collection('users');
@@ -25,7 +26,7 @@ export const doCreateUserCommentRelation = (userCommentRelation) =>
     userCommentRelationRef.add(userCommentRelation);
 
 // create user role
-export const doCreateRole = (userRole) => userRole.add(userRole);
+export const doCreateRole = (role) => userRole.add(role);
 
 // get/read single user based on email
 export const doGetUser = (email) => userRef.where('email', '==', email);
