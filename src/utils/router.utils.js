@@ -5,6 +5,9 @@ export const AppRoute = {
     SEARCH: '/search',
     PROFILE: '/profile',
     USER_PROFILE: `/profile/${PLACEHOLDER_ID}`,
+    BOOK_DETAILS: `/books/${PLACEHOLDER_ID}`,
+    MY_BOOKS: `/users/my-books`,
+    BOOKMARKS: `/users/bookmarks`,
 };
 
 export default AppRoute;
