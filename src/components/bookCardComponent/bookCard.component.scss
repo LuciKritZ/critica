@@ -1,0 +1,45 @@
+@import 'src/scss/styles.scss';
+.card-book {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    margin: 10px;
+    cursor: pointer;
+    .lazy-load-image-background {
+        text-align: center;
+        max-height: 325px;
+        min-height: 325px;
+    }
+    .book-info-container {
+        justify-content: space-between;
+        align-items: center;
+        // display: flex;
+        .book-title {
+            margin-top: 10px;
+            // color: $dark-color;
+            color: $light-color;
+            margin-bottom: 0px;
+            font-size: 18px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .book-author {
+            margin-top: 5px;
+            color: $light-color;
+            margin-bottom: 10px;
+            font-size: 14px;
+            opacity: 0.8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .book-ratings {
+            font-size: 14px;
+            color: #7d7d7d;
+            margin-left: 5px;
+        }
+    }
+}

@@ -13,7 +13,7 @@ const Bookmarks = lazy(() => import('../pages/bookmarks/bookmarks.page'));
 const AppRouter = () => (
     <Suspense
         // Add loading indicator here.
-        fallback={<div>Error.</div>}
+        fallback={<div>Loading.</div>}
     >
         <Switch>
             {/* Path for the homepage */}
@@ -41,4 +41,3 @@ const AppRouter = () => (
 );
 
 export default AppRouter;
-Th;
