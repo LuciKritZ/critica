@@ -1,7 +1,8 @@
 import React, { lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
-
 import { AppRoute } from '../utils/router.utils';
+import 'antd/dist/antd.min.css';
+import '../scss/styles.scss';
 
 const Homepage = lazy(() => import('../pages/homepage/homepage.page'));
 const Search = lazy(() => import('../pages/search/search.page'));
