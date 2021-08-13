@@ -1,0 +1,18 @@
+@import 'src/scss/variables.scss';
+.wrapper {
+    margin: 15px;
+    background-color: $body-color;
+    .container {
+        margin: 10px 10px 30px 10px;
+    }
+    .category-title {
+        color: $dark-80-color;
+        margin-top: 10px;
+        margin-left: 10px;
+        font-size: 20px;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}

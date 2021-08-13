@@ -1,9 +1,9 @@
-@import 'src/scss/styles.scss';
+@import 'src/scss/variables.scss';
 .card-book {
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    width: 200px;
+    width: 20%;
     margin: 10px;
     cursor: pointer;
     .lazy-load-image-background {
@@ -17,8 +17,7 @@
         // display: flex;
         .book-title {
             margin-top: 10px;
-            // color: $dark-color;
-            color: $light-color;
+            color: $dark-color;
             margin-bottom: 0px;
             font-size: 18px;
             font-weight: 500;
@@ -31,14 +30,13 @@
             color: $light-color;
             margin-bottom: 10px;
             font-size: 14px;
-            opacity: 0.8;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         .book-ratings {
             font-size: 14px;
-            color: #7d7d7d;
+            color: $light-color;
             margin-left: 5px;
         }
     }

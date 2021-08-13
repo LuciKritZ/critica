@@ -4,7 +4,7 @@ import RatingComponent from '../ratingComponent/rating.component';
 import './bookCard.component.scss';
 
 // To Do:
-// check Add functionality to add books as read or bookmark it
+// p-1 check Add functionality to add books as read or bookmark it
 //
 
 const BookCardComponent = ({ bookInfo }) => (
