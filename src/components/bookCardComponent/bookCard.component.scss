@@ -1,9 +1,9 @@
 @import 'src/scss/variables.scss';
 .card-book {
-    padding: 1.5rem;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
-    width: 20%;
+    width: 230px;
     margin: 10px;
     cursor: pointer;
     .lazy-load-image-background {

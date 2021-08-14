@@ -2,6 +2,8 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
 
+// TODO:
+// cache -- file names chunks ??
 module.exports = (env) => ({
     context: __dirname,
     entry: './src/index.js',

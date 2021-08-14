@@ -1,0 +1,36 @@
+@import 'src/scss/variables.scss';
+.filter-section {
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+    h3 {
+        margin-bottom: 0;
+        font-weight: 600;
+        color: $dark-color;
+    }
+}
+.rating-text {
+    margin-left: 5px;
+    // color: $light-color;
+}
+.ant-radio {
+    top: 0.1em;
+}
+.ant-radio-wrapper {
+    margin-bottom: 6px !important;
+    span {
+        display: flex;
+        // align-items: center;
+        justify-content: center;
+    }
+}
+.ant-collapse-borderless {
+    background-color: $body-color;
+}
+.ant-checkbox-wrapper {
+    width: 100%;
+    margin-bottom: 6px !important;
+}
+.ant-collapse-header {
+    color: $dark-color !important;
+    font-weight: 500 !important;
+}

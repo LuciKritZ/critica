@@ -58,7 +58,10 @@ const Homepage = () => {
 
                 <ShowImageCarousel categoryTitle="Most Reads" bookInfo={homeData?.most_read} />
 
-                <ShowImageCarousel categoryTitle="Newly Added" bookInfo={homeData?.newly_added} />
+                <ShowImageCarousel
+                    categoryTitle="Newly Added"
+                    bookInfo={homeData?.newly_added}
+                />
             </div>
         </>
     );

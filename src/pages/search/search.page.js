@@ -1,8 +1,11 @@
-import React from 'react';
+/* eslint-disable max-len */
+import React, { useState } from 'react';
 import BookCardComponent from '../../components/bookCardComponent/bookCard.component';
+import FiltersComponent from '../../components/filtersComponent/filters.component';
+import InfiniteScrollComponent from '../../components/infiniteScrollComponent/infiniteScroll.component';
 import './search.component.scss';
 
-const bookInfo = [
+const bookDataInfo = [
     {
         url: 'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1441601125l/762464.jpg',
         title: 'Beating the Street Beating the Street',
@@ -60,14 +63,45 @@ const bookInfo = [
         totalRating: '10,313',
     },
 ];
-const Search = () => (
-    <>
-        <div className="book-container">
-            {bookInfo.map((eachBookInfo, index) => (
-                <BookCardComponent bookInfo={eachBookInfo} key={index} />
-            ))}
-        </div>
-    </>
-);
+const Search = () => {
+    const [bookInfo, setBookInfo] = useState([...bookDataInfo]);
+    const applyFilters = (filterObj) => {
+        console.log(filterObj, 'sendFilters axios');
+    }
+    const fetchMoreData = () => {
+        console.log([...bookInfo, ...bookDataInfo], 'dddd');
+        setBookInfo([...bookInfo, ...bookDataInfo]);
+    }
+    const LoaderFunc = () => {
+        console.log('aaaaaa1111');
+        return (
+            <h4 style={{
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+                display: 'flex'
+            }}>Loading...</h4>
+        );
+    }
+    return (
+        <>
+            <div className="wrapper">
+                <div className="filter-container">
+                    <FiltersComponent applyFilters={applyFilters} />
+                </div>
+                <div className="book-container">
+                    <InfiniteScrollComponent
+                        bookLength={bookInfo.length}
+                        fetchData={fetchMoreData}
+                        LoaderFunc={LoaderFunc}
+                        render={() => bookInfo.map((eachBookInfo, index) => (
+                            <BookCardComponent bookInfo={eachBookInfo} key={index} />
+                        ))}
+                    />
+                </div>
+            </div>
+        </>
+    )
+}
 
 export default Search;
