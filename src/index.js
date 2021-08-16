@@ -8,6 +8,7 @@ import { AuthProvider } from './providers/auth-provider.providers';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
 
+// delete vitals
 ReactDOM.render(
     <React.StrictMode>
         {/* App rendered by a router to allow navigation using app bar */}

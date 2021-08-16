@@ -2,15 +2,26 @@
 @import "./mixins";
 
 .btn-primary {
-    @include buttons($primary-button-color, $primary-button-hover-color);
+    @include buttons(var(--primary-button-color), var(--primary-button-hover-color));
 }
-
+// --secondary-button-border-color: #dde2e4;
+//     --secondary-button-color: #fff;
+//     --secondary-button-hover-color: #d9d9d9;
+.btn-secondary {
+    @include buttons(var(--secondary-button-color), var(--body-bg));
+    color: var(--dark-80-color);
+    border-color: var(--dark-80-color);
+    &:hover {
+        color: var(--dark-80-color);
+        border-color: var(--dark-80-color);
+    }
+}
 .form-input {
-    border-color: $border-color;
-    border-radius: $border-radius;
-    background-color: $selected-comments-background;
-    border-color: $border-color;
-    color: $dark-color;
+    border-color: var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--selected-comments-background);
+    border-color: var(--border-color);
+    color: var(--dark-color);
 
     &:hover, &:focus {
         border-color: #5b6b88;
@@ -18,11 +29,11 @@
 }
 
 .label {
-    color: $dark-color;
+    color: var(--dark-color);
 }
 
 .site-wrapper {
-    background-color: $body-bg;
+    background-color: var(--body-bg);
 }
 ul {
     margin-top: 0;

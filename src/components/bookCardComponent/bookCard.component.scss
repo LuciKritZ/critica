@@ -1,4 +1,4 @@
-@import 'src/scss/variables.scss';
+// @import 'src/scss/variables.scss';
 .card-book {
     padding: 1rem;
     display: flex;
@@ -17,7 +17,7 @@
         // display: flex;
         .book-title {
             margin-top: 10px;
-            color: $dark-color;
+            color: var(--dark-color);
             margin-bottom: 0px;
             font-size: 18px;
             font-weight: 500;
@@ -27,7 +27,7 @@
         }
         .book-author {
             margin-top: 5px;
-            color: $light-color;
+            color: var(--light-color);
             margin-bottom: 10px;
             font-size: 14px;
             white-space: nowrap;
@@ -36,7 +36,7 @@
         }
         .book-ratings {
             font-size: 14px;
-            color: $light-color;
+            color: var(--light-color);
             margin-left: 5px;
         }
     }

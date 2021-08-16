@@ -1,57 +1,60 @@
-$body-bg: #f1f3f6; // outter most background's bg color
-$body-color: #ffffff; // bg-color
+:root {
+    --body-bg: #f1f3f6; // outter most background's bg color
+    --body-color: #ffffff; // bg-color
 
-// text colors
-$dark-color: #172b4d; // dark to show imp fields 
-$dark-80-color: #293c59;
-$light-color: #5a6573;
-$disabled-text-color: #787c80;
-$border-color: #b6c1d9;
+    // text colors
+    --dark-color: #172b4d; // dark to show imp fields 
+    --dark-80-color: #293c59;
+    --light-color: #5a6573;
+    --disabled-text-color: #787c80;
+    --border-color: #b6c1d9;
 
-$selected-background-color: #e6f7ff;
+    --selected-background-color: #e6f7ff;
 
-// $links-color: #1692eb;
-$links-color: #0e73f6;
-$input-field-color: #172b4d; // in edit mode
-$hover-input-field-background: #f9f9f9;
+    // --links-color: #1692eb;
+    --links-color: #0e73f6;
+    --input-field-color: #172b4d; // in edit mode
+    --hover-input-field-background: #f9f9f9;
 
-// selected comments background
-$selected-comments-background: #f9f9f9;  
+    // selected comments background
+    --selected-comments-background: #f9f9f9;
 
-// buttons
+    // buttons
 
-$primary-button-color: #1890ff;
-$primary-button-hover-color: #40a9ff;
+    --primary-button-color: #1890ff;
+    --primary-button-hover-color: #40a9ff;
 
-$secondary-button-border-color: #dde2e4;
-$secondary-button-color: #fff;
-$secondary-button-hover-color: #d9d9d9;
+    --secondary-button-border-color: #dde2e4;
+    --secondary-button-color: #fff;
+    --secondary-button-hover-color: #d9d9d9;
 
-$danger-button-color: #ff4d4f;
-$danger-button-hover-color: #ff7875;
+    --danger-button-color: #ff4d4f;
+    --danger-button-hover-color: #ff7875;
 
-// icons
-$primary-icons-color: #595959;
+    // icons
+    --primary-icons-color: #595959;
 
-$border-radius: 2px;
+    --border-radius: 2px;
 
 
-// image hover
-// transition for image hover
-$transition-time: 0.3s;
+    // image hover
+    // transition for image hover
+    --transition-time: 0.3s;
 
-// ratings
-$active-star-color: #ffe53d;
-$empty-star-color: #e6ebf5;
+    // ratings
+    --active-star-color: #ffe53d;
+    --empty-star-color: #e6ebf5;
 
-// fonts ??
-$normal-font-size: 16px;
-$title-font-size: 20px;
+    // fonts ??
+    --normal-font-size: 16px;
+    --title-font-size: 20px;
 
-$normal-line-height: 22px;
+    --normal-line-height: 22px;
 
-$box-background-shadow: 0 1px 8px 0 rgb(0 0 0 / 6%);
+    --box-background-shadow: 0 1px 8px 0 rgb(0 0 0 / 6%);
+}
+
 // :export {
-//     activeStarColor: $active-star-color;
-//     emptyStarColor: $empty-star-color;
+//     activeStarColor: --active-star-color;
+//     emptyStarColor: --empty-star-color;
 // }

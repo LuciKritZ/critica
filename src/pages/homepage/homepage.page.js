@@ -6,6 +6,7 @@ import './homepage.page.scss';
 import CarouselComponent from '../../components/carouselComponent/carousel.component';
 
 // TODO:
+// p-1 only single skeleton
 // P-3 Add flipkart like genre horizontal scroll bar which redirects to search page.
 const Homepage = () => {
     const [homeData, setHomeData] = useState({});
@@ -36,6 +37,7 @@ const Homepage = () => {
                                     src={eachBookInfo.bookCover}
                                     alt={eachBookInfo.title}
                                     key={eachBookInfo.id}
+                                    redirect={eachBookInfo.id}
                                 />
                             ))
                         }

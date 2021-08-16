@@ -10,6 +10,8 @@ const Profile = lazy(() => import('../pages/user-profile/user-profile.page'));
 const BookDetails = lazy(() => import('../pages/book-details/book-details.page'));
 const MyBooks = lazy(() => import('../pages/my-books/my-books.page'));
 const Bookmarks = lazy(() => import('../pages/bookmarks/bookmarks.page'));
+const AdminDashboard = lazy(() => import('../pages/admin-dashboard/adminDashboard.page'));
+const PageNotFound = lazy(() => import('../pages/pageNotFound/pageNotFound.component'));
 
 const AppRouter = () => (
     <div className="site-wrapper">
@@ -38,6 +40,12 @@ const AppRouter = () => (
 
                 {/* Path for the getting the user bookmarks */}
                 <Route path={AppRoute.BOOKMARKS} component={Bookmarks} />
+
+                {/* Path for the getting the user bookmarks */}
+                <Route path={AppRoute.ADMINDASHBOARD} component={AdminDashboard} />
+
+                {/* Route for 404 page error */}
+                <Route component={PageNotFound} />
             </Switch>
         </Suspense>
     </div>

@@ -5,27 +5,26 @@ import './filters.component.scss';
 
 const { Panel } = Collapse;
 
-const authorName = [
-    { id: 1, name: 'Charles Dickens' },
-    { id: 2, name: 'Rabindranath tagore' },
-    { id: 3, name: 'Peter Lynch' },
-    { id: 4, name: 'Warren Buffet' },
-    { id: 5, name: 'Raghuram rajan' },
-];
-const genreLists = [
-    { label: 'Sci-Fi', value: 1 },
-    { label: 'Fantsy', value: 2 },
-    { label: 'Fiction', value: 3 },
-    { label: 'Non-fiction', value: 4 },
-    { label: 'Biography', value: 5 },
-];
+// const authorName = [
+//     { id: 1, name: 'Charles Dickens' },
+//     { id: 2, name: 'Rabindranath tagore' },
+//     { id: 3, name: 'Peter Lynch' },
+//     { id: 4, name: 'Warren Buffet' },
+//     { id: 5, name: 'Raghuram rajan' },
+// ];
+// const genreLists = [
+//     { label: 'Sci-Fi', value: 1 },
+//     { label: 'Fantsy', value: 2 },
+//     { label: 'Fiction', value: 3 },
+//     { label: 'Non-fiction', value: 4 },
+//     { label: 'Biography', value: 5 },
+// ];
 
 
 // TODO:
-// p-1 design
 // p-2 search, show more
 // p-3 reusability 
-const FiltersComponent = ({ applyFilters }) => {
+const FiltersComponent = ({ applyFilters, authorList, genreList }) => {
     const [filterObj, setFilterObj] = useState({
         averageRating: null,
         author: null,
@@ -83,14 +82,14 @@ const FiltersComponent = ({ applyFilters }) => {
                 </Panel>
                 <Panel header="Genre" key="2">
                     <Checkbox.Group
-                        options={genreLists}
+                        options={genreList}
                         defaultValue={filterObj.genre}
                         onChange={onChangeGenre} />
                 </Panel>
                 <Panel header="Author" key="3">
                     <Radio.Group onChange={onChangeAuthor} value={filterObj.author}>
                         {
-                            authorName.map((eachAuthorData) => (
+                            authorList.map((eachAuthorData) => (
                                 <ShowRadioAuthorContent
                                     author={eachAuthorData}
                                     key={eachAuthorData.id} />

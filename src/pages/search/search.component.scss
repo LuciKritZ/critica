@@ -1,13 +1,15 @@
-@import 'src/scss/variables.scss';
+// @import 'src/scss/variables.scss';
 .wrapper {
     display: flex;
     flex-flow: row;
-    // background-color: $body-bg;
+    height: 100%;
+    min-height: 100vh;
+    // background-color: var(--body-bg);
     .filter-container {
         width: 18.66%;
         margin: 16px;
-        background-color: $body-color;
-        box-shadow: $box-background-shadow;
+        background-color: var(--body-color);
+        box-shadow: var(--box-background-shadow);
     }
     .book-container {
         margin-top: 16px;
@@ -17,9 +19,10 @@
         margin-left: auto;
         margin-right: auto;
         max-width: 81.33%;
+        width: 81.33%;
         min-height: 81.33%;
-        background-color: $body-color;
-        box-shadow: $box-background-shadow;
+        background-color: var(--body-color);
+        box-shadow: var(--box-background-shadow);
         // remove this
         justify-content: space-around;
     }
