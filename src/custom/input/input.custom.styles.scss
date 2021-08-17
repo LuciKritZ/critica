@@ -1,0 +1,10 @@
+.search-input {
+    button {
+        background-color: #263f61 !important;
+        border: 0px;
+        &:hover {
+            border: 0px;
+        }
+    };
+    max-width: 640px;
+}

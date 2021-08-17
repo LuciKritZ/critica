@@ -1,0 +1,12 @@
+.list-option {
+    min-width: 120px;
+    cursor: pointer;
+    .option-container {
+        justify-content: space-between;
+        .ant-list-item-meta-avatar, .ant-list-item-meta-title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}

@@ -1,0 +1,62 @@
+$small: 575px;
+$medium: 767px;
+$hideSearchBar: 399px;
+.root {
+    margin: 0;
+    padding: 0;
+    overflow-x: scroll;
+    & .navbar-panel {
+        margin: 10px 20px;
+        height: 75px;
+        width: 100%;
+        @media screen and (max-width: $hideSearchBar) {
+            justify-content: space-between;
+        }
+        & .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            & .logo {
+                height: 75px;
+                width: 75px;
+                @media screen and (max-width: $small) {
+                    height: 60px;
+                }
+            }
+        }
+        & .search-container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            @media screen and (max-width: $hideSearchBar) {
+                display: none;
+            }
+        }
+        & .button-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            @media screen and (max-width: $medium) {
+                display: none;
+            }
+            .user-avatar {
+                width: 36px;
+                height: 36px;
+                line-height: 36px;
+                font-size: 20px;
+                margin: 0px 10px;
+            }
+        }
+        & .menu-container {
+            display: none;
+            @media screen and (max-width: $medium) {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
+    & .body {
+        margin: 10px 20px;
+    }
+}

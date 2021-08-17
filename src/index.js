@@ -2,15 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
 import { Router } from 'react-router-dom';
-import AppRouter from './routers/app.router';
 import { appHistory } from './utils/history.utils';
+import { AuthProvider } from './providers/auth-provider.providers';
 import reportWebVitals from './reportWebVitals';
+import App from './App';
 
 ReactDOM.render(
     <React.StrictMode>
         {/* App rendered by a router to allow navigation using app bar */}
         <Router history={appHistory}>
-            <AppRouter />
+            <AuthProvider>
+                <App />
+            </AuthProvider>
         </Router>
     </React.StrictMode>,
     document.getElementById('root'),
