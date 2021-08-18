@@ -124,7 +124,7 @@ const Navbar = ({ children }) => {
                     )}
                 </Col>
             </Row>
-            <Row className="body">{children}</Row>
+            {/* <Row className="body">{children}</Row> */}
         </Row>
     );
 };

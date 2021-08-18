@@ -4,9 +4,10 @@ import AppRouter from './routers/app.router';
 import 'antd/dist/antd.min.css';
 
 const App = () => (
-    <Navbar>
+    <>
+        <Navbar />
         <AppRouter />
-    </Navbar>
+    </>
 );
 
 export default App;
