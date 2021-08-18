@@ -7,7 +7,10 @@ import './bookCard.component.scss';
 const BookCardComponent = ({ bookInfo, isShowButton = false, buttonFunc, buttonString }) => (
     <>
         <div className="card-book">
-            <ImageComponent src={bookInfo.bookCover} alt={bookInfo.title} />
+            <ImageComponent
+                src={bookInfo.bookCover}
+                alt={bookInfo.title}
+                redirect={bookInfo.id} />
             <div className="book-info-container">
                 <p className="book-title" title={bookInfo.title}>
                     {bookInfo.title}
