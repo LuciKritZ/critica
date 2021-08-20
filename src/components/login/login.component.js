@@ -10,14 +10,11 @@ import './login.component.styles.scss';
 const Login = () => {
     const { signIn } = useAuth();
     const [loading, setLoading] = useState(false);
-    // const history = useHistory();
 
     const handleLogin = async (googleData) => {
-        console.log(googleData);
         setLoading(true);
         try {
-            await signIn(googleData);
-            // history.push(AppRoute.HOMEPAGE);
+            signIn(googleData);
         } finally {
             setLoading(false);
         }

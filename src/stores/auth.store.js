@@ -18,9 +18,9 @@ const useAuthStore = create(
 
             setUserInfo: (userCode, isAdmin, role, isPremiumUser = false) => {
                 set({
-                    userId: userCode || DEFAULT_EMPLOYEE_ID,
+                    userId: userCode,
                     isAdmin: isAdmin || false,
-                    role: DEFAULT_ROLES_ARRAY[role + 1],
+                    role: DEFAULT_ROLES_ARRAY[parseInt(role) + 1],
                     isPremium: isPremiumUser,
                 });
             },

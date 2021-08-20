@@ -5,6 +5,8 @@ import LoadingIndicator from '../components/loading-indicator/loading-indicator.
 import { notification } from 'antd';
 import MESSAGES from '../utils/messages.utils';
 import { useLocation, useHistory } from 'react-router-dom';
+import { login } from '../rest/authentication.rest';
+import { DEFAULT_ROLES, ADMIN_ROLE } from '../utils/roles.utils';
 
 export const AuthProvider = ({ children }) => {
     const [authLoading, setAuthLoading] = useState(true);
@@ -50,7 +52,14 @@ export const AuthProvider = ({ children }) => {
         }
 
         try {
-            if (!formData || !formData.tokenId) {
+            const request = {
+                firstName: formData.profileObj.givenName,
+                lastName: formData.profileObj.familyName,
+                email: formData.profileObj.email,
+            };
+            const auth = await login(request);
+
+            if (!auth || !auth.access_token) {
                 notification.error({
                     message: MESSAGES.LABELS.ERROR,
                     description: MESSAGES.AUTHENTICATION.ERROR,
@@ -59,8 +68,13 @@ export const AuthProvider = ({ children }) => {
                 return false;
             }
 
-            setAccessToken(formData.tokenId);
-            setUserInfo(1, false, formData.role || 1);
+            setAccessToken(auth.access_token);
+            setUserInfo(
+                auth.id,
+                auth.role === DEFAULT_ROLES[ADMIN_ROLE],
+                auth.role,
+                auth.isPremium,
+            );
             history.push(location);
         } catch (error) {
             notification.error({
