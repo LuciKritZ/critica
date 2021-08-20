@@ -2,11 +2,16 @@ import React from 'react';
 import Navbar from './components/navbar/navbar.component';
 import AppRouter from './routers/app.router';
 import 'antd/dist/antd.min.css';
+import { Row, Col } from 'antd';
 
 const App = () => (
     <>
         <Navbar />
-        <AppRouter />
+        <Row>
+            <Col className="app-body" xs={24}>
+                <AppRouter />
+            </Col>
+        </Row>
     </>
 );
 

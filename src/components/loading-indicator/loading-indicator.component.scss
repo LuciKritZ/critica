@@ -1,5 +1,9 @@
 .loading-container {
-    display: flex;
+    display: flex !important;
     justify-content: center;
-    align-content: center;
+    align-items: center;
+}
+
+.loading-fullscreen {
+    height: 100vh !important;
 }

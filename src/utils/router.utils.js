@@ -8,6 +8,7 @@ export const AppRoute = {
     BOOK_DETAILS: `/books/${PLACEHOLDER_ID}`,
     MY_BOOKS: `/users/my-books`,
     BOOKMARKS: `/users/bookmarks`,
+    ADMIN_PANEL: `/admin`,
 };
 
 export default AppRoute;

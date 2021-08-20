@@ -3,9 +3,18 @@
     cursor: pointer;
     .option-container {
         justify-content: space-between;
+        align-items: center;
         .ant-list-item-meta-avatar, .ant-list-item-meta-title {
             display: flex;
             justify-content: center;
+            align-items: center;
+            svg {
+                font-size: 20px;
+            }
+        }
+        .ant-list-item-meta-content {
+            display: flex;
+            justify-content: flex-start;
             align-items: center;
         }
     }

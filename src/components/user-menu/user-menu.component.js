@@ -1,27 +1,39 @@
 import React from 'react';
 import { Row, Col, List, Avatar } from 'antd';
-import { LogoutOutlined } from '@ant-design/icons';
+import { LogoutOutlined, UserSwitchOutlined, UserOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../providers/auth-provider.providers';
 import { AppRoute } from '../../utils/router.utils';
-import './user-menu.component.styles.scss';
+import './user-menu.component.scss';
 
-const UserMenu = () => {
-    const { signOut } = useAuth();
+const UserMenu = ({ closeMenu }) => {
+    const { signOut, isAdmin } = useAuth();
     const history = useHistory();
 
     const options = [
         {
             title: 'My Profile',
-            avatar: (
-                <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-            ),
-            onClick: () => history.push(AppRoute.PROFILE),
+            avatar: <UserOutlined size="small" />,
+            onClick: () => {
+                closeMenu();
+                history.push(AppRoute.PROFILE);
+            },
+            show: true,
+        },
+        {
+            title: 'Admin Panel',
+            avatar: <UserSwitchOutlined size="small" />,
+            onClick: () => {
+                closeMenu();
+                history.push(AppRoute.ADMIN_PANEL);
+            },
+            show: isAdmin,
         },
         {
             title: 'Sign Out',
             avatar: <LogoutOutlined size="small" />,
             onClick: signOut,
+            show: true,
         },
     ];
 

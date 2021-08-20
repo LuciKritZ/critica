@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import useAuthStore from '../stores/auth.store';
 import LoadingIndicator from '../components/loading-indicator/loading-indicator.component';
 import { notification } from 'antd';
@@ -9,7 +9,7 @@ import { login } from '../rest/authentication.rest';
 import { DEFAULT_ROLES, ADMIN_ROLE } from '../utils/roles.utils';
 
 export const AuthProvider = ({ children }) => {
-    const [authLoading, setAuthLoading] = useState(true);
+    const [authLoading, setAuthLoading] = useState(false);
     const history = useHistory();
     const [
         role,
@@ -31,27 +31,13 @@ export const AuthProvider = ({ children }) => {
         state.isAdmin,
     ]);
 
-    const initAuth = () => {
-        if (authenticated) {
-            setAuthLoading(false);
-
-            return;
-        }
-
-        setAuthLoading(false);
-    };
-
-    useEffect(() => {
-        setAuthLoading(true);
-        initAuth();
-    }, []);
-
     const performLogin = async (formData) => {
         if (authenticated) {
             return true;
         }
 
         try {
+            setAuthLoading(true);
             const request = {
                 firstName: formData.profileObj.givenName,
                 lastName: formData.profileObj.familyName,
@@ -83,6 +69,8 @@ export const AuthProvider = ({ children }) => {
                 duration: MESSAGES.DURATION,
             });
             return false;
+        } finally {
+            setAuthLoading(false);
         }
 
         return true;
@@ -112,7 +100,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     if (authLoading) {
-        return <LoadingIndicator />;
+        return <LoadingIndicator fullScreen />;
     }
 
     return <AuthContext.Provider value={authContext}>{children}</AuthContext.Provider>;

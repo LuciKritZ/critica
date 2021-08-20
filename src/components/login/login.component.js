@@ -5,9 +5,9 @@ import MESSAGES from '../../utils/messages.utils';
 import { FrownOutlined } from '@ant-design/icons';
 import { useAuth } from '../../providers/auth-provider.providers';
 import LoadingIndicator from '../loading-indicator/loading-indicator.component';
-import './login.component.styles.scss';
+import './login.component.scss';
 
-const Login = () => {
+const Login = ({ onSignIn }) => {
     const { signIn } = useAuth();
     const [loading, setLoading] = useState(false);
 
@@ -15,6 +15,7 @@ const Login = () => {
         setLoading(true);
         try {
             signIn(googleData);
+            onSignIn();
         } finally {
             setLoading(false);
         }
@@ -26,7 +27,10 @@ const Login = () => {
 
     return (
         <Row className="login-container">
-            <Col className="login-body" xs={24}>
+            <Col className="login-body" xs={10}>
+                LOGIN
+            </Col>
+            <Col className="login-body" xs={14}>
                 <GoogleLogin
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                     buttonText="Sign in with Google"

@@ -8,12 +8,14 @@ const defaultContent = (
     </>
 );
 
-const CustomPopover = ({ placement, title, content, trigger, children }) => (
+const CustomPopover = ({ placement, title, content, trigger, children, visible, close }) => (
     <Popover
         placement={placement || 'bottom'}
         title={title}
         content={content || defaultContent}
         trigger={trigger || 'hover'}
+        visible={visible}
+        onVisibleChange={(isVisible) => !isVisible && close()}
     >
         <Row>{children}</Row>
     </Popover>

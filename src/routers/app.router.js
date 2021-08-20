@@ -6,7 +6,7 @@ import '../scss/styles.scss';
 
 const Homepage = lazy(() => import('../pages/homepage/homepage.page'));
 const Search = lazy(() => import('../pages/search/search.page'));
-const Profile = lazy(() => import('../pages/my-profile/my-profile.page'));
+const Profile = lazy(() => import('../pages/user-profile/user-profile.page'));
 const BookDetails = lazy(() => import('../pages/book-details/book-details.page'));
 const MyBooks = lazy(() => import('../pages/my-books/my-books.page'));
 const Bookmarks = lazy(() => import('../pages/bookmarks/bookmarks.page'));
@@ -19,6 +19,9 @@ const AppRouter = () => (
         <Switch>
             {/* Path for the homepage */}
             <Route path={AppRoute.HOMEPAGE} exact component={Homepage} />
+
+            {/* Path for the admin panel */}
+            <Route path={AppRoute.ADMIN_PANEL} exact component={Homepage} />
 
             {/* Path for the search list */}
             <Route path={AppRoute.SEARCH} exact component={Search} />

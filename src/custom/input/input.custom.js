@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input } from 'antd';
-import './input.custom.styles.scss';
+import './input.custom.scss';
 
 const CustomInput = (props) => {
     const { Search } = Input;
