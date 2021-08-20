@@ -4,9 +4,11 @@ import useAuthStore from '../stores/auth.store';
 import LoadingIndicator from '../components/loading-indicator/loading-indicator.component';
 import { notification } from 'antd';
 import MESSAGES from '../utils/messages.utils';
+import { useLocation, useHistory } from 'react-router-dom';
 
 export const AuthProvider = ({ children }) => {
     const [authLoading, setAuthLoading] = useState(true);
+    const history = useHistory();
     const [
         role,
         authenticated,
@@ -59,6 +61,7 @@ export const AuthProvider = ({ children }) => {
 
             setAccessToken(formData.tokenId);
             setUserInfo(1, false, formData.role || 1);
+            history.push(location);
         } catch (error) {
             notification.error({
                 message: MESSAGES.LABELS.ERROR,
@@ -71,6 +74,19 @@ export const AuthProvider = ({ children }) => {
         return true;
     };
 
+    const performLogout = () => {
+        setAuthLoading(true);
+        const { location } = useLocation;
+        clearAccessToken();
+        notification.success({
+            message: MESSAGES.LABELS.SUCCESS,
+            description: MESSAGES.AUTHENTICATION.LOGOUT_SUCCESS,
+            duration: MESSAGES.DURATION,
+        });
+        setAuthLoading(false);
+        history.push(location);
+    };
+
     const authContext = {
         authenticated,
         accessToken,
@@ -78,7 +94,7 @@ export const AuthProvider = ({ children }) => {
         isAdmin,
         role,
         signIn: performLogin,
-        signOut: clearAccessToken,
+        signOut: performLogout,
     };
 
     if (authLoading) {

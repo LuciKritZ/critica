@@ -94,7 +94,7 @@ const Navbar = ({ children }) => {
                 <Col lg={2} md={3} sm={3} xs={4} className="logo-container">
                     <img src={Logo} alt="Logo" className="logo" />
                 </Col>
-                <Col md={7} lg={11} xl={10} xs={16} className="search-container">
+                <Col md={7} lg={10} xl={10} xs={16} className="search-container">
                     <CustomInput
                         search
                         onSearch={(value) => console.log(value)}
@@ -115,7 +115,7 @@ const Navbar = ({ children }) => {
                         {returnNavbarButtons(true)}
                     </CustomDrawer>
                 </Col>
-                <Col xs={0} sm={8} md={12} xl={11} className="button-container">
+                <Col xs={0} sm={8} md={12} lg={12} xl={11} className="button-container">
                     {returnNavbarButtons()}
                     {authenticated && (
                         <CustomPopover placement="bottom" trigger="click" content={<UserMenu />}>

@@ -8,6 +8,7 @@ const MESSAGES = {
         SUCCESS: 'Successfully Logged in.',
         ERROR: 'Something went wrong.',
         FAILURE: 'Unable to log in.',
+        LOGOUT_SUCCESS: 'You have been logged out.',
     },
     DURATION: 3,
 };
