@@ -1,10 +1,11 @@
 // @import 'src/scss/variables.scss';
-.wrapper {
-    margin: 16px;
+.home-page-wrapper {
+    // margin: 16px;
     background-color: var(--body-color);
     padding: 10px;
         .category-title {
             color: var(--dark-80-color);
+            width: 300px;
             margin-top: 10px;
             margin-left: 10px;
             font-size: 20px;

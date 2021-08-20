@@ -9,6 +9,7 @@ export const AppRoute = {
     MY_BOOKS: `/users/my-books`,
     BOOKMARKS: `/users/bookmarks`,
     ADMIN_PANEL: `/admin`,
+    PAYMENT: `/payment`
 };
 
 export default AppRoute;

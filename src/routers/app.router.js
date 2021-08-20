@@ -11,6 +11,7 @@ const BookDetails = lazy(() => import('../pages/book-details/book-details.page')
 const MyBooks = lazy(() => import('../pages/my-books/my-books.page'));
 const Bookmarks = lazy(() => import('../pages/bookmarks/bookmarks.page'));
 const AdminDashboard = lazy(() => import('../pages/admin-dashboard/adminDashboard.page'));
+const Payments = lazy(() => import('../pages/payments/payments.page'));
 const PageNotFound = lazy(() => import('../pages/pageNotFound/pageNotFound.component'));
 
 const AppRouter = () => (
@@ -41,8 +42,11 @@ const AppRouter = () => (
                 {/* Path for the getting the user bookmarks */}
                 <Route path={AppRoute.BOOKMARKS} component={Bookmarks} />
 
-                {/* Path for the getting the user bookmarks */}
+                {/* Path for the getting the admin dashboard */}
                 <Route path={AppRoute.ADMINDASHBOARD} component={AdminDashboard} />
+
+                {/* Path for the getting the paymnets page */}
+                <Route path={AppRoute.PAYMENT} component={Payments} />
 
                 {/* Route for 404 page error */}
                 <Route component={PageNotFound} />

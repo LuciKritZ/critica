@@ -100,7 +100,10 @@ const Search = () => {
                                 fetchData={fetchMoreData}
                                 LoaderFunc={LoaderFunc}
                                 render={() => bookInfo.map((eachBookInfo) => (
-                                    <BookCardComponent bookInfo={eachBookInfo} key={eachBookInfo.id} />
+                                    <BookCardComponent 
+                                    bookInfo={eachBookInfo}
+                                    redirect={eachBookInfo.id}
+                                    key={eachBookInfo.id} />
                                 ))}
                             /> :
                             <div>

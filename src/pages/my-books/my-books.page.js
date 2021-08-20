@@ -76,6 +76,7 @@ const MyBooks = () => {
                             key={index}
                             isShowButton
                             buttonFunc={removeBookRead}
+                            redirect={eachBookInfo.id}
                             buttonString="Remove from Read" />
                     ))}
                 </div>

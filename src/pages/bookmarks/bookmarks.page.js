@@ -75,6 +75,7 @@ const Bookmarks = () => {
                             bookInfo={eachBookInfo}
                             key={index}
                             isShowButton
+                            redirect={eachBookInfo.id}
                             buttonFunc={removeBookmark}
                             buttonString="Remove from Bookmark" />
                     ))}
