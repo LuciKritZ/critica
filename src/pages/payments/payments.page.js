@@ -1,8 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
-
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-// import { useState } from "react";
 import './payments.scss';
 import { Button, Form, Input } from 'antd';
 import axios from 'axios';
@@ -12,21 +10,6 @@ import AppRoute from '../../utils/router.utils';
 import { useAuth } from '../../providers/auth-provider.providers';
 
 const iframeStyles = {
-    // base: {
-    //   color: "#fff",
-    //   fontSize: "16px",
-    //   iconColor: "#fff",
-    //   "::placeholder": {
-    //     color: "#87bbfd"
-    //   }
-    // },
-    // invalid: {
-    //   iconColor: "#FFC7EE",
-    //   color: "#FFC7EE"
-    // },
-    // complete: {
-    //   iconColor: "#cbf4c9"
-    // }
 };
 
 const cardElementOpts = {
@@ -58,32 +41,14 @@ const Payments = () => {
         })
     }
     const buyPremiumMembership = async value => {
-        // ev.preventDefault();
-
-        // const billingDetails = {
-        //   name: ev.target.name.value,
-        //   email: ev.target.email.value,
-        //   address: {
-        //     city: ev.target.city.value,
-        //     line1: ev.target.address.value,
-        //     state: ev.target.state.value,
-        //     postal_code: ev.target.zip.value
-        //   }
-        // };
-
-        // setProcessingTo(true);
-
         const cardElement = elements.getElement("card");
-
         try {
             const { data: clientSecret } =
                 await axios.post(`${process.env.REACT_API_URL}/payment`, {
                     amount: 99,
                     currency: 'INR'
                 });
-
             console.log(clientSecret, value, 'clientSecret');
-
             const paymentMethodReq = await stripe.createPaymentMethod({
                 type: "card",
                 card: cardElement,
@@ -97,7 +62,6 @@ const Payments = () => {
                 setProcessingTo(false);
                 return;
             }
-
             const confirmCardPayments = await stripe.confirmCardPayment(
                 clientSecret.client_secret, {
                 payment_method: paymentMethodReq.paymentMethod.id
