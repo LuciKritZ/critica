@@ -1,4 +1,5 @@
 import { Button, Table, Space } from 'antd';
+import axios from 'axios';
 import React from 'react';
 import './adminDashboard.page.scss';
 
@@ -17,46 +18,55 @@ const tableConfig = {
 const adminData = [
     {
         key: 1,
-        name: 'Test Test',
-        profileUrl: 'https://google.com',
-        date: ' 16th jan 2020'
+        firstName: 'Test Test',
+        accomplishment: 'https://google.com',
+        userID: '9EnwzBxOqhZL045UtnTb',
+        creationDateAndTime: ' 16th jan 2020'
     },
     {
         key: 2,
-        name: 'Test2 Test',
-        profileUrl: 'https://google.com',
-        date: ' 16th jan 2020'
+        firstName: 'Test2 Test',
+        userID: '1111',
+        accomplishment: 'https://google.com',
+        creationDateAndTime: ' 16th jan 2020'
     },
     {
         key: 3,
-        name: 'Test3 Test',
-        profileUrl: 'https://google.com/https://google.com/https://google.com/https://google.comhttps://google.com',
-        date: ' 16th jan 2020'
+        firstName: 'Test3 Test',
+        userID: '222',
+        accomplishment: 'https://google.com/https://google.com/https://google.com/https://google.comhttps://google.com',
+        creationDateAndTime: ' 16th jan 2020'
     }
 ]
 const AdminDashboard = () => {
     const sendRequest = (isAllowed, key) => {
         console.log(isAllowed, key, 'sss');
+        axios.post(`${process.env.REACT_API_URL}adminresponse`, {
+            respond: isAllowed,
+            userID: key
+        }).then((response) => {
+            console.log(response, 'rr');
+        })
     }
     const columns = [
         {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
+            title: 'First Name',
+            dataIndex: 'firstName',
+            key: 'firstName',
             width: '150px',
         },
         {
             title: 'Profile Url',
-            dataIndex: 'profileUrl',
-            key: 'profileUrl',
+            dataIndex: 'accomplishment',
+            key: 'accomplishment',
             width: '350px',
             ellipsis: true,
             render: text => <a href={text}>{text}</a>,
         },
         {
             title: 'Date',
-            dataIndex: 'date',
-            key: 'date',
+            dataIndex: 'creationDateAndTime',
+            key: 'creationDateAndTime',
             width: '150px',
         },
         {
@@ -67,10 +77,10 @@ const AdminDashboard = () => {
                 <Space size="middle">
                     <Button
                         type="primary"
-                        onClick={() => sendRequest(true, eachAdminData.key)}>
+                        onClick={() => sendRequest(true, eachAdminData.userID)}>
                         Accept</Button>
                     <Button type="primary" danger
-                        onClick={() => sendRequest(false, eachAdminData.key)}>
+                        onClick={() => sendRequest(false, eachAdminData.userID)}>
                         Reject</Button>
                 </Space>
             ),
@@ -96,8 +106,8 @@ const AdminDashboard = () => {
                                     <td style={{ maxWidth: '150px' }}>{eachAdminData.key}</td>
                                     <td style={{ maxWidth: '150px' }}>{eachAdminData.name}</td>
                                     <td style={{ maxWidth: '350px' }}>
-                                        <a href={eachAdminData.profileUrl}>
-                                            {eachAdminData.profileUrl}
+                                        <a href={eachAdminData.accomplishment}>
+                                            {eachAdminData.accomplishment}
                                         </a>
                                     </td>
                                     <td style={{ maxWidth: '150px' }}>{eachAdminData.date}</td>

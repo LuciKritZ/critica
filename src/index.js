@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import { appHistory } from './utils/history.utils';
 import { UserProvider } from './providers/user.providers';
 import { AuthProvider } from './providers/auth-provider.providers';

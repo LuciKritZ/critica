@@ -11,28 +11,12 @@ import RatingComponent from '../../components/ratingComponent/rating.component';
 import './book-details.page.scss';
 import NoReview from '../../assets/noReviews.png';
 import { useAuth } from '../../providers/auth-provider.providers';
+import DeleteModal from '../../components/deleteModal/deleteModal';
 
 const { TextArea } = Input;
 
-// const bookData = {
-//     bookCover: 'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1503088065l/36065279._SX318_.jpg',
-//     title: 'I Do What I Do',
-//     author: 'Raghuram G. Rajan',
-//     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-//     averageRating: 4.1,
-//     totalRating: '10,313',
-//     totalComments: 10,
-//     stars: {
-//         1: 3,
-//         2: 1,
-//         3: 1,
-//         4: 4,
-//         5: 1
-//     }
-// };
-
 let constCriticsReviewData = [];
-
+let reviewId = '';
 const BookDetails = () => {
     const { id } = useParams();
     const { authenticated, userId, role } = useAuth();
@@ -43,12 +27,12 @@ const BookDetails = () => {
     const [form] = Form.useForm();
     const [averageRating, setAverageRating] = useState(0);
     const [isShowRatingError, setIsShowRatingError] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [myReview, setMyReview] = useState(false);
+    const [editReviewId, setEditReviewId ] = useState(null);
 
-
-    console.log(authenticated, userId, role, 'vvv');
     // for bookread and bookmark apis
     const updateBookStatus = (bookStatus, isStatus) => {
-        console.log(bookStatus, isStatus);
         if (authenticated && userId) {
             axios.put(`${process.env.REACT_API_URL}userbook/userbookdetails`, {
                 bookID: id,
@@ -60,7 +44,22 @@ const BookDetails = () => {
                 }),
                 userID: userId
             }).then((response) => {
-                console.log(response, 'response');
+                switch (bookStatus) {
+                    case 1: {
+                        const constBookData = bookData;
+                        constBookData.isInWishlist = !constBookData.isInWishlist;
+                        setBookData({...constBookData});
+                        break;
+                    }
+                    case 2: {
+                        const constBookData = bookData;
+                        constBookData.isRead = !constBookData.isRead;
+                        setBookData({...constBookData});
+                        break;
+                    }
+                    default:
+                        break;
+                }
             })
         }
 
@@ -143,6 +142,8 @@ const BookDetails = () => {
                         reviewsData.unshift(myReviewData[0]);
                         console.log(reviewsData, 'reviewsData');
                     }
+                    const myReviewIndex = reviewsData.findIndex((eachReviews) => eachReviews.userID === userId);
+                    setMyReview(myReviewIndex !== -1 && true);
                     setCriticsReviewData(reviewsData);
                     constCriticsReviewData = cloneDeep(reviewsData);
                 }
@@ -157,7 +158,7 @@ const BookDetails = () => {
         fetchBooksData();
         fetchReviewsData();
     }, [id]);
-
+// authenticated, userId
     // commments like api call
     const likeFunc = () => {
         console.log('ddddd likeFunc');
@@ -177,7 +178,31 @@ const BookDetails = () => {
                 bookID: id,
                 userID: userId
             }).then((response) => {
+                fetchBooksData();
+                fetchReviewsData();
                 console.log(response);
+            }).catch((error) => {
+                console.log(error);
+            })
+        }
+    }
+    
+    const editReview = (values) => {
+        if (!averageRating) {
+            setIsShowRatingError(true);
+        } else {
+            const criticData = values;
+            criticData.rating = averageRating;
+            console.log(criticData, '/review, add reviews');
+            axios.put(`${process.env.REACT_API_URL}review/${editReviewId}`, {
+                rating: averageRating,
+                comment: criticData.comment,
+                bookID: id,
+                userID: userId
+            }).then((response) => {
+                fetchBooksData();
+                fetchReviewsData();
+                setEditReviewId(null);
             }).catch((error) => {
                 console.log(error);
             })
@@ -219,6 +244,42 @@ const BookDetails = () => {
         }
     }
 
+    const showDeleteModalFunc = (setModalVisibility) => {
+        setIsModalVisible(setModalVisibility);
+        // setIsModalVisible(true);
+    }
+
+    const onDelete = () => {
+        // constReason = reason;
+        console.log(reviewId, 'reviewId');
+        axios.delete(`${process.env.REACT_API_URL}/review/${reviewId}`)
+        .then((response) => {
+            console.log(response);
+            fetchReviewsData();
+            fetchBooksData();
+            setIsModalVisible(false);
+        })
+    }
+
+    const deleteComment = (reviewData) => {
+        console.log(reviewData, 'reviewData');
+        reviewId = reviewData.id;
+        setIsModalVisible(true);
+    }
+
+    const editComment = (reviewData) => {
+        // setAverageRating()
+        // comment
+        setEditReviewId(reviewData.id)
+        setMyReview(false);
+        const criticsReviewDataConst = criticsReviewData;
+        console.log(reviewData, 'reviewData');
+        criticsReviewDataConst.splice(0, 1);
+        setAverageRating(reviewData.rating);
+        setCriticsReviewData([...criticsReviewDataConst]);
+        form.setFieldsValue({comment: reviewData.comment});
+    }
+
     const ReviewsComponent = ({ reviewData, likeFunction }) => (
         <div className={`criticsReview ${ reviewData.userID === userId ? `my-review` : ``} `}>
             <div className="criticsImg">
@@ -258,13 +319,13 @@ const BookDetails = () => {
                             <Button type="text"
                                 className="bookStatusBtn likesIcon"
                                 style={{ marginLeft: '10px' }}
-                                onClick={() => updateBookStatus(2, !bookData.isRead)}>
+                                onClick={() => editComment(reviewData)}>
                                 <EditOutlined /> Edit
                             </Button>
                             <Button type="text"
                                 className="bookStatusBtn likesIcon"
                                 style={{ marginLeft: '10px' }}
-                                onClick={() => updateBookStatus(2, !bookData.isRead)}>
+                                onClick={() => deleteComment(reviewData)}>
                                 <DeleteOutlined /> Delete
                             </Button>
                         </>
@@ -275,171 +336,179 @@ const BookDetails = () => {
     )
 
     return (
-        <div className="wrapper">
-            <div className="pageWrapper">
-                <div className="bookInfoWrapper">
-                    <div className="bookInfoContainer">
-                        <div className="bookImgContainer">
-                            <ImageComponent
-                                src={bookData.bookCover}
-                                alt={bookData.title}
-                                extraClass='bookDetailImage' />
-                        </div>
-                        <div className="bookDataContainer">
-                            <div className="bookTitle">{bookData.title}</div>
-                            <div className="bookAuthor"> by {bookData.author}</div>
-                            {/* <div className="bookRatng"> by {bookData.author}</div> */}
-                            <div className="book-ratings">
-                                <RatingComponent
-                                    starDimension='19px'
-                                    starSpacing='1px'
-                                    rating={bookData.averageRating} />
-                                <span> {bookData.averageRating} </span>
-                                <span className="book-total-reviews">
-                                    {bookData.totalComments} reviews
-                                </span>
+        <>
+            <DeleteModal
+                showDeleteModal={isModalVisible}
+                modalVisibleFunc={showDeleteModalFunc}
+                onSave={onDelete}
+                message='Are you sure you want to delete your review?' />
+            <div className="wrapper">
+                <div className="pageWrapper">
+                    <div className="bookInfoWrapper">
+                        <div className="bookInfoContainer">
+                            <div className="bookImgContainer">
+                                <ImageComponent
+                                    src={bookData.bookCover}
+                                    alt={bookData.title}
+                                    extraClass='bookDetailImage' />
                             </div>
-                            <div className="bookDetails">
-                                {bookData.description}
-                            </div>
-                            <div>
-                                <Button type="primary"
-                                    className="bookStatusBtn"
-                                    onClick={() => updateBookStatus(1, !bookData.isInWishlist)}>
-                                     {bookData.isInWishlist ? 'Book Marked' : 'Book Mark'}
-                                </Button>
-                                <Button type="primary"
-                                    className="bookStatusBtn"
-                                    style={{ marginLeft: '10px' }}
-                                    onClick={() => updateBookStatus(2, !bookData.isRead)}>
-                                    {bookData.isRead ? 'Read' : 'Want to Read'}
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="ratingInfoWrapper">
-                    <div className="ratingInfoContainer pt-30px">
-                        <div className="ratingRow">
-                            <div className="ratingData">
-                                <div className="rating-title">
-                                    Critics Review
-                                </div>
+                            <div className="bookDataContainer">
+                                <div className="bookTitle">{bookData.title}</div>
+                                <div className="bookAuthor"> by {bookData.author}</div>
+                                {/* <div className="bookRatng"> by {bookData.author}</div> */}
                                 <div className="book-ratings">
                                     <RatingComponent
-                                        starDimension='22px'
-                                        starSpacing='2px'
+                                        starDimension='19px'
+                                        starSpacing='1px'
                                         rating={bookData.averageRating} />
                                     <span> {bookData.averageRating} </span>
+                                    <span className="book-total-reviews">
+                                        {bookData.totalComments} reviews
+                                    </span>
                                 </div>
-                                <div className="book-total-reviews">
-                                    {bookData.totalComments} total reviews
+                                <div className="bookDetails">
+                                    {bookData.description}
                                 </div>
-                                <div className="filters">
-                                    {
-                                        tags.length ?
-                                            <span className="filtersTitle">Filters:</span>
-                                            : <> </>
-                                    }
-                                    {
-                                        tags.map((eachTags, index) => (
-                                            <Tag closable onClose={() => clearFilters(index, eachTags)} key={index}>
-                                                {eachTags.text}
-                                            </Tag>
-                                        ))
-                                    }
+                                <div>
+                                    <Button type={bookData.isInWishlist ? "primary" : "text"}
+                                        style={{ marginLeft: '0px' }}
+                                        className="btn"
+                                        onClick={() => updateBookStatus(1, !bookData.isInWishlist)}>
+                                        {bookData.isInWishlist ? 'Book Marked' : 'Book Mark'}
+                                    </Button>
+                                    <Button type={bookData.isRead ? "primary" : "text"}
+                                        className="btn"
+                                        style={{ marginLeft: '10px' }}
+                                        onClick={() => updateBookStatus(2, !bookData.isRead)}>
+                                        {bookData.isRead ? 'Book Completed' : 'Incomplete'}
+                                    </Button>
                                 </div>
                             </div>
                         </div>
-                        <div className="ratingBar">
-                            {
-                                starsPercentage.length && starsPercentage.map((eachStar, index) => (
-                                    <div className="eachRatingBar" key={index}>
-                                        <span className="starName">{index + 1} star</span>
-                                        <Progress percent={eachStar} onClick={() => ratingsFilter(index + 1)} title="click to filter reviews" />
-                                    </div>
-                                ))
-                            }
-                        </div>
                     </div>
 
-                    <div className="ratingInfoContainer pb-30px">
-                        <div className="reviewConatiner">
-                            {
-                                true ? <>
-                                    <div className="criticsReview" style={{ width: '100%' }}>
-                                        <div className="criticsImg">
-                                            {
-                                                false ?
-                                                    <ImageComponent
-                                                        src={bookData.bookCover}
-                                                        alt={bookData.title}
-                                                        extraClass='circle' />
-                                                : <Avatar 
-                                                className="user-avatar" size="large" icon={<UserOutlined />} />
-                                            }
+                    <div className="ratingInfoWrapper">
+                        <div className="ratingInfoContainer pt-30px">
+                            <div className="ratingRow">
+                                <div className="ratingData">
+                                    <div className="rating-title">
+                                        Critics Review
+                                    </div>
+                                    <div className="book-ratings">
+                                        <RatingComponent
+                                            starDimension='22px'
+                                            starSpacing='2px'
+                                            rating={bookData.averageRating} />
+                                        <span> {bookData.averageRating} </span>
+                                    </div>
+                                    <div className="book-total-reviews">
+                                        {bookData.totalComments} total reviews
+                                    </div>
+                                    <div className="filters">
+                                        {
+                                            tags.length ?
+                                                <span className="filtersTitle">Filters:</span>
+                                                : <> </>
+                                        }
+                                        {
+                                            tags.map((eachTags, index) => (
+                                                <Tag closable onClose={() => clearFilters(index, eachTags)} key={index}>
+                                                    {eachTags.text}
+                                                </Tag>
+                                            ))
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="ratingBar">
+                                {
+                                    starsPercentage.length && starsPercentage.map((eachStar, index) => (
+                                        <div className="eachRatingBar" key={index}>
+                                            <span className="starName">{index + 1} star</span>
+                                            <Progress percent={eachStar} onClick={() => ratingsFilter(index + 1)} title="click to filter reviews" />
                                         </div>
-                                        <div className="criticsComment" style={{ width: '100%' }}>
-                                            <Form name="basic" form={form} onFinish={addReview} initialValues={null}>
-                                                <div className="criticsRating">
-                                                    <RatingComponent
-                                                        isRatingChangeAllowed
-                                                        onChangeRatingFunc={onChangeRating}
-                                                        starDimension='22px'
-                                                        starSpacing='3px'
-                                                        rating={averageRating} />
-                                                    {
-                                                        isShowRatingError ?
-                                                            <span className="ratingError" role="alert">
-                                                                Please give ratings
-                                                            </span> :
-                                                            <></>
-                                                    }
-                                                </div>
-                                                <div className="criticsComment" style={{ width: '100%' }}>
-                                                    <Form.Item name="comment" rules={[{ required: true, whitespace: true, message: "Please add review" }]}>
-                                                        <TextArea
-                                                            showCount
-                                                            maxLength={500}
-                                                            placeholder={`Write your review for ${bookData.title}`}
-                                                            autoSize={{ minRows: 5, maxRows: 5 }} />
-                                                    </Form.Item>
-                                                </div>
-                                                {/* <Form.Item style={{ marginTop: '15px' }}>
+                                    ))
+                                }
+                            </div>
+                        </div>
+
+                        <div className="ratingInfoContainer pb-30px">
+                            <div className="reviewConatiner">
+                                {
+                                    authenticated && userId && role > 1 && !myReview ? <>
+                                        <div className="criticsReview" style={{ width: '100%' }}>
+                                            <div className="criticsImg">
+                                                {
+                                                    false ?
+                                                        <ImageComponent
+                                                            src={bookData.bookCover}
+                                                            alt={bookData.title}
+                                                            extraClass='circle' />
+                                                        : <Avatar
+                                                            className="user-avatar" size="large" icon={<UserOutlined />} />
+                                                }
+                                            </div>
+                                            <div className="criticsComment" style={{ width: '100%' }}>
+                                                <Form name="basic" form={form} onFinish={editReviewId ? editReview : addReview } initialValues={null}>
+                                                    <div className="criticsRating">
+                                                        <RatingComponent
+                                                            isRatingChangeAllowed
+                                                            onChangeRatingFunc={onChangeRating}
+                                                            starDimension='22px'
+                                                            starSpacing='3px'
+                                                            rating={averageRating} />
+                                                        {
+                                                            isShowRatingError ?
+                                                                <span className="ratingError" role="alert">
+                                                                    Please give ratings
+                                                                </span> :
+                                                                <></>
+                                                        }
+                                                    </div>
+                                                    <div className="criticsComment" style={{ width: '100%' }}>
+                                                        <Form.Item name="comment" rules={[{ required: true, whitespace: true, message: "Please add review" }]}>
+                                                            <TextArea
+                                                                showCount
+                                                                maxLength={500}
+                                                                placeholder={`Write your review for ${bookData.title}`}
+                                                                autoSize={{ minRows: 5, maxRows: 5 }} />
+                                                        </Form.Item>
+                                                    </div>
+                                                    {/* <Form.Item style={{ marginTop: '15px' }}>
 
                                                 </Form.Item> */}
-                                                <div className="reviewButton">
-                                                    <Button type="primary"
-                                                        htmlType="submit"
-                                                        className="bookStatusBtn">
-                                                        Add Review
-                                                    </Button>
-                                                </div>
-                                            </Form>
+                                                    <div className="reviewButton">
+                                                        <Button type="primary"
+                                                            htmlType="submit"
+                                                            className="bookStatusBtn">
+                                                            {editReviewId ? 'Update Review' : 'Add Review'}
+                                                        </Button>
+                                                    </div>
+                                                </Form>
+                                            </div>
                                         </div>
-                                    </div>
-                                </> :
-                                    <>
+                                    </> :
+                                        <>
 
-                                    </>
-                            }
-                            {
-                                criticsReviewData.length ? criticsReviewData.map((eachReviews, index) => (
-                                    <ReviewsComponent reviewData={eachReviews} likeFunc={likeFunc} key={index} />
-                                )) :
-                                    <div className="noReviews">
-                                        <img src={NoReview} alt="No Reviews" />
-                                        <div className="no-review-title">
-                                            No reviews
+                                        </>
+                                }
+                                {
+                                    criticsReviewData.length ? criticsReviewData.map((eachReviews, index) => (
+                                        <ReviewsComponent reviewData={eachReviews} likeFunc={likeFunc} key={index} />
+                                    )) :
+                                        <div className="noReviews">
+                                            <img src={NoReview} alt="No Reviews" />
+                                            <div className="no-review-title">
+                                                No reviews
+                                            </div>
                                         </div>
-                                    </div>
-                            }
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 };
 
