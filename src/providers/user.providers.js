@@ -1,33 +1,40 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { ADMIN_ROLE, DEFAULT_ROLES } from '../utils/roles.utils';
-
-const initialState = {
-    userDetails: null,
-    role: 1,
-    isPremium: false,
-    isAdmin: false,
-};
+import { ADMIN_ROLE, CRITIC_ROLE, DEFAULT_ROLES } from '../utils/roles.utils';
+import { useAuth } from './auth-provider.providers';
+import { getUser } from '../rest/user.rest';
 
 export const UserProvider = ({ children }) => {
-    const [user, setUser] = useState({ ...initialState });
+    const { authenticated, email } = useAuth();
+    const [user, setUser] = useState({
+        userDetails: null,
+        role: null,
+        isPremium: false,
+        isAdmin: false,
+        isCritic: false,
+    });
 
-    const updateUser = (data) => {
-        if (data) {
-            setUser({
-                userDetails: { ...data },
-                role: data.role,
-                isPremium: data.isPremium,
-                isAdmin: data.role === DEFAULT_ROLES[ADMIN_ROLE],
+    const updateUser = async () => {
+        if (authenticated) {
+            const userData = await getUser({
+                email,
             });
-        } else {
-            setUser({ ...initialState });
+            setUser({
+                userDetails: { ...userData },
+                role: user.role,
+                isPremium: userData.isPremium,
+                isAdmin: userData.role === DEFAULT_ROLES[ADMIN_ROLE],
+                isCritic: userData.role === DEFAULT_ROLES[CRITIC_ROLE],
+            });
         }
     };
 
+    useEffect(() => {
+        updateUser();
+    }, []);
+
     const userContext = {
         user,
-        updateUser,
     };
 
     return <UserContext.Provider value={{ ...userContext }}>{children}</UserContext.Provider>;

@@ -5,14 +5,12 @@ import { useLocation, useHistory } from 'react-router-dom';
 import useAuthStore from '../stores/auth.store';
 import LoadingIndicator from '../components/loading-indicator/loading-indicator.component';
 import MESSAGES from '../utils/messages.utils';
-import { login } from '../rest/authentication.rest';
+import { getUser } from '../rest/user.rest';
 import { DEFAULT_ROLES, ADMIN_ROLE } from '../utils/roles.utils';
-import { useUserInfo } from './user.providers';
 
 export const AuthProvider = ({ children }) => {
     const [authLoading, setAuthLoading] = useState(false);
     const history = useHistory();
-    const { updateUser } = useUserInfo();
     const [
         role,
         authenticated,
@@ -22,6 +20,7 @@ export const AuthProvider = ({ children }) => {
         userId,
         setUserInfo,
         isAdmin,
+        email,
     ] = useAuthStore((state) => [
         state.role,
         state.authenticated,
@@ -31,6 +30,7 @@ export const AuthProvider = ({ children }) => {
         state.userId,
         state.setUserInfo,
         state.isAdmin,
+        state.email,
     ]);
 
     const performLogin = async (formData) => {
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
                 lastName: formData.profileObj.familyName,
                 email: formData.profileObj.email,
             };
-            const auth = await login(request);
+            const auth = await getUser(request);
 
             if (!auth || !auth.access_token) {
                 notification.error({
@@ -57,12 +57,12 @@ export const AuthProvider = ({ children }) => {
             }
 
             const { location } = useLocation;
-            updateUser({ ...auth });
             setAccessToken(auth.access_token);
             setUserInfo(
                 auth.id,
                 auth.role === DEFAULT_ROLES[ADMIN_ROLE],
                 auth.role,
+                auth.email,
                 auth.isPremium,
             );
             history.push(location);
@@ -83,7 +83,6 @@ export const AuthProvider = ({ children }) => {
     const performLogout = () => {
         setAuthLoading(true);
         const { location } = useLocation;
-        updateUser();
         clearAccessToken();
         notification.success({
             message: MESSAGES.LABELS.SUCCESS,
@@ -100,6 +99,7 @@ export const AuthProvider = ({ children }) => {
         userId,
         isAdmin,
         role,
+        email,
         signIn: performLogin,
         signOut: performLogout,
     };

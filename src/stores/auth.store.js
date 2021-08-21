@@ -13,15 +13,17 @@ const useAuthStore = create(
             redirectPath: '',
             userId: 0,
             isAdmin: false,
+            email: '',
             role: DEFAULT_ROLES[USER_ROLE],
             isPremium: false,
 
-            setUserInfo: (userCode, isAdmin, role, isPremiumUser = false) => {
+            setUserInfo: (userCode, isAdmin, role, email, isPremiumUser = false) => {
                 set({
                     userId: userCode,
                     isAdmin: isAdmin || false,
-                    role: DEFAULT_ROLES_ARRAY[parseInt(role) + 1],
+                    role: DEFAULT_ROLES_ARRAY[parseInt(role, 10) + 1],
                     isPremium: isPremiumUser,
+                    email,
                 });
             },
 
@@ -39,6 +41,7 @@ const useAuthStore = create(
                     role: 1,
                     isAdmin: false,
                     isPremium: false,
+                    email: '',
                 });
             },
 

@@ -1,0 +1,7 @@
+$medium: 990px;
+.app-body {
+    margin: 20px 0px 0px 20px;
+    @media screen and (max-width: $medium) {
+        margin: 10px 20px;
+    }
+}

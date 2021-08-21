@@ -12,11 +12,11 @@ ReactDOM.render(
     <React.StrictMode>
         {/* App rendered by a router to allow navigation using app bar */}
         <Router history={appHistory}>
-            <UserProvider>
-                <AuthProvider>
+            <AuthProvider>
+                <UserProvider>
                     <App />
-                </AuthProvider>
-            </UserProvider>
+                </UserProvider>
+            </AuthProvider>
         </Router>
     </React.StrictMode>,
     document.getElementById('root'),
