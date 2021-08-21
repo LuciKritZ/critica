@@ -27,7 +27,7 @@ const Navbar = () => {
     const navbarButtons = [
         {
             name: 'Try Premium',
-            onClick: () => console.log('Try Premium clicked'),
+            onClick: () => history.push(AppRoute.PAYMENT),
             className: 'try-premium-btn',
             show: !user.isPremium,
         },

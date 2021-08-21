@@ -1,6 +1,9 @@
 import { Button, Table, Space } from 'antd';
 import axios from 'axios';
-import React from 'react';
+import  ContentLoader from 'react-content-loader'
+import React, { useEffect, useState } from 'react';
+import Moment from 'react-moment';
+import { useAuth } from '../../providers/auth-provider.providers';
 import './adminDashboard.page.scss';
 
 const tableConfig = {
@@ -15,39 +18,41 @@ const tableConfig = {
     tableLayout: undefined,
 };
 
-const adminData = [
-    {
-        key: 1,
-        firstName: 'Test Test',
-        accomplishment: 'https://google.com',
-        userID: '9EnwzBxOqhZL045UtnTb',
-        creationDateAndTime: ' 16th jan 2020'
-    },
-    {
-        key: 2,
-        firstName: 'Test2 Test',
-        userID: '1111',
-        accomplishment: 'https://google.com',
-        creationDateAndTime: ' 16th jan 2020'
-    },
-    {
-        key: 3,
-        firstName: 'Test3 Test',
-        userID: '222',
-        accomplishment: 'https://google.com/https://google.com/https://google.com/https://google.comhttps://google.com',
-        creationDateAndTime: ' 16th jan 2020'
-    }
-]
 const AdminDashboard = () => {
+    const { authenticated, userId, role } = useAuth();
+    const [adminData, setAdminData] = useState([]);
+    const [isLoading, setisLoading] = useState(false);
+    
+
     const sendRequest = (isAllowed, key) => {
-        console.log(isAllowed, key, 'sss');
         axios.post(`${process.env.REACT_API_URL}adminresponse`, {
             respond: isAllowed,
             userID: key
         }).then((response) => {
-            console.log(response, 'rr');
+            const constAdminData = adminData;
+            const dataIndex = constAdminData.findIndex((eachAdminData) => eachAdminData.id === key);
+            if(dataIndex !== -1) {
+                constAdminData.splice(dataIndex, 1);
+            }
+            setAdminData([...constAdminData]);
         })
     }
+
+    useEffect(() => {
+        if(authenticated && userId && role === 3) {
+            setisLoading(true);
+            axios.get(`${process.env.REACT_API_URL}criticsrequests?limit=100&offset=0`)
+            .then((response) => {
+                setisLoading(false);
+                if(typeof response.data !== 'string') {
+                    setAdminData(response.data.data)
+                }
+            })
+        } else {
+            // open login
+        }
+        
+    }, [userId])
     const columns = [
         {
             title: 'First Name',
@@ -68,6 +73,7 @@ const AdminDashboard = () => {
             dataIndex: 'creationDateAndTime',
             key: 'creationDateAndTime',
             width: '150px',
+            render: date => <Moment format="DD/MM/YYYY" unix>{date}</Moment>,
         },
         {
             title: 'Action',
@@ -77,10 +83,10 @@ const AdminDashboard = () => {
                 <Space size="middle">
                     <Button
                         type="primary"
-                        onClick={() => sendRequest(true, eachAdminData.userID)}>
+                        onClick={() => sendRequest(true, eachAdminData.id)}>
                         Accept</Button>
                     <Button type="primary" danger
-                        onClick={() => sendRequest(false, eachAdminData.userID)}>
+                        onClick={() => sendRequest(false, eachAdminData.id)}>
                         Reject</Button>
                 </Space>
             ),
@@ -129,11 +135,75 @@ const AdminDashboard = () => {
                     </tbody>
                 </table>
             */}
+            {
+                !isLoading ?
                 <Table
                     {...tableConfig}
+                    rowKey="id"
                     pagination={{ position: ['bottomCenter'], pageSize: 10 }}
                     columns={columns}
                     dataSource={adminData} />
+                    : 
+                    <ContentLoader
+                    width='100%'
+                    height={550}
+                    viewBox="0 0 1000 550"
+                    backgroundColor="#eaeced"
+                    foregroundColor="#ffffff"
+                  >
+                    <rect x="51" y="45" rx="3" ry="3" width="906" height="17" />
+                    <circle cx="879" cy="123" r="11" />
+                    <circle cx="914" cy="123" r="11" />
+                    <rect x="104" y="115" rx="3" ry="3" width="141" height="15" />
+                    <rect x="305" y="114" rx="3" ry="3" width="299" height="15" />
+                    <rect x="661" y="114" rx="3" ry="3" width="141" height="15" />
+                    <rect x="55" y="155" rx="3" ry="3" width="897" height="2" />
+                    <circle cx="880" cy="184" r="11" />
+                    <circle cx="915" cy="184" r="11" />
+                    <rect x="105" y="176" rx="3" ry="3" width="141" height="15" />
+                    <rect x="306" y="175" rx="3" ry="3" width="299" height="15" />
+                    <rect x="662" y="175" rx="3" ry="3" width="141" height="15" />
+                    <rect x="56" y="216" rx="3" ry="3" width="897" height="2" />
+                    <circle cx="881" cy="242" r="11" />
+                    <circle cx="916" cy="242" r="11" />
+                    <rect x="106" y="234" rx="3" ry="3" width="141" height="15" />
+                    <rect x="307" y="233" rx="3" ry="3" width="299" height="15" />
+                    <rect x="663" y="233" rx="3" ry="3" width="141" height="15" />
+                    <rect x="57" y="274" rx="3" ry="3" width="897" height="2" />
+                    <circle cx="882" cy="303" r="11" />
+                    <circle cx="917" cy="303" r="11" />
+                    <rect x="107" y="295" rx="3" ry="3" width="141" height="15" />
+                    <rect x="308" y="294" rx="3" ry="3" width="299" height="15" />
+                    <rect x="664" y="294" rx="3" ry="3" width="141" height="15" />
+                    <rect x="58" y="335" rx="3" ry="3" width="897" height="2" />
+                    <circle cx="881" cy="363" r="11" />
+                    <circle cx="916" cy="363" r="11" />
+                    <rect x="106" y="355" rx="3" ry="3" width="141" height="15" />
+                    <rect x="307" y="354" rx="3" ry="3" width="299" height="15" />
+                    <rect x="663" y="354" rx="3" ry="3" width="141" height="15" />
+                    <rect x="57" y="395" rx="3" ry="3" width="897" height="2" />
+                    <circle cx="882" cy="424" r="11" />
+                    <circle cx="917" cy="424" r="11" />
+                    <rect x="107" y="416" rx="3" ry="3" width="141" height="15" />
+                    <rect x="308" y="415" rx="3" ry="3" width="299" height="15" />
+                    <rect x="664" y="415" rx="3" ry="3" width="141" height="15" />
+                    <rect x="55" y="453" rx="3" ry="3" width="897" height="2" />
+                    <rect x="51" y="49" rx="3" ry="3" width="2" height="465" />
+                    <rect x="955" y="49" rx="3" ry="3" width="2" height="465" />
+                    <circle cx="882" cy="484" r="11" />
+                    <circle cx="917" cy="484" r="11" />
+                    <rect x="107" y="476" rx="3" ry="3" width="141" height="15" />
+                    <rect x="308" y="475" rx="3" ry="3" width="299" height="15" />
+                    <rect x="664" y="475" rx="3" ry="3" width="141" height="15" />
+                    <rect x="55" y="513" rx="3" ry="3" width="897" height="2" />
+                    <rect x="52" y="80" rx="3" ry="3" width="906" height="17" />
+                    <rect x="53" y="57" rx="3" ry="3" width="68" height="33" />
+                    <rect x="222" y="54" rx="3" ry="3" width="149" height="33" />
+                    <rect x="544" y="55" rx="3" ry="3" width="137" height="33" />
+                    <rect x="782" y="56" rx="3" ry="3" width="72" height="33" />
+                    <rect x="933" y="54" rx="3" ry="3" width="24" height="33" />
+                  </ContentLoader>
+            }
             </div>
         </>
     )

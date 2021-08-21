@@ -43,7 +43,7 @@ const AppRouter = () => (
                 <Route path={AppRoute.BOOKMARKS} component={Bookmarks} />
 
                 {/* Path for the getting the admin dashboard */}
-                <Route path={AppRoute.ADMINDASHBOARD} component={AdminDashboard} />
+                <Route path={AppRoute.ADMIN_PANEL} component={AdminDashboard} />
 
                 {/* Path for the getting the paymnets page */}
                 <Route path={AppRoute.PAYMENT} component={Payments} />

@@ -1,11 +1,12 @@
 // @import 'src/scss/variables.scss';
 .card-book {
-    padding: 1rem;
+    padding: 16px;
     display: flex;
     flex-direction: column;
     width: 230px;
     margin: 10px;
     cursor: pointer;
+    align-items: flex-start;
     .lazy-load-image-background {
         text-align: center;
         max-height: 325px;

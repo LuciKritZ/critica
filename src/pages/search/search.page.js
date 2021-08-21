@@ -72,7 +72,6 @@ const Search = () => {
         fetchBooks(filterBookObj);
     }
     const fetchMoreData = () => {
-        // console.log([...bookInfo, ...bookDataInfo], 'dddd');
         // setBookInfo([...bookInfo, ...bookDataInfo]);
         // applyFilters(filterConstObj);
         setHasMore(false);

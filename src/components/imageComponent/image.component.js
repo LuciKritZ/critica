@@ -12,7 +12,6 @@ import { appHistory } from '../../utils/history.utils';
 const ImageComponent = ({ src, alt, redirect, extraClass }) => {
     const redirectFunc = () => {
         if(redirect) {
-            console.log(redirect, 'redirect');
             appHistory.push(`/books/${redirect}`);
         }
     }

@@ -15,7 +15,6 @@ const BookCardComponent = ({
     redirect = false }) => {
     const redirectFunc = () => {
         if (redirect) {
-            console.log(redirect, 'redirect');
             appHistory.push(`/books/${redirect}`);
         }
     }

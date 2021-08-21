@@ -75,7 +75,6 @@ const BookDetails = () => {
 
     // count percentage for rating bar
     const getRatings = (ratingInfo, totalComments) => {
-        console.log(totalComments, ratingInfo, 'ratingInfo');
         const starsPercentageConst = [];
         for (let star = 1; star <= 5; star++) {
             starsPercentageConst.push(returnPercentage(totalComments, ratingInfo[star]))
@@ -94,7 +93,6 @@ const BookDetails = () => {
             constTags[filterTagsIndex] = { text: `star: ${star}`, value: star, filterid: 1 };
             setTags([...constTags]);
         }
-        console.log(constCriticsReviewData, 'constCriticsReviewData');
         const rewviewsFilteredData = constCriticsReviewData.filter((eachReviews) => eachReviews.rating === star);
         setCriticsReviewData([...rewviewsFilteredData]);
     }
@@ -109,7 +107,6 @@ const BookDetails = () => {
             }
         })
             .then((response) => {
-                console.log(response, 'books');
                 setBookData(response.data.data);
                 getRatings(response.data.ratingInfo, response.data.data.totalComments);
             })
@@ -119,32 +116,22 @@ const BookDetails = () => {
     }
 
     const fetchReviewsData = () => {
-        axios.get(`${process.env.REACT_API_URL}review/${id}`)
+        axios.post(`${process.env.REACT_API_URL}reviewlike`, {
+            bookID: id,
+            userID: userId
+        })
             .then((response) => {
-                console.log(response);
                 if(typeof response.data !== 'string') {
-                    const rrData  = {
-                        bookID: "uw0WELSJ5jIcUVDIumOM",
-                        comment: "Nice book. Must read for investors",
-                        creationDateAndTime: 1629374156025,
-                        id: "CfkycouZcvuFnNBT80uQ",
-                        rating: 4,
-                        totalLikes: 0,
-                        userFullName: "tttt Borkar",
-                        userID: 1
-                    }
                     const reviewsData = response.data.data;
-                    reviewsData.push(rrData);
-                    console.log([...reviewsData], 'rrr');
                     const reviewIndex = reviewsData.findIndex((eachReviews) => eachReviews.userID === userId);
                     if(reviewIndex !== -1) {
                         const myReviewData = reviewsData.splice(reviewIndex, 1);
                         reviewsData.unshift(myReviewData[0]);
-                        console.log(reviewsData, 'reviewsData');
                     }
                     const myReviewIndex = reviewsData.findIndex((eachReviews) => eachReviews.userID === userId);
                     setMyReview(myReviewIndex !== -1 && true);
                     setCriticsReviewData(reviewsData);
+                    setEditReviewId(null);
                     constCriticsReviewData = cloneDeep(reviewsData);
                 }
             })
@@ -157,11 +144,30 @@ const BookDetails = () => {
         document.title = 'Books Info';
         fetchBooksData();
         fetchReviewsData();
-    }, [id]);
-// authenticated, userId
+    }, [id, userId]);
+    // authenticated, userId
     // commments like api call
-    const likeFunc = () => {
-        console.log('ddddd likeFunc');
+    const likeFunc = (reviewData) => {
+        axios.put(`${process.env.REACT_API_URL}reviewlike`, {
+            id: reviewData.id,
+            isLiked: !reviewData.userLike,
+            userID: userId
+        })
+        .then((response) => {
+            const constCriticsReview = criticsReviewData;
+            constCriticsReview.forEach((eachReview) => {
+                if(eachReview.id === reviewData.id) {
+                    if(eachReview.userLike) {
+                        eachReview.totalLikes -=  1;
+                    } else {
+                        eachReview.totalLikes +=  1;
+                    }
+                    eachReview.userLike = !eachReview.userLike;
+                    
+                }
+            })
+            setCriticsReviewData([...constCriticsReview]);
+        })
     }
 
     // add reviews
@@ -171,7 +177,6 @@ const BookDetails = () => {
         } else {
             const criticData = values;
             criticData.rating = averageRating;
-            console.log(criticData, '/review, add reviews');
             axios.post(`${process.env.REACT_API_URL}review`, {
                 rating: averageRating,
                 comment: criticData.comment,
@@ -180,7 +185,6 @@ const BookDetails = () => {
             }).then((response) => {
                 fetchBooksData();
                 fetchReviewsData();
-                console.log(response);
             }).catch((error) => {
                 console.log(error);
             })
@@ -202,7 +206,6 @@ const BookDetails = () => {
             }).then((response) => {
                 fetchBooksData();
                 fetchReviewsData();
-                setEditReviewId(null);
             }).catch((error) => {
                 console.log(error);
             })
@@ -210,10 +213,8 @@ const BookDetails = () => {
     }
 
     const onChangeRating = (newRating) => {
-        console.log(newRating, 'newRating');
         setAverageRating(newRating);
         if (newRating) {
-            console.log('aaa', newRating);
             setIsShowRatingError(false);;
         }
     }
@@ -251,10 +252,8 @@ const BookDetails = () => {
 
     const onDelete = () => {
         // constReason = reason;
-        console.log(reviewId, 'reviewId');
-        axios.delete(`${process.env.REACT_API_URL}/review/${reviewId}`)
+        axios.delete(`${process.env.REACT_API_URL}review/${reviewId}`)
         .then((response) => {
-            console.log(response);
             fetchReviewsData();
             fetchBooksData();
             setIsModalVisible(false);
@@ -262,25 +261,21 @@ const BookDetails = () => {
     }
 
     const deleteComment = (reviewData) => {
-        console.log(reviewData, 'reviewData');
         reviewId = reviewData.id;
         setIsModalVisible(true);
     }
 
     const editComment = (reviewData) => {
-        // setAverageRating()
-        // comment
         setEditReviewId(reviewData.id)
         setMyReview(false);
         const criticsReviewDataConst = criticsReviewData;
-        console.log(reviewData, 'reviewData');
         criticsReviewDataConst.splice(0, 1);
         setAverageRating(reviewData.rating);
         setCriticsReviewData([...criticsReviewDataConst]);
         form.setFieldsValue({comment: reviewData.comment});
     }
 
-    const ReviewsComponent = ({ reviewData, likeFunction }) => (
+    const ReviewsComponent = ({ reviewData }) => (
         <div className={`criticsReview ${ reviewData.userID === userId ? `my-review` : ``} `}>
             <div className="criticsImg">
                 {
@@ -309,7 +304,7 @@ const BookDetails = () => {
                 <div className="criticsLikes">
                     <Button type="text"
                         className="bookStatusBtn likesIcon"
-                        onClick={likeFunction}>
+                        onClick={() => likeFunc(reviewData)}>
                         <LikeOutlined className="likesIcon likes-font-size" />
                     </Button>
                     <div className="totalLikes"> {reviewData.totalLikes}</div>
@@ -494,7 +489,7 @@ const BookDetails = () => {
                                 }
                                 {
                                     criticsReviewData.length ? criticsReviewData.map((eachReviews, index) => (
-                                        <ReviewsComponent reviewData={eachReviews} likeFunc={likeFunc} key={index} />
+                                        <ReviewsComponent reviewData={eachReviews} key={index} />
                                     )) :
                                         <div className="noReviews">
                                             <img src={NoReview} alt="No Reviews" />
