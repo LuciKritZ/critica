@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.scss';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { appHistory } from './utils/history.utils';
+import { UserProvider } from './providers/user.providers';
 import { AuthProvider } from './providers/auth-provider.providers';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
@@ -11,9 +12,11 @@ ReactDOM.render(
     <React.StrictMode>
         {/* App rendered by a router to allow navigation using app bar */}
         <Router history={appHistory}>
-            <AuthProvider>
-                <App />
-            </AuthProvider>
+            <UserProvider>
+                <AuthProvider>
+                    <App />
+                </AuthProvider>
+            </UserProvider>
         </Router>
     </React.StrictMode>,
     document.getElementById('root'),
