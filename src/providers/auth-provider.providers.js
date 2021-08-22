@@ -61,9 +61,9 @@ export const AuthProvider = ({ children }) => {
             }
 
             setAccessToken(auth.access_token);
-            console.log(auth.role, 'auth', auth);
             setUserInfo(
                 auth.id,
+                auth.role === DEFAULT_ROLES[ADMIN_ROLE],
                 auth.isAdmin,
                 auth.role,
                 formData.profileObj.imageUrl,
