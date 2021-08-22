@@ -1,6 +1,6 @@
 import React from 'react';
 import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from "@stripe/react-stripe-js";
+import { Elements } from '@stripe/react-stripe-js';
 import Navbar from './components/navbar/navbar.component';
 import AppRouter from './routers/app.router';
 import 'antd/dist/antd.min.css';

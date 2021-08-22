@@ -12,44 +12,44 @@ const BookCardComponent = ({
     buttonFunc,
     buttonString,
     isShowButton = false,
-    redirect = false }) => {
+    redirect = false,
+}) => {
     const redirectFunc = () => {
         if (redirect) {
             appHistory.push(`/books/${redirect}`);
         }
-    }
+    };
     return (
         <>
             <div className="card-book">
                 <span href="#" onClick={() => redirectFunc()}>
-                    <ImageComponent
-                        src={bookInfo.bookCover}
-                        alt={bookInfo.title} />
+                    <ImageComponent src={bookInfo.bookCover} alt={bookInfo.title} />
                     <div className="book-info-container">
                         <p className="book-title" title={bookInfo.title}>
                             {bookInfo.title}
                         </p>
                         <p className="book-author">by {bookInfo.author}</p>
-                        {
-                            isShowButton ?
-                                <div>
-                                    <Button danger
-                                        style={{ width: '100%' }}
-                                        onClick={() => buttonFunc(bookInfo.url)}>
-                                        {buttonString}
-                                    </Button>
-                                </div>
-                                :
-                                <div>
-                                    <RatingComponent rating={bookInfo.averageRating} />
-                                    <span className="book-ratings">({bookInfo.totalComments})</span>
-                                </div>
-                        }
+                        {isShowButton ? (
+                            <div>
+                                <Button
+                                    danger
+                                    style={{ width: '100%' }}
+                                    onClick={() => buttonFunc(bookInfo.url)}
+                                >
+                                    {buttonString}
+                                </Button>
+                            </div>
+                        ) : (
+                            <div>
+                                <RatingComponent rating={bookInfo.averageRating} />
+                                <span className="book-ratings">({bookInfo.totalComments})</span>
+                            </div>
+                        )}
                     </div>
                 </span>
             </div>
         </>
-    )
+    );
 };
 
 export default BookCardComponent;

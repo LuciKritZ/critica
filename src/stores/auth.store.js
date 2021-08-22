@@ -22,7 +22,7 @@ const useAuthStore = create(
                 set({
                     userId: userCode,
                     isAdmin: isAdmin || false,
-                    role: DEFAULT_ROLES_ARRAY[+role -1],
+                    role: DEFAULT_ROLES_ARRAY[+role - 1],
                     image,
                     email,
                     isPremium: isPremiumUser,
@@ -50,7 +50,7 @@ const useAuthStore = create(
                     isAdmin: false,
                     isPremium: false,
                     email: '',
-                    userId: null
+                    userId: null,
                 });
             },
 

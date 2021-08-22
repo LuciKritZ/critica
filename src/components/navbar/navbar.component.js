@@ -26,7 +26,7 @@ const Navbar = () => {
     const history = useHistory();
     const location = useLocation();
     const { pathname } = location;
-    console.log(authenticated,user, 'authenticated');
+    console.log(authenticated, user, 'authenticated');
     const navbarButtons = [
         {
             name: 'Try Premium',

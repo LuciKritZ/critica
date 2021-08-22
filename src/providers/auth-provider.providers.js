@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
                 firstName: formData.profileObj.givenName,
                 lastName: formData.profileObj.familyName,
                 email: formData.profileObj.email,
-                profilePicture: formData.profileObj.imageUrl
+                profilePicture: formData.profileObj.imageUrl,
             };
             const auth = await getUser(request);
 

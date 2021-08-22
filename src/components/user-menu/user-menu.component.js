@@ -8,7 +8,7 @@ import { AppRoute } from '../../utils/router.utils';
 import './user-menu.component.scss';
 
 const UserMenu = ({ closeMenu }) => {
-    const { signOut, aurhenticated } = useAuth();
+    const { signOut, authenticated } = useAuth();
     const { user } = useUserInfo();
     const history = useHistory();
     const location = useLocation();
@@ -40,7 +40,7 @@ const UserMenu = ({ closeMenu }) => {
                 closeMenu();
                 history.push(AppRoute.BOOKMARKS);
             },
-            show: aurhenticated,
+            show: authenticated,
         },
         {
             title: 'Book Completed',
@@ -49,7 +49,7 @@ const UserMenu = ({ closeMenu }) => {
                 closeMenu();
                 history.push(AppRoute.MY_BOOKS);
             },
-            show: aurhenticated,
+            show: authenticated,
         },
         {
             title: 'Sign Out',

@@ -10,19 +10,18 @@ import CarouselComponent from '../../components/carouselComponent/carousel.compo
 // p-1 only single skeleton
 // P-3 Add flipkart like genre horizontal scroll bar which redirects to search page.
 const Homepage = () => {
-
     // skeleton Hardcoded values
-    const rows = 1
-    const columns = 6
-    const coverHeight = 300
-    const coverWidth = 195
-    const padding = 15
-    const speed = 1
+    const rows = 1;
+    const columns = 6;
+    const coverHeight = 300;
+    const coverWidth = 195;
+    const padding = 15;
+    const speed = 1;
 
-    const coverHeightWithPadding = coverHeight + padding
-    const coverWidthWithPadding = coverWidth + padding
-    const initial = 35
-    const covers = Array(columns * rows).fill(1)
+    const coverHeightWithPadding = coverHeight + padding;
+    const coverWidthWithPadding = coverWidth + padding;
+    const initial = 35;
+    const covers = Array(columns * rows).fill(1);
 
     const [homeData, setHomeData] = useState({});
     const [isLoaded, setIsLoaded] = useState(false);
@@ -65,21 +64,15 @@ const Homepage = () => {
                         width={columns * coverWidthWithPadding}
                         height={rows * coverHeightWithPadding}
                     >
-                        <rect
-                            x="0"
-                            y="0"
-                            rx="0"
-                            ry="0"
-                            width={200}
-                            height="20"
-                        />
+                        <rect x="0" y="0" rx="0" ry="0" width={200} height="20" />
 
                         {covers.map((g, i) => {
-                            const vy = Math.floor(i / columns) * coverHeightWithPadding + initial
-                            const vx = (i*coverWidthWithPadding)%(columns * coverWidthWithPadding)
+                            const vy = Math.floor(i / columns) * coverHeightWithPadding + initial;
+                            const vx =
+                                (i * coverWidthWithPadding) % (columns * coverWidthWithPadding);
                             return (
                                 <rect
-                                    key={i}
+                                    key={i.toString()}
                                     x={vx}
                                     y={vy}
                                     rx="0"
@@ -87,7 +80,7 @@ const Homepage = () => {
                                     width={coverWidth}
                                     height={coverHeight}
                                 />
-                            )
+                            );
                         })}
                     </ContentLoader>
                 </>
@@ -104,10 +97,7 @@ const Homepage = () => {
 
                 <ShowImageCarousel categoryTitle="Most Reads" bookInfo={homeData?.most_read} />
 
-                <ShowImageCarousel
-                    categoryTitle="Newly Added"
-                    bookInfo={homeData?.newly_added}
-                />
+                <ShowImageCarousel categoryTitle="Newly Added" bookInfo={homeData?.newly_added} />
             </div>
         </>
     );

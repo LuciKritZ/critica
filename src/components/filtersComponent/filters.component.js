@@ -20,52 +20,44 @@ const { Panel } = Collapse;
 //     { label: 'Biography', value: 5 },
 // ];
 
-
 // TODO:
 // p-2 search, show more
-// p-3 reusability 
+// p-3 reusability
 const FiltersComponent = ({ applyFilters, authorList, genreList }) => {
     const [filterObj, setFilterObj] = useState({
         averageRating: null,
         author: null,
         genre: [],
-    })
-    const onChangeRating = e => {
+    });
+    const onChangeRating = (e) => {
         const filter = filterObj;
         filter.averageRating = +e.target.value;
         setFilterObj({ ...filter });
     };
-    const onChangeAuthor = e => {
+    const onChangeAuthor = (e) => {
         const filter = filterObj;
         filter.author = +e.target.value;
         setFilterObj({ ...filter });
     };
-    const onChangeGenre = e => {
+    const onChangeGenre = (e) => {
         const filter = filterObj;
         filter.genre = e;
         setFilterObj({ ...filter });
     };
     const ShowRadioRatingContent = ({ rating }) => (
         <Radio value={rating}>
-            <RatingComponent
-                starDimension='19px'
-                starSpacing='1px'
-                rating={rating} />
-            <span className="rating-text">
-                & up
-            </span>
+            <RatingComponent starDimension="19px" starSpacing="1px" rating={rating} />
+            <span className="rating-text">& up</span>
         </Radio>
-    )
+    );
     const ShowRadioAuthorContent = ({ author }) => (
         <Radio value={author.id}>
-            <span className="rating-text">
-                {author.name}
-            </span>
+            <span className="rating-text">{author.name}</span>
         </Radio>
-    )
+    );
     const sendFilters = () => {
         applyFilters(filterObj);
-    }
+    };
     return (
         <>
             <section className="filter-section">
@@ -84,28 +76,27 @@ const FiltersComponent = ({ applyFilters, authorList, genreList }) => {
                     <Checkbox.Group
                         options={genreList}
                         defaultValue={filterObj.genre}
-                        onChange={onChangeGenre} />
+                        onChange={onChangeGenre}
+                    />
                 </Panel>
                 <Panel header="Author" key="3">
                     <Radio.Group onChange={onChangeAuthor} value={filterObj.author}>
-                        {
-                            authorList.map((eachAuthorData) => (
-                                <ShowRadioAuthorContent
-                                    author={eachAuthorData}
-                                    key={eachAuthorData.id} />
-                            ))
-                        }
+                        {authorList.map((eachAuthorData) => (
+                            <ShowRadioAuthorContent
+                                author={eachAuthorData}
+                                key={eachAuthorData.id}
+                            />
+                        ))}
                     </Radio.Group>
                 </Panel>
             </Collapse>
             <section className="filter-section">
-                <Button type="primary"
-                    style={{ width: '100%' }}
-                    onClick={sendFilters}>
-                    Apply Filters</Button>
+                <Button type="primary" style={{ width: '100%' }} onClick={sendFilters}>
+                    Apply Filters
+                </Button>
             </section>
         </>
-    )
-}
+    );
+};
 
 export default FiltersComponent;

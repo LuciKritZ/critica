@@ -13,36 +13,34 @@ const RatingComponent = ({
     starEmptyColor = '#e6ebf5',
     starHoverColor = '#fce02b',
     isRatingChangeAllowed = false,
-    onChangeRatingFunc
+    onChangeRatingFunc,
 }) => {
     const onChangeRating = (newRating) => {
         onChangeRatingFunc(newRating);
-    }
+    };
     return (
         <>
-            {
-                isRatingChangeAllowed ?
-                    <StarRatings
-                        rating={rating}
-                        changeRating={onChangeRating}
-                        starHoverColor={starHoverColor}
-                        starDimension={starDimension}
-                        starSpacing={starSpacing}
-                        starRatedColor={starRatedColor}
-                        starEmptyColor={starEmptyColor}
-                    /> :
-                    <StarRatings
-                        rating={rating}
-                        starDimension={starDimension}
-                        starSpacing={starSpacing}
-                        starRatedColor={starRatedColor}
-                        starEmptyColor={starEmptyColor}
-                    />
-
-            }
-
+            {isRatingChangeAllowed ? (
+                <StarRatings
+                    rating={rating}
+                    changeRating={onChangeRating}
+                    starHoverColor={starHoverColor}
+                    starDimension={starDimension}
+                    starSpacing={starSpacing}
+                    starRatedColor={starRatedColor}
+                    starEmptyColor={starEmptyColor}
+                />
+            ) : (
+                <StarRatings
+                    rating={rating}
+                    starDimension={starDimension}
+                    starSpacing={starSpacing}
+                    starRatedColor={starRatedColor}
+                    starEmptyColor={starEmptyColor}
+                />
+            )}
         </>
-    )
+    );
 };
 
 export default RatingComponent;

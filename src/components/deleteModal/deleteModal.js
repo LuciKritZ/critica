@@ -11,13 +11,10 @@ const DeleteModal = ({ showDeleteModal, modalVisibleFunc, onSave, message }) => 
     };
     return (
         <>
-            <Modal
-                visible={showDeleteModal}
-                onOk={handleOk}
-                onCancel={handleCancel}>
+            <Modal visible={showDeleteModal} onOk={handleOk} onCancel={handleCancel}>
                 {message}
             </Modal>
         </>
     );
-}
+};
 export default DeleteModal;

@@ -11,10 +11,10 @@ import { appHistory } from '../../utils/history.utils';
 // isLazyLoading = false
 const ImageComponent = ({ src, alt, redirect, extraClass }) => {
     const redirectFunc = () => {
-        if(redirect) {
+        if (redirect) {
             appHistory.push(`/books/${redirect}`);
         }
-    }
+    };
     return (
         <>
             <LazyLoadImage
@@ -22,12 +22,14 @@ const ImageComponent = ({ src, alt, redirect, extraClass }) => {
                 alt={alt}
                 onClick={() => redirectFunc()}
                 // eslint-disable-next-line max-len
-                className={`image-class ${(redirect ? `cursor-ponter ` : ` `)} ${(extraClass || ` hover_grow hover_shadow-lg`)}`}
+                className={`image-class ${redirect ? `cursor-ponter ` : ` `} ${
+                    extraClass || ` hover_grow hover_shadow-lg`
+                }`}
                 threshold="100"
                 effect="blur"
             />
         </>
-    )
+    );
 };
 
 export default ImageComponent;
