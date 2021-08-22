@@ -26,6 +26,7 @@ const Navbar = () => {
     const history = useHistory();
     const location = useLocation();
     const { pathname } = location;
+    console.log(authenticated,user, 'authenticated');
     const navbarButtons = [
         {
             name: 'Try Premium',
@@ -50,6 +51,18 @@ const Navbar = () => {
             className: 'show-on-mobile',
             show: Boolean(user.isAdmin),
             onClick: () => history.push(AppRoute.ADMIN_PANEL),
+        },
+        {
+            name: 'Book Mark',
+            className: 'show-on-mobile',
+            show: authenticated,
+            onClick: () => history.push(AppRoute.BOOKMARKS),
+        },
+        {
+            name: 'Completed Books',
+            className: 'show-on-mobile',
+            show: authenticated,
+            onClick: () => history.push(AppRoute.MY_BOOKS),
         },
         {
             name: 'Sign Out',
@@ -126,6 +139,7 @@ const Navbar = () => {
                 <Col lg={2} md={3} sm={3} xs={4} className="logo-container">
                     <div onClick={() => history.push(AppRoute.HOMEPAGE)}>
                         <img src={Logo} alt="Logo" className="logo" />
+                        <span>Crítica</span>
                     </div>
                 </Col>
                 <Col md={7} lg={10} xl={10} xs={16} className="search-container">

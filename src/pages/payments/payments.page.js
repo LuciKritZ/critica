@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import './payments.scss';
 import { Button, Form, Input } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import useAuthStore from '../../stores/auth.store';
 import { appHistory } from '../../utils/history.utils';
-import AppRoute from '../../utils/router.utils';
 import { useAuth } from '../../providers/auth-provider.providers';
+import AppRoute from '../../utils/router.utils';
 
 const iframeStyles = {
 };
@@ -41,6 +42,7 @@ const Payments = () => {
         })
     }
     const buyPremiumMembership = async value => {
+        setProcessingTo(true);
         const cardElement = elements.getElement("card");
         try {
             const { data: clientSecret } =
@@ -48,7 +50,6 @@ const Payments = () => {
                     amount: 99,
                     currency: 'INR'
                 });
-            console.log(clientSecret, value, 'clientSecret');
             const paymentMethodReq = await stripe.createPaymentMethod({
                 type: "card",
                 card: cardElement,
@@ -137,14 +138,16 @@ const Payments = () => {
                                         </div>
                                     </div>
                                     {checkoutError &&
-                                    <div className="card-error">{checkoutError}</div>}
+                                        <div className="card-error">{checkoutError}</div>}
                                     <Form.Item style={{ marginTop: '15px' }}>
                                         <Button
                                             type="primary"
                                             htmlType="submit"
                                             className="btn try-premium-btn"
                                             ghost style={{ width: 200 }}>
-                                            Pay 99 INR
+                                            {isProcessing ?
+                                                <> <span>processing </span> <LoadingOutlined /> </>
+                                                : 'Pay 99 INR'}
                                         </Button>
                                     </Form.Item>
                                 </Form>
