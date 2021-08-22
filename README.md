@@ -17,7 +17,7 @@ Node packages used in the project.
 3. User can read reviews and like the reviews.
 4. User(critics) can give reviews on listed books.
 5. User can book mark Books for keeping records.
-6. User can become premium user by paying 100 rs.
+6. User can become premium member to avail extra features.
 7. Premium users will get monthly mails, recommending list of books.
 
 ## Future Scope
