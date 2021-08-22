@@ -48,6 +48,7 @@ export const AuthProvider = ({ children }) => {
                 firstName: formData.profileObj.givenName,
                 lastName: formData.profileObj.familyName,
                 email: formData.profileObj.email,
+                profilePicture: formData.profileObj.imageUrl
             };
             const auth = await getUser(request);
 
@@ -61,10 +62,11 @@ export const AuthProvider = ({ children }) => {
             }
 
             setAccessToken(auth.access_token);
+            // userCode, isAdmin, role, image, email, isPremiumUser
             setUserInfo(
                 auth.id,
                 auth.role === DEFAULT_ROLES[ADMIN_ROLE],
-                auth.isAdmin,
+                // auth.isAdmin,
                 auth.role,
                 formData.profileObj.imageUrl,
                 auth.email,
