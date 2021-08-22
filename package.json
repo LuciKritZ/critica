@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
+    "@stripe/react-stripe-js": "^1.4.1",
+    "@stripe/stripe-js": "^1.17.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -13,12 +15,18 @@
     "css-loader": "^6.2.0",
     "file-loader": "^6.2.0",
     "firebase": "^8.8.1",
-    "history": "^5.0.0",
+    "history": "^4.9.0",
     "prop-types": "^15.7.2",
+    "lodash.clonedeep": "^4.5.0",
+    "moment": "^2.29.1",
     "react": "^17.0.2",
+    "react-content-loader": "^6.0.3",
     "react-dom": "^17.0.2",
     "react-google-login": "^5.2.2",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-lazy-load-image-component": "^1.5.1",
+    "react-loading-skeleton": "^2.2.0",
+    "react-moment": "^1.1.1",
     "react-multi-carousel": "^2.6.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
@@ -41,18 +49,6 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
     ]
   },
   "devDependencies": {

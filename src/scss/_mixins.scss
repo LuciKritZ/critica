@@ -1,7 +1,7 @@
-@mixin  buttons($color, $hover-color) {
-    background-color: $primary-button-color;
-    border-radius: $border-radius;
+@mixin  buttons($color, $hover-color, $radius: 2px) {
+    background-color: #{$color};
+    border-radius: #{$radius};
     &:hover {
-        background-color: $primary-button-hover-color;
+        background-color: #{$hover-color};
     }
 }

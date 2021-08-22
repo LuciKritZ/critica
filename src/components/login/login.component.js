@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Row, Col, notification } from 'antd';
+import { FrownOutlined } from '@ant-design/icons';
 import { GoogleLogin } from 'react-google-login';
 import MESSAGES from '../../utils/messages.utils';
-import { FrownOutlined } from '@ant-design/icons';
 import { useAuth } from '../../providers/auth-provider.providers';
 import LoadingIndicator from '../loading-indicator/loading-indicator.component';
 import './login.component.scss';

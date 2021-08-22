@@ -2,16 +2,16 @@ $medium: 767px;
 .btn {
     margin: 10px !important;
     padding: 7px 20px !important;
-    border-radius: 5px !important;
+    border-radius: 2px !important;
     border: 1px solid #DDE2E4 !important;
     height: 36px !important;
-    &:hover {
-        color: rgba(0, 0, 0, 0.85) !important;
-    }
+    // &:hover {
+    //     color: rgba(0, 0, 0, 0.85) !important;
+    // }
 }
 
 .ant-btn:focus, .ant-btn:hover {
-    color: rgba(0, 0, 0, 0.85) !important;
+    // color: rgba(0, 0, 0, 0.85) !important;
 }
 
 .btn-center {

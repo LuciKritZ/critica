@@ -8,7 +8,7 @@ import { AppRoute } from '../../utils/router.utils';
 import './user-menu.component.scss';
 
 const UserMenu = ({ closeMenu }) => {
-    const { signOut } = useAuth();
+    const { signOut, aurhenticated } = useAuth();
     const { user } = useUserInfo();
     const history = useHistory();
 
@@ -30,6 +30,24 @@ const UserMenu = ({ closeMenu }) => {
                 history.push(AppRoute.ADMIN_PANEL);
             },
             show: Boolean(user.isAdmin),
+        },
+        {
+            title: 'Book Marks',
+            avatar: <UserSwitchOutlined size="small" />,
+            onClick: () => {
+                closeMenu();
+                history.push(AppRoute.BOOKMARKS);
+            },
+            show: aurhenticated,
+        },
+        {
+            title: 'Book Completed',
+            avatar: <UserSwitchOutlined size="small" />,
+            onClick: () => {
+                closeMenu();
+                history.push(AppRoute.MY_BOOKS);
+            },
+            show: aurhenticated,
         },
         {
             title: 'Sign Out',

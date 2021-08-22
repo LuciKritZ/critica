@@ -1,11 +1,28 @@
-.book-container {
-    padding-top: 1rem;
-    align-items: center;
+// @import 'src/scss/variables.scss';
+.wrapper {
     display: flex;
-    flex-wrap: wrap;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 99%;
-    // remove this
-    justify-content: center;
+    flex-flow: row;
+    height: 100%;
+    min-height: 100vh;
+    // background-color: var(--body-bg);
+    .filter-container {
+        width: 18.66%;
+        margin-right: 16px;
+        background-color: var(--body-color);
+        box-shadow: var(--box-background-shadow);
+    }
+    .book-container {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 81.33%;
+        width: 81.33%;
+        min-height: 81.33%;
+        background-color: var(--body-color);
+        box-shadow: var(--box-background-shadow);
+        // remove this
+        justify-content: space-around;
+    }
 }

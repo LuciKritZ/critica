@@ -1,0 +1,282 @@
+.wrapper {
+    display: flex;
+    flex-flow: row;
+    height: 100%;
+    // min-height: 100vh;
+
+    .pageWrapper {
+        width: 100%;
+        // margin: 16px;
+
+        .bookInfoWrapper {
+            width: 100%;
+            background-color: var(--body-color);
+            box-shadow: var(--box-background-shadow);
+
+            .bookInfoContainer {
+                margin: 5px auto;
+                padding-top: 30px;
+                padding-bottom: 30px;
+                width: 80%;
+                min-width: 80%;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-evenly;
+
+                .bookImgContainer {
+                    width: 50%;
+                    display: flex;
+                    justify-content: center;
+                }
+
+                .bookDataContainer {
+                    width: 50%;
+                    justify-content: flex-start;
+                    display: flex;
+                    flex-wrap: wrap;
+                    flex-direction: column;
+                    padding-left: 10%;
+                    margin-top: 5px;
+
+                    .bookTitle {
+                        width: 300px;
+                        font-size: 26px;
+                        color: var(--dark-color);
+                        font-weight: 600;
+                    }
+
+                    .bookAuthor {
+                        width: 300px;
+                        font-size: 21px;
+                        color: var(--dark-color);
+                        font-weight: 600;
+                    }
+
+                    .book-ratings {
+                        margin-top: 5px;
+                    }
+
+                    .book-total-reviews {
+                        font-size: 14px;
+                        color: var(--light-color);
+                        margin-left: 20px;
+                    }
+
+                    .bookDetails {
+                        margin-top: 10px;
+                        width: 300px;
+                        font-size: 14px;
+                        color: var(--light-color);
+                    }
+
+                    .bookStatusBtn {
+                        padding: 0px 20px;
+                        margin-top: 15px;
+                    }
+                }
+            }
+        }
+
+        .ratingInfoWrapper {
+            margin-top: 16px;
+            width: 100%;
+            background-color: var(--body-color);
+            box-shadow: var(--box-background-shadow);
+
+            .ratingInfoContainer {
+                margin: 5px auto;
+                width: 80%;
+                min-width: 80%;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+
+                .ratingRow {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                    width: 50%;
+
+                    .ratingData {
+                        display: flex;
+                        flex-direction: column;
+                        margin: 7px auto;
+                        width: 275px;
+
+                        // align-items: center;
+                        .rating-title {
+                            font-size: 20px;
+                            font-weight: 600;
+                            color: var(--dark-color);
+                        }
+
+                        .book-ratings {
+                            margin-top: 7px;
+                        }
+
+                        .book-total-reviews {
+                            font-size: 16px;
+                            color: var(--light-color);
+                            // margin-left: 20px;
+                        }
+                        .filters {
+                            margin-top: 15px;
+                        }
+                        .filtersTitle {
+                            margin-right: 10px;
+                            color: var(--dark-color);
+                        }
+                    }
+                }
+
+                .ratingBar {
+                    width: 50%;
+                    margin: 7px auto;
+
+                    .eachRatingBar {
+                        display: flex;
+                    }
+
+                    .starName {
+                        width: 55px;
+                    }
+
+                    .ant-progress-outer {
+                        margin-bottom: 10px;
+                        width: 350px;
+
+                        .ant-progress-inner {
+                            border-radius: 2px;
+                            border: 1px solid #afafaf;
+
+                            .ant-progress-bg {
+                                height: 18px !important;
+                                border-radius: 2px;
+                                background-color: #f6f179 !important;
+                            }
+                        }
+
+                        &:hover {
+                            cursor: pointer;
+
+                            .ant-progress-inner {
+                                border: 1px solid var(--dark-80-color);
+                                background-color: #f1f1f1;
+                            }
+                        }
+                    }
+
+                    .ant-progress-text {
+                        color: var(--dark-color);
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+
+                    .ant-progress-outer:hover+.ant-progress-text {
+                        text-decoration: underline;
+                    }
+                }
+
+                .reviewConatiner {
+                    width: 75%;
+
+                    .criticsReview {
+                        display: flex;
+                        flex-direction: row;
+                        margin-top: 25px;
+                        padding: 13px;
+                        .criticsImg {
+                            margin-right: 20px;
+                        }
+
+                        .crticsName {
+                            color: var(--dark-color);
+                            font-size: 16px;
+                        }
+
+                        .criticsComment {
+                            color: var(--dark-color);
+                            font-size: 14px;
+                        }
+
+                        .criticsRating {
+                            margin-left: -5px;
+                        }
+
+                        .criticsLikes {
+                            display: flex;
+                            flex-direction: row;
+                            flex-wrap: wrap;
+                            align-items: center;
+                            margin-top: 7px;
+                            .likesIcon {
+                                // margin-top: 12px;
+                                color: var(--light-color);
+                                cursor: pointer;
+                            }
+                            .likes-font-size {
+                                font-size: 20px;
+                            }
+                            .totalLikes {
+                                // font-size: 20px;
+                                // margin-bottom: -3px;
+                                // margin-top: 12px;
+                                color: var(--light-color);
+                                cursor: pointer;
+                            }
+                        }
+                    }
+                }
+
+            }
+            .user-avatar {
+                height: 50px;
+                width: 50px;
+                line-height: 50px;
+            }
+            .my-review {
+                background-color: var(--body-bg);
+            }
+        }
+    }
+}
+.ant-input-textarea {
+    width: 100%;
+    textarea {
+        width: 100% !important;
+        min-width: 100% !important;
+    }
+}
+.reviewButton {
+    margin-top: 10px;
+}
+.ratingError {
+    color: #ff4d4f;
+    margin-left: 10px;
+}
+.noReviews {
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f1f3f6;
+    flex-direction: column;
+    margin-top: 20px;
+    img {
+        height: 100px;
+    }
+    .no-review-title {
+        color: var(--dark-color);
+        margin-top: 10px;
+        font-size: 16px;
+    }
+}
+
+.pt-30px {
+    padding-top: 30px;
+}
+.pb-30px {
+    padding-bottom: 30px;
+}

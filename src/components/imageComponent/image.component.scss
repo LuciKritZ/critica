@@ -18,3 +18,16 @@
         box-shadow: 0 0 #0000,0 0 #0000,var(--tw-shadow);
     }
 }
+.cursor-ponter {
+    cursor: pointer;
+}
+
+.bookDetailImage {
+    height: 400px !important;
+    width: 275px !important;
+}
+.circle {
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
+}
