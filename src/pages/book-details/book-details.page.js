@@ -20,7 +20,7 @@ let constCriticsReviewData = [];
 let reviewId = '';
 const BookDetails = () => {
     const { id } = useParams();
-    const { authenticated, userId, role } = useAuth();
+    const { authenticated, userId, role, image } = useAuth();
     const [starsPercentage, setStarsPercentage] = useState([]);
     const [criticsReviewData, setCriticsReviewData] = useState([]);
     const [bookData, setBookData] = useState({});
@@ -279,10 +279,10 @@ const BookDetails = () => {
         <div className={`criticsReview ${reviewData.userID === userId ? `my-review` : ``} `}>
             <div className="criticsImg">
                 {
-                    false ?
+                    reviewData.profilePicture !== "" ?
                         <ImageComponent
-                            src={bookData.bookCover}
-                            alt={bookData.title}
+                            src={reviewData.profilePicture}
+                            alt="Profile"
                             extraClass='circle' />
                         : <Avatar
                             className="user-avatar" size="large" icon={<UserOutlined />} />
@@ -446,10 +446,10 @@ const BookDetails = () => {
                                         <div className="criticsReview" style={{ width: '100%' }}>
                                             <div className="criticsImg">
                                                 {
-                                                    false ?
+                                                    image ?
                                                         <ImageComponent
-                                                            src={bookData.bookCover}
-                                                            alt={bookData.title}
+                                                            src={image}
+                                                            alt="Profile"
                                                             extraClass='circle' />
                                                         : <Avatar
                                                             className="user-avatar" size="large" icon={<UserOutlined />} />

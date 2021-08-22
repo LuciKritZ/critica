@@ -19,7 +19,6 @@ const useAuthStore = create(
             image: '',
 
             setUserInfo: (userCode, isAdmin, role, image, email, isPremiumUser = false) => {
-                console.log(userCode, isAdmin, role, image, email, isPremiumUser, 'lset');
                 set({
                     userId: userCode,
                     isAdmin: isAdmin || false,
