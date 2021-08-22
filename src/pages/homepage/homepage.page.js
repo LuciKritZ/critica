@@ -26,6 +26,7 @@ const Homepage = () => {
     const [homeData, setHomeData] = useState({});
     const [isLoaded, setIsLoaded] = useState(false);
     useEffect(() => {
+        console.log(process.env.REACT_API_URL, 'ddd');
         document.title = 'Critica';
         axios
             .get(`${process.env.REACT_API_URL}home`)
