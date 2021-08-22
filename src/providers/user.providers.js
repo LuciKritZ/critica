@@ -14,14 +14,14 @@ export const UserProvider = ({ children }) => {
         isCritic: false,
     });
 
-    const updateUser = async () => {
+    const refreshUser = async () => {
         if (authenticated) {
             const userData = await getUser({
                 email,
             });
             setUser({
                 userDetails: { ...userData },
-                role: user.role,
+                role: userData.role,
                 isPremium: userData.isPremium,
                 isAdmin: userData.role === DEFAULT_ROLES[ADMIN_ROLE],
                 isCritic: userData.role === DEFAULT_ROLES[CRITIC_ROLE],
@@ -30,11 +30,12 @@ export const UserProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        updateUser();
+        refreshUser();
     }, []);
 
     const userContext = {
         user,
+        refreshUser,
     };
 
     return <UserContext.Provider value={{ ...userContext }}>{children}</UserContext.Provider>;

@@ -11,6 +11,8 @@ import { DEFAULT_ROLES, ADMIN_ROLE } from '../utils/roles.utils';
 export const AuthProvider = ({ children }) => {
     const [authLoading, setAuthLoading] = useState(false);
     const history = useHistory();
+    const location = useLocation();
+    const { pathname } = location;
     const [
         role,
         authenticated,
@@ -21,6 +23,7 @@ export const AuthProvider = ({ children }) => {
         setUserInfo,
         isAdmin,
         email,
+        image,
     ] = useAuthStore((state) => [
         state.role,
         state.authenticated,
@@ -31,6 +34,7 @@ export const AuthProvider = ({ children }) => {
         state.setUserInfo,
         state.isAdmin,
         state.email,
+        state.image,
     ]);
 
     const performLogin = async (formData) => {
@@ -56,16 +60,16 @@ export const AuthProvider = ({ children }) => {
                 return false;
             }
 
-            const { location } = useLocation;
             setAccessToken(auth.access_token);
             setUserInfo(
                 auth.id,
                 auth.role === DEFAULT_ROLES[ADMIN_ROLE],
                 auth.role,
+                formData.profileObj.imageUrl,
                 auth.email,
                 auth.isPremium,
             );
-            history.push(location);
+            history.push(pathname);
         } catch (error) {
             notification.error({
                 message: MESSAGES.LABELS.ERROR,
@@ -82,7 +86,6 @@ export const AuthProvider = ({ children }) => {
 
     const performLogout = () => {
         setAuthLoading(true);
-        const { location } = useLocation;
         clearAccessToken();
         notification.success({
             message: MESSAGES.LABELS.SUCCESS,
@@ -90,7 +93,6 @@ export const AuthProvider = ({ children }) => {
             duration: MESSAGES.DURATION,
         });
         setAuthLoading(false);
-        history.push(location);
     };
 
     const authContext = {
@@ -100,6 +102,7 @@ export const AuthProvider = ({ children }) => {
         isAdmin,
         role,
         email,
+        image,
         signIn: performLogin,
         signOut: performLogout,
     };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, List } from 'antd';
 import { LogoutOutlined, UserSwitchOutlined, UserOutlined } from '@ant-design/icons';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useAuth } from '../../providers/auth-provider.providers';
 import { useUserInfo } from '../../providers/user.providers';
 import { AppRoute } from '../../utils/router.utils';
@@ -11,6 +11,8 @@ const UserMenu = ({ closeMenu }) => {
     const { signOut } = useAuth();
     const { user } = useUserInfo();
     const history = useHistory();
+    const location = useLocation();
+    const { pathname } = location;
 
     const options = [
         {
@@ -34,7 +36,12 @@ const UserMenu = ({ closeMenu }) => {
         {
             title: 'Sign Out',
             avatar: <LogoutOutlined size="small" />,
-            onClick: signOut,
+            onClick: () => {
+                signOut();
+                if (pathname === AppRoute.PROFILE) {
+                    history.push(AppRoute.HOMEPAGE);
+                }
+            },
             show: true,
         },
     ];

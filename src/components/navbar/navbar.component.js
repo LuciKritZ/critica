@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react';
-import { Row, Col, Avatar } from 'antd';
+import { Row, Col, Avatar, List } from 'antd';
 import { MenuOutlined, UserOutlined } from '@ant-design/icons';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import Logo from '../../assets/logo.png';
 import { useAuth } from '../../providers/auth-provider.providers';
 import { useUserInfo } from '../../providers/user.providers';
@@ -21,9 +21,11 @@ const Navbar = () => {
     const [openDrawer, setOpenDrawer] = useState(false);
     const [signInModalStatus, setSignInModalStatus] = useState(false);
     const [userMenuPopoverStatus, setUserMenuPopoverStatus] = useState(false);
-    const { authenticated, signOut } = useAuth();
+    const { authenticated, signOut, image } = useAuth();
     const { user } = useUserInfo();
     const history = useHistory();
+    const location = useLocation();
+    const { pathname } = location;
     const navbarButtons = [
         {
             name: 'Try Premium',
@@ -53,7 +55,12 @@ const Navbar = () => {
             name: 'Sign Out',
             className: 'show-on-mobile',
             show: Boolean(authenticated),
-            onClick: signOut,
+            onClick: () => {
+                signOut();
+                if (pathname === AppRoute.PROFILE) {
+                    history.push(AppRoute.HOMEPAGE);
+                }
+            },
         },
     ];
 
@@ -64,22 +71,45 @@ const Navbar = () => {
      * @returns Elements The button elements based on the navbar buttons array.
      */
     const returnNavbarButtons = (inDrawer = false) =>
-        navbarButtons.map(
-            (button) =>
-                button.show &&
-                (!inDrawer ? (
-                    <CustomButton
-                        key={button.name}
-                        className={button.className}
-                        onClick={button.onClick}
-                        title={button.name}
-                        inDrawer={inDrawer}
-                    />
-                ) : (
-                    <Row key={button.name} className="menu-list">
-                        {button.name}
-                    </Row>
-                )),
+        !inDrawer ? (
+            navbarButtons.map(
+                (button) =>
+                    button.show && (
+                        <CustomButton
+                            key={button.name}
+                            className={button.className}
+                            onClick={button.onClick}
+                            title={button.name}
+                            inDrawer={inDrawer}
+                        />
+                    ),
+            )
+        ) : (
+            <Row>
+                <List
+                    itemLayout="horizontal"
+                    dataSource={navbarButtons}
+                    renderItem={(option) =>
+                        option.show && (
+                            <Col
+                                xs={24}
+                                onClick={() => {
+                                    option.onClick();
+                                    setOpenDrawer(false);
+                                }}
+                                className="list-option"
+                            >
+                                <List.Item>
+                                    <List.Item.Meta
+                                        className="option-container"
+                                        title={option.name}
+                                    />
+                                </List.Item>
+                            </Col>
+                        )
+                    }
+                />
+            </Row>
         );
 
     return (
@@ -131,8 +161,17 @@ const Navbar = () => {
                             close={() => setUserMenuPopoverStatus(!userMenuPopoverStatus)}
                         >
                             <Avatar
-                                className="user-avatar"
+                                className={image ? 'user-image-container' : 'user-avatar'}
                                 size="large"
+                                src={
+                                    <div
+                                        onClick={() =>
+                                            setUserMenuPopoverStatus(!userMenuPopoverStatus)
+                                        }
+                                    >
+                                        <img className="user-image" src={image} alt="User" />
+                                    </div>
+                                }
                                 icon={
                                     <UserOutlined
                                         onClick={() =>
