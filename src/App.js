@@ -11,13 +11,10 @@ const stripePromise = loadStripe(process.env.REACT_APP_PUBLISHABLE_KEY);
 const App = () => (
     <>
         <Navbar />
-        <Row>
-            <Col className="app-body" xs={24}>
-            <Elements stripe={stripePromise} >
-                <AppRouter />
-            </Elements>
-            </Col>
-        </Row>
+        <Elements stripe={stripePromise} >
+            <AppRouter />
+        </Elements>
+
     </>
 );
 
