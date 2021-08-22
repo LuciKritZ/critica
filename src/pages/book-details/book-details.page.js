@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 import { Button, Progress, Tag, Input, Form, Avatar } from 'antd';
 import axios from 'axios';
-import { DeleteOutlined, EditOutlined, LikeOutlined, UserOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, LikeOutlined, UserOutlined, LikeFilled } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import cloneDeep from 'lodash.clonedeep';
@@ -10,6 +10,7 @@ import ImageComponent from '../../components/imageComponent/image.component';
 import RatingComponent from '../../components/ratingComponent/rating.component';
 import './book-details.page.scss';
 import NoReview from '../../assets/noReviews.png';
+import LikeLoading from '../../assets/likeLoading.svg';
 import { useAuth } from '../../providers/auth-provider.providers';
 import DeleteModal from '../../components/deleteModal/deleteModal';
 
@@ -29,7 +30,7 @@ const BookDetails = () => {
     const [isShowRatingError, setIsShowRatingError] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [myReview, setMyReview] = useState(false);
-    const [editReviewId, setEditReviewId ] = useState(null);
+    const [editReviewId, setEditReviewId] = useState(null);
 
     // for bookread and bookmark apis
     const updateBookStatus = (bookStatus, isStatus) => {
@@ -43,18 +44,18 @@ const BookDetails = () => {
                     isRead: isStatus
                 }),
                 userID: userId
-            }).then((response) => {
+            }).then(() => {
                 switch (bookStatus) {
                     case 1: {
                         const constBookData = bookData;
                         constBookData.isInWishlist = !constBookData.isInWishlist;
-                        setBookData({...constBookData});
+                        setBookData({ ...constBookData });
                         break;
                     }
                     case 2: {
                         const constBookData = bookData;
                         constBookData.isRead = !constBookData.isRead;
-                        setBookData({...constBookData});
+                        setBookData({ ...constBookData });
                         break;
                     }
                     default:
@@ -67,7 +68,7 @@ const BookDetails = () => {
 
     // returns percentage for rating bar
     const returnPercentage = (total, current) => {
-        if(!current) {
+        if (!current) {
             return 0;
         }
         return ((100 * current) / total);
@@ -76,6 +77,7 @@ const BookDetails = () => {
     // count percentage for rating bar
     const getRatings = (ratingInfo, totalComments) => {
         const starsPercentageConst = [];
+        // eslint-disable-next-line no-plusplus
         for (let star = 1; star <= 5; star++) {
             starsPercentageConst.push(returnPercentage(totalComments, ratingInfo[star]))
         }
@@ -121,10 +123,10 @@ const BookDetails = () => {
             userID: userId
         })
             .then((response) => {
-                if(typeof response.data !== 'string') {
+                if (typeof response.data !== 'string') {
                     const reviewsData = response.data.data;
                     const reviewIndex = reviewsData.findIndex((eachReviews) => eachReviews.userID === userId);
-                    if(reviewIndex !== -1) {
+                    if (reviewIndex !== -1) {
                         const myReviewData = reviewsData.splice(reviewIndex, 1);
                         reviewsData.unshift(myReviewData[0]);
                     }
@@ -147,27 +149,25 @@ const BookDetails = () => {
     }, [id, userId]);
     // authenticated, userId
     // commments like api call
-    const likeFunc = (reviewData) => {
+    const likeFunc = (reviewData, index) => {
+        const constCriticsReview = criticsReviewData;
+        constCriticsReview[index].isLoading = true;
+        setCriticsReviewData([...constCriticsReview]);
         axios.put(`${process.env.REACT_API_URL}reviewlike`, {
             id: reviewData.id,
             isLiked: !reviewData.userLike,
             userID: userId
         })
-        .then((response) => {
-            const constCriticsReview = criticsReviewData;
-            constCriticsReview.forEach((eachReview) => {
-                if(eachReview.id === reviewData.id) {
-                    if(eachReview.userLike) {
-                        eachReview.totalLikes -=  1;
-                    } else {
-                        eachReview.totalLikes +=  1;
-                    }
-                    eachReview.userLike = !eachReview.userLike;
-                    
+            .then(() => {
+                if (constCriticsReview[index].userLike) {
+                    constCriticsReview[index].totalLikes -= 1;
+                } else {
+                    constCriticsReview[index].totalLikes += 1;
                 }
+                constCriticsReview[index].isLoading = false;
+                constCriticsReview[index].userLike = !constCriticsReview[index].userLike;
+                setCriticsReviewData([...constCriticsReview]);
             })
-            setCriticsReviewData([...constCriticsReview]);
-        })
     }
 
     // add reviews
@@ -182,7 +182,7 @@ const BookDetails = () => {
                 comment: criticData.comment,
                 bookID: id,
                 userID: userId
-            }).then((response) => {
+            }).then(() => {
                 fetchBooksData();
                 fetchReviewsData();
             }).catch((error) => {
@@ -190,7 +190,7 @@ const BookDetails = () => {
             })
         }
     }
-    
+
     const editReview = (values) => {
         if (!averageRating) {
             setIsShowRatingError(true);
@@ -203,7 +203,7 @@ const BookDetails = () => {
                 comment: criticData.comment,
                 bookID: id,
                 userID: userId
-            }).then((response) => {
+            }).then(() => {
                 fetchBooksData();
                 fetchReviewsData();
             }).catch((error) => {
@@ -253,11 +253,11 @@ const BookDetails = () => {
     const onDelete = () => {
         // constReason = reason;
         axios.delete(`${process.env.REACT_API_URL}review/${reviewId}`)
-        .then((response) => {
-            fetchReviewsData();
-            fetchBooksData();
-            setIsModalVisible(false);
-        })
+            .then(() => {
+                fetchReviewsData();
+                fetchBooksData();
+                setIsModalVisible(false);
+            })
     }
 
     const deleteComment = (reviewData) => {
@@ -272,11 +272,11 @@ const BookDetails = () => {
         criticsReviewDataConst.splice(0, 1);
         setAverageRating(reviewData.rating);
         setCriticsReviewData([...criticsReviewDataConst]);
-        form.setFieldsValue({comment: reviewData.comment});
+        form.setFieldsValue({ comment: reviewData.comment });
     }
 
-    const ReviewsComponent = ({ reviewData }) => (
-        <div className={`criticsReview ${ reviewData.userID === userId ? `my-review` : ``} `}>
+    const ReviewsComponent = ({ reviewData, index }) => (
+        <div className={`criticsReview ${reviewData.userID === userId ? `my-review` : ``} `}>
             <div className="criticsImg">
                 {
                     false ?
@@ -302,12 +302,24 @@ const BookDetails = () => {
                     {reviewData.comment}
                 </div>
                 <div className="criticsLikes">
-                    <Button type="text"
-                        className="bookStatusBtn likesIcon"
-                        onClick={() => likeFunc(reviewData)}>
-                        <LikeOutlined className="likesIcon likes-font-size" />
-                    </Button>
-                    <div className="totalLikes"> {reviewData.totalLikes}</div>
+                    {
+                        reviewData.isLoading ?
+                            <div style={{paddingLeft: 15}}>
+                                <img src={LikeLoading} alt="loading" style={{width: 30}}/>
+                            </div> :
+                            <>
+                                <Button type="text"
+                                    className="bookStatusBtn likesIcon"
+                                    onClick={() => likeFunc(reviewData, index)}>
+                                    {
+                                        reviewData.userLike ?
+                                            <LikeFilled className="likesIcon likes-font-size" />
+                                            : <LikeOutlined className="likesIcon likes-font-size" />
+                                    }
+                                </Button>
+                                <div className="totalLikes"> {reviewData.totalLikes}</div>
+                            </>
+                    }
                     {
                         reviewData.userID === userId &&
                         <>
@@ -444,7 +456,7 @@ const BookDetails = () => {
                                                 }
                                             </div>
                                             <div className="criticsComment" style={{ width: '100%' }}>
-                                                <Form name="basic" form={form} onFinish={editReviewId ? editReview : addReview } initialValues={null}>
+                                                <Form name="basic" form={form} onFinish={editReviewId ? editReview : addReview} initialValues={null}>
                                                     <div className="criticsRating">
                                                         <RatingComponent
                                                             isRatingChangeAllowed
@@ -489,7 +501,7 @@ const BookDetails = () => {
                                 }
                                 {
                                     criticsReviewData.length ? criticsReviewData.map((eachReviews, index) => (
-                                        <ReviewsComponent reviewData={eachReviews} key={index} />
+                                        <ReviewsComponent reviewData={eachReviews} key={eachReviews.id} index={index} />
                                     )) :
                                         <div className="noReviews">
                                             <img src={NoReview} alt="No Reviews" />

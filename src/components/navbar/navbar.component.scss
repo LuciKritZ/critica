@@ -17,8 +17,8 @@ $hideSearchBar: 399px;
             justify-content: flex-start;
             cursor: pointer;
             & .logo {
-                height: 75px;
-                width: 75px;
+                height: 50px;
+                width: 40px;
                 @media screen and (max-width: $small) {
                     height: 60px;
                 }

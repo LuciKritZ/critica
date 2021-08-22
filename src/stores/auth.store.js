@@ -19,10 +19,11 @@ const useAuthStore = create(
             image: '',
 
             setUserInfo: (userCode, isAdmin, role, image, email, isPremiumUser = false) => {
+                console.log(userCode, isAdmin, role, image, email, isPremiumUser, 'lset');
                 set({
                     userId: userCode,
                     isAdmin: isAdmin || false,
-                    role: DEFAULT_ROLES_ARRAY[parseInt(role, 10) + 1],
+                    role: DEFAULT_ROLES_ARRAY[+role -1],
                     image,
                     email,
                     isPremium: isPremiumUser,
