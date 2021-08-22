@@ -213,20 +213,19 @@ const BookDetails = () => {
             setMyReviewUpate(true);
             const criticData = values;
             criticData.rating = averageRating;
-            axios
-                .post(`${process.env.REACT_API_URL}review`, {
-                    rating: averageRating,
-                    comment: criticData.comment,
-                    bookID: id,
-                    userID: userId,
-                })
-                .then(() => {
-                    fetchBooksData();
-                    fetchReviewsData();
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            axios.post(`${process.env.REACT_API_URL}review`, {
+                rating: averageRating,
+                comment: criticData.comment,
+                bookID: id,
+                userID: userId
+            }).then(() => {
+                fetchBooksData();
+                fetchReviewsData();
+                // form.setFieldsValue({ comment: '' });
+                // setAverageRating(0);
+            }).catch((error) => {
+                console.log(error);
+            })
         }
     };
 
