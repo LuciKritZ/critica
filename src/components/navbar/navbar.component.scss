@@ -16,11 +16,27 @@ $hideSearchBar: 399px;
             align-items: center;
             justify-content: flex-start;
             cursor: pointer;
+            & .logo-title {
+                height: 64px;
+                /* padding-left: 40px; */
+                overflow: hidden;
+                justify-content: center;
+                display: flex;
+                align-items: center;
+            }
             & .logo {
-                height: 50px;
-                width: 40px;
+                height: 32px;
                 @media screen and (max-width: $small) {
-                    height: 60px;
+                    // height: 60px;
+                }
+            }
+            & .company-title {
+                margin-left: 5px;
+                color: var(--dark-color);
+                font-weight: 700;
+                font-size: 18px;
+                @media screen and (max-width: $medium) {
+                    display: none;
                 }
             }
         }

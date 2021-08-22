@@ -2,7 +2,7 @@
 @import "./mixins";
 
 .btn-primary {
-    @include buttons(var(--primary-button-color), var(--primary-button-hover-color));
+    @include buttons(var(--dark-color), var(--dark-80-color));
 }
 // --secondary-button-border-color: #dde2e4;
 //     --secondary-button-color: #fff;

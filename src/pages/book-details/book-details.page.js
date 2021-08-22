@@ -19,6 +19,7 @@ import NoReview from '../../assets/noReviews.png';
 import LikeLoading from '../../assets/likeLoading.svg';
 import { useAuth } from '../../providers/auth-provider.providers';
 import DeleteModal from '../../components/deleteModal/deleteModal';
+import LoginModalComponent from '../../components/loginModal/loginModal.component';
 
 const { TextArea } = Input;
 
@@ -26,6 +27,7 @@ let constCriticsReviewData = [];
 let reviewId = '';
 const BookDetails = () => {
     const { id } = useParams();
+    const [signInModalStatus, setSignInModalStatus] = useState(false);
     const { authenticated, userId, role, image } = useAuth();
     const [starsPercentage, setStarsPercentage] = useState([]);
     const [criticsReviewData, setCriticsReviewData] = useState([]);
@@ -69,7 +71,9 @@ const BookDetails = () => {
                         default:
                             break;
                     }
-                });
+                })
+        } else {
+            setSignInModalStatus(true);
         }
     };
 
@@ -114,8 +118,8 @@ const BookDetails = () => {
                     bookID: id,
                     ...(authenticated &&
                         userId && {
-                            userID: userId,
-                        }),
+                        userID: userId,
+                    }),
                 },
             })
             .then((response) => {
@@ -165,26 +169,29 @@ const BookDetails = () => {
     // authenticated, userId
     // commments like api call
     const likeFunc = (reviewData, index) => {
-        const constCriticsReview = criticsReviewData;
-        constCriticsReview[index].isLoading = true;
-        setCriticsReviewData([...constCriticsReview]);
-        axios
-            .put(`${process.env.REACT_API_URL}reviewlike`, {
+        if (!authenticated) {
+            setSignInModalStatus(true);
+        } else {
+            const constCriticsReview = criticsReviewData;
+            constCriticsReview[index].isLoading = true;
+            setCriticsReviewData([...constCriticsReview]);
+            axios.put(`${process.env.REACT_API_URL}reviewlike`, {
                 id: reviewData.id,
                 isLiked: !reviewData.userLike,
-                userID: userId,
+                userID: userId
             })
-            .then(() => {
-                if (constCriticsReview[index].userLike) {
-                    constCriticsReview[index].totalLikes -= 1;
-                } else {
-                    constCriticsReview[index].totalLikes += 1;
-                }
-                constCriticsReview[index].isLoading = false;
-                constCriticsReview[index].userLike = !constCriticsReview[index].userLike;
-                setCriticsReviewData([...constCriticsReview]);
-            });
-    };
+                .then(() => {
+                    if (constCriticsReview[index].userLike) {
+                        constCriticsReview[index].totalLikes -= 1;
+                    } else {
+                        constCriticsReview[index].totalLikes += 1;
+                    }
+                    constCriticsReview[index].isLoading = false;
+                    constCriticsReview[index].userLike = !constCriticsReview[index].userLike;
+                    setCriticsReviewData([...constCriticsReview]);
+                })
+        }
+    }
 
     // add reviews
     const addReview = (values) => {
@@ -320,11 +327,26 @@ const BookDetails = () => {
                 </div>
                 <div className="criticsComment">{reviewData.comment}</div>
                 <div className="criticsLikes">
-                    {reviewData.isLoading ? (
-                        <div style={{ paddingLeft: 15 }}>
-                            <img src={LikeLoading} alt="loading" style={{ width: 30 }} />
-                        </div>
-                    ) : (
+                    {
+                        reviewData.isLoading ?
+                            <div style={{ paddingLeft: 15 }}>
+                                <img src={LikeLoading} alt="loading" style={{ width: 30 }} />
+                            </div> :
+                            <>
+                                <Button type="text"
+                                    className="bookStatusBtn likesIcon"
+                                    onClick={() => likeFunc(reviewData, index)}>
+                                    {
+                                        reviewData.userLike ?
+                                            <LikeFilled className="likesIcon likes-font-size" />
+                                            : <LikeOutlined className="likesIcon likes-font-size" />
+                                    }
+                                </Button>
+                                <div className="totalLikes"> {reviewData.totalLikes}</div>
+                            </>
+                    }
+                    {
+                        reviewData.userID === userId &&
                         <>
                             <Button
                                 type="text"
@@ -367,6 +389,10 @@ const BookDetails = () => {
 
     return (
         <>
+
+            <LoginModalComponent
+                signInModalStatus={signInModalStatus}
+                setSignInModalStatus={setSignInModalStatus} />
             <DeleteModal
                 showDeleteModal={isModalVisible}
                 modalVisibleFunc={showDeleteModalFunc}

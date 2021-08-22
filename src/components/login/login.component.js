@@ -34,6 +34,7 @@ const Login = ({ onSignIn }) => {
                 <GoogleLogin
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                     buttonText="Sign in with Google"
+                    className="try-premium-btn btn loginBtn"
                     onSuccess={handleLogin}
                     onFailure={() =>
                         notification.error({

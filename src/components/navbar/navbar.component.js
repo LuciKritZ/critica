@@ -7,15 +7,14 @@ import { useHistory, useLocation } from 'react-router-dom';
 import Logo from '../../assets/logo.png';
 import { useAuth } from '../../providers/auth-provider.providers';
 import { useUserInfo } from '../../providers/user.providers';
-import Login from '../login/login.component';
 import UserMenu from '../user-menu/user-menu.component';
 import CustomButton from '../../custom/button/button.custom';
 import CustomInput from '../../custom/input/input.custom';
 import CustomDrawer from '../../custom/drawer/drawer.custom';
 import CustomPopover from '../../custom/popover/popover.custom';
-import CustomModal from '../../custom/modal/modal.custom';
 import { AppRoute } from '../../utils/router.utils';
 import './navbar.component.scss';
+import LoginModalComponent from '../loginModal/loginModal.component';
 
 const Navbar = () => {
     const [openDrawer, setOpenDrawer] = useState(false);
@@ -26,11 +25,17 @@ const Navbar = () => {
     const history = useHistory();
     const location = useLocation();
     const { pathname } = location;
-    console.log(authenticated, user, 'authenticated');
+    const redirectToPremium = () => {
+        if (authenticated) {
+            history.push(AppRoute.PAYMENT)
+        } else {
+            setSignInModalStatus(true);
+        }
+    }
     const navbarButtons = [
         {
             name: 'Try Premium',
-            onClick: () => history.push(AppRoute.PAYMENT),
+            onClick: () => redirectToPremium(),
             className: 'try-premium-btn',
             show: !user.isPremium,
         },
@@ -70,7 +75,10 @@ const Navbar = () => {
             show: Boolean(authenticated),
             onClick: () => {
                 signOut();
-                if (pathname === AppRoute.PROFILE) {
+                if (pathname === AppRoute.PROFILE 
+                    || pathname === AppRoute.ADMIN_PANEL
+                    || pathname === AppRoute.BOOKMARKS
+                    || pathname === AppRoute.MY_BOOKS) {
                     history.push(AppRoute.HOMEPAGE);
                 }
             },
@@ -127,26 +135,21 @@ const Navbar = () => {
 
     return (
         <Row className="root">
-            <CustomModal
-                centered
-                visible={signInModalStatus}
-                footer={null}
-                onCancel={() => setSignInModalStatus(false)}
-            >
-                <Login onSignIn={() => setSignInModalStatus(false)} />
-            </CustomModal>
+            <LoginModalComponent  
+            signInModalStatus={signInModalStatus}
+            setSignInModalStatus={setSignInModalStatus} />
             <Row span={24} className="navbar-panel">
                 <Col lg={2} md={3} sm={3} xs={4} className="logo-container">
-                    <div onClick={() => history.push(AppRoute.HOMEPAGE)}>
+                    <div className="logo-title" onClick={() => history.push(AppRoute.HOMEPAGE)}>
                         <img src={Logo} alt="Logo" className="logo" />
-                        <span>Crítica</span>
+                        <span className="company-title">Crítica</span>
                     </div>
                 </Col>
                 <Col md={7} lg={10} xl={10} xs={16} className="search-container">
                     <CustomInput
                         search
                         onSearch={() => history.push(AppRoute.SEARCH)}
-                        label="Search field"
+                        label="Search Books"
                     />
                 </Col>
                 <Col xs={4} md={0} sm={5} className="menu-container">
