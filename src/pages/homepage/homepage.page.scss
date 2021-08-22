@@ -1,18 +1,17 @@
-@import 'src/scss/variables.scss';
-.wrapper {
-    margin: 15px;
-    background-color: $body-color;
-    .container {
-        margin: 10px 10px 30px 10px;
-    }
-    .category-title {
-        color: $dark-80-color;
-        margin-top: 10px;
-        margin-left: 10px;
-        font-size: 20px;
-        font-weight: 600;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+// @import 'src/scss/variables.scss';
+.home-page-wrapper {
+    // margin: 16px;
+    background-color: var(--body-color);
+    padding: 10px;
+        .category-title {
+            color: var(--dark-80-color);
+            width: 300px;
+            margin-top: 10px;
+            margin-left: 10px;
+            font-size: 20px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 }

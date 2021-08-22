@@ -2,6 +2,7 @@
 import React from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import './carousel.component.scss';
 
 const responsiveDevice = {
     desktop: {
@@ -61,7 +62,7 @@ const CarouselComponent = ({ render }) => (
             autoPlaySpeed={3000}
             centerMode={false}
             className=""
-            containerClass="container"
+            containerClass="carousel-container"
             dotListClass=""
             draggable
             focusOnSelect={false}

@@ -29,6 +29,12 @@ const useAuthStore = create(
                 });
             },
 
+            setPremiumUser: (isPremiumUser) => {
+                set({
+                    isPremium: isPremiumUser,
+                });
+            },
+
             setAccessToken: (accessToken) => {
                 set({
                     authenticated: Boolean(accessToken),
@@ -44,6 +50,7 @@ const useAuthStore = create(
                     isAdmin: false,
                     isPremium: false,
                     email: '',
+                    userId: null
                 });
             },
 
