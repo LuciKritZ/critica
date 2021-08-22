@@ -294,12 +294,15 @@ const BookDetails = () => {
 
     const onDelete = () => {
         // constReason = reason;
-        axios.delete(`${process.env.REACT_API_URL}review/${reviewId}`).then(() => {
-            fetchReviewsData();
-            fetchBooksData();
-            setIsModalVisible(false);
-        });
-    };
+        axios.delete(`${process.env.REACT_API_URL}review/${reviewId}`)
+            .then(() => {
+                fetchReviewsData();
+                fetchBooksData();
+                setIsModalVisible(false);
+                form.setFieldsValue({ comment: '' });
+                setAverageRating(0);
+            })
+    }
 
     const deleteComment = (reviewData) => {
         reviewId = reviewData.id;
