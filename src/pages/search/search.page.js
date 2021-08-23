@@ -92,7 +92,7 @@ const Search = ({ location }) => {
     };
     const fetchMoreData = () => {
         // setBookInfo([...bookInfo, ...bookDataInfo]);
-        offset += 1;
+        offset += 8;
         applyFilters(filterConstObj);
     };
 
@@ -124,7 +124,7 @@ const Search = ({ location }) => {
                     />
                 </div>
                 <div className="book-container">
-                    {bookInfo.length ? (
+                    {bookInfo && bookInfo.length ? (
                         <InfiniteScrollComponent
                             hasMore={hasMore}
                             bookLength={bookInfo.length}

@@ -1,10 +1,11 @@
-import { Button, Table, Space } from 'antd';
+import { Button, Table, Space, notification } from 'antd';
 import axios from 'axios';
 import ContentLoader from 'react-content-loader';
 import React, { useEffect, useState } from 'react';
 import Moment from 'react-moment';
 import { useAuth } from '../../providers/auth-provider.providers';
 import './adminDashboard.page.scss';
+import MESSAGES from '../../utils/messages.utils';
 
 const tableConfig = {
     bordered: false,
@@ -38,6 +39,12 @@ const AdminDashboard = () => {
                     constAdminData.splice(dataIndex, 1);
                 }
                 setAdminData([...constAdminData]);
+                notification.success({
+                    message: MESSAGES.LABELS.SUCCESS,
+                    description: `${isAllowed ? 'Critic reuqest successfully accepted'
+                    : 'Critic reuqest rejected'}`,
+                    duration: MESSAGES.DURATION,
+                });
             });
     };
 
@@ -78,7 +85,7 @@ const AdminDashboard = () => {
             width: '150px',
             render: (date) => (
                 <Moment format="DD/MM/YYYY" unix>
-                    {date}
+                    {date/1000}
                 </Moment>
             ),
         },
@@ -88,7 +95,8 @@ const AdminDashboard = () => {
             width: '250px',
             render: (eachAdminData) => (
                 <Space size="middle">
-                    <Button type="primary" onClick={() => sendRequest(true, eachAdminData.id)}>
+                    <Button  type="primary" className="btn btn-primary" 
+                    onClick={() => sendRequest(true, eachAdminData.id)}>
                         Accept
                     </Button>
                     <Button

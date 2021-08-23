@@ -31,13 +31,15 @@ const RatingComponent = ({
                     starEmptyColor={starEmptyColor}
                 />
             ) : (
-                <StarRatings
-                    rating={rating}
-                    starDimension={starDimension}
-                    starSpacing={starSpacing}
-                    starRatedColor={starRatedColor}
-                    starEmptyColor={starEmptyColor}
-                />
+                <>
+                 <StarRatings
+                 rating={rating}
+                 starDimension={starDimension}
+                 starSpacing={starSpacing}
+                 starRatedColor={starRatedColor}
+                 starEmptyColor={starEmptyColor}
+             />
+                </>
             )}
         </>
     );
