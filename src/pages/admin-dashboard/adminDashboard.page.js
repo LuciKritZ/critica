@@ -104,7 +104,7 @@ const AdminDashboard = () => {
     ];
     return (
         <>
-            <div className="wrapper">
+            <div className="admin-wrapper">
                 {/* <table className="styled-table">
                     <thead>
                         <tr>

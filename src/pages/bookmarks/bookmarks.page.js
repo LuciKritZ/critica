@@ -74,7 +74,7 @@ const Bookmarks = () => {
     }, []);
 
     return (
-        <div className="wrapper">
+        <div className="bookmark-wrapper">
             <div className="container">
                 <div className="category-title">My Bookmarks</div>
                 {isLoading ? (

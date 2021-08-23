@@ -115,7 +115,7 @@ const Search = ({ location }) => {
     );
     return (
         <>
-            <div className="wrapper">
+            <div className="search-wrapper">
                 <div className="filter-container">
                     <FiltersComponent
                         applyFilters={applyExtraFilters}

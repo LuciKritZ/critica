@@ -10,6 +10,7 @@ import { appHistory } from '../../utils/history.utils';
 import { useAuth } from '../../providers/auth-provider.providers';
 import { AppRoute } from '../../utils/router.utils';
 import MESSAGES from '../../utils/messages.utils';
+import BookLover from '../../assets/bookLover.svg';
 
 const iframeStyles = {};
 
@@ -90,7 +91,7 @@ const Payments = () => {
     };
     return (
         <>
-            <div className="wrapper">
+            <div className="payment-wrapper">
                 <div className="container">
                     <div className="payments-container">
                         <div className="payments-page-title">
@@ -98,7 +99,20 @@ const Payments = () => {
                         </div>
                         <div className="payments-info-container">
                             <div className="premium-text">
-                                <div className="category-title">Premium Memership</div>
+                                <div className="category-title">
+                                    <ul>
+                                        <li>
+                                            Monthly Mail recommending list of books
+                                        </li>
+                                        <li>
+                                            Many more features to come ...
+                                        </li>
+                                    </ul>
+                                    <img
+                                        src={BookLover}
+                                        alt="book lover"
+                                        className="book-lover-img" />
+                                </div>
                             </div>
                             <div className="premium-form">
                                 <div className="payment-box">

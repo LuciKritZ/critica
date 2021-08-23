@@ -396,7 +396,7 @@ const BookDetails = () => {
                 okButtonProps={{className: 'btn-primary'}}
                 message="Are you sure you want to delete your review?"
             />
-            <div className="wrapper">
+            <div className="book-detail-wrapper">
                 <div className="pageWrapper">
                     <div className="bookInfoWrapper">
                         <div className="bookInfoContainer">

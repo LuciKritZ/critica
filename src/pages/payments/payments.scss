@@ -1,5 +1,5 @@
 // @import 'src/scss/variables.scss';
-.wrapper {
+.payment-wrapper {
     display: flex;
     flex-flow: row;
 
@@ -41,6 +41,8 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            display: flex;
+            flex-direction: column;
         }
 
         .payment-box {
@@ -48,6 +50,7 @@
             padding: 20px;
             margin-right: 30px;
             border: 1px solid var(--body-bg);
+            box-shadow: var(--box-background-shadow);
         }
     }
 
@@ -80,4 +83,8 @@
     color: var(--dark-color);
     font-size: 18px;
     margin-bottom: 10px;
+}
+.book-lover-img {
+    height: 200px;
+    margin-top: 30px;
 }

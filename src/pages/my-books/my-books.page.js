@@ -78,7 +78,7 @@ const MyBooks = () => {
     }, []);
 
     return (
-        <div className="wrapper">
+        <div className="my-books-wrapper">
             <div className="container">
                 <div className="category-title">Completed Books</div>
 
