@@ -241,7 +241,7 @@ const MyProfile = () => {
                         <div className="user-joining-date">
                             User since{' '}
                             <Moment
-                                date={user.userDetails.creationDateAndTime}
+                                date={parseInt(user.userDetails.creationDateAndTime / 1000, 10)}
                                 format="D MMM YYYY"
                                 withTitle
                                 unix
