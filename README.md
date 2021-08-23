@@ -1,6 +1,32 @@
 # Crítica - Book rating application
 
-Critica is a Book rating application. [Crítica Backend](https://github.com/sameer-555/critica-backend).
+## About Me
+
+Being confused whether which book to read next is a very common problem for the readers. Due to a lot of recommendations from peers and the internet, it gets difficult to get a good suggestion. Critica solves this problem by providing the book suggestions based on the reviews of the top critics.
+
+Links:
+
+-   [Crítica Backend](https://github.com/sameer-555/critica-backend).
+
+-   [Crítica Frontend](https://critica-frontend.netlify.app/)
+
+-   [Backend Host](https://critica-production.herokuapp.com/)
+
+Created by:
+
+-   Sameer Borkar
+
+    -   [GitHub](https://github.com/sameer-555)
+    -   [LinkedIn](https://www.linkedin.com/in/sameer-borkar-3809b0b3/)
+
+-   Tirth Patel
+
+    -   [GitHub](https://github.com/tirth089)
+    -   [LinkedIn](https://www.linkedin.com/in/tirth-p-7191b7215/)
+
+-   Krishal Shah
+    -   [GitHub](https://github.com/LuciKritZ)
+    -   [LinkedIn](https://www.linkedin.com/in/krishal-shah/)
 
 ## Packages
 
@@ -30,10 +56,7 @@ Node packages used in the project.
 
 ## Development setup
 
-Install dependencies & run below command.
+Run the following commands in the root directory:
 
+> yarn install\
 > yarn run start
-
-## Application
-
-[Critica](https://critica-frontend.netlify.app/)
