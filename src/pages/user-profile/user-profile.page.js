@@ -393,7 +393,6 @@ const MyProfile = () => {
                                             autoSize={{ minRows: 3, maxRows: 5 }}
                                             maxLength={500}
                                         />
-                                        {user.userDetails?.accomplishment?.length}
                                     </>
                                 ) : (
                                     user.userDetails?.accomplishment
