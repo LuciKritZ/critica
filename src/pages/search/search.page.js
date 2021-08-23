@@ -67,10 +67,24 @@ const Search = ({ location }) => {
                 console.log('Something went wrong', error);
             });
     };
+    const searchfetchBooks = (filterObj) => {
+        axios
+            .post(`${process.env.REACT_API_URL}books/filtered?limit=8&offset=${offset}`, { filter: filterObj })
+            .then((response) => {
+                setBookInfo([...response.data.data]);
+                if (!response.data.total || response.data.total < 8 ) {
+                    setHasMore(false);
+                }
+            })
+            .catch((error) => {
+                console.log('Something went wrong', error);
+            });
+    };
 
     useEffect(() => {
         if (search) {
-            fetchBooks({ title: search });
+            setBookInfo([]);
+            searchfetchBooks({ title: search });
         }
     }, [search]);
 

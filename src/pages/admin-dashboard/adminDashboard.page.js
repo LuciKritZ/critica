@@ -42,7 +42,7 @@ const AdminDashboard = () => {
                 notification.success({
                     message: MESSAGES.LABELS.SUCCESS,
                     description: `${isAllowed ? 'Critic reuqest successfully accepted'
-                    : 'Critic reuqest rejected'}`,
+                        : 'Critic reuqest rejected'}`,
                     duration: MESSAGES.DURATION,
                 });
             });
@@ -71,12 +71,12 @@ const AdminDashboard = () => {
             width: '150px',
         },
         {
-            title: 'Profile Url',
+            title: 'Accomplishment',
             dataIndex: 'accomplishment',
             key: 'accomplishment',
             width: '350px',
             ellipsis: true,
-            render: (text) => <a href={text}>{text}</a>,
+            // render: (text) => <a href={text}>{text}</a>,
         },
         {
             title: 'Date',
@@ -85,7 +85,7 @@ const AdminDashboard = () => {
             width: '150px',
             render: (date) => (
                 <Moment format="DD/MM/YYYY" unix>
-                    {date/1000}
+                    {date / 1000}
                 </Moment>
             ),
         },
@@ -95,8 +95,8 @@ const AdminDashboard = () => {
             width: '250px',
             render: (eachAdminData) => (
                 <Space size="middle">
-                    <Button  type="primary" className="btn btn-primary" 
-                    onClick={() => sendRequest(true, eachAdminData.id)}>
+                    <Button type="primary" className="btn btn-primary"
+                        onClick={() => sendRequest(true, eachAdminData.id)}>
                         Accept
                     </Button>
                     <Button
