@@ -1,4 +1,6 @@
 // @import 'src/scss/variables.scss';
+$medium: 775px;
+$small: 420px;
 .payment-wrapper {
     display: flex;
     flex-flow: row;
@@ -24,11 +26,18 @@
         }
 
         .premium-text {
+            
             width: 50%;
+            @media screen and (max-width: $medium) {
+                width: 100%;
+            }
         }
 
         .premium-form {
             width: 50%;
+            @media screen and (max-width: $medium) {
+                width: 100%;
+            }
         }
 
         .category-title {
@@ -36,13 +45,16 @@
             margin-top: 10px;
             margin-left: 30px;
             margin-bottom: -10px;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             display: flex;
             flex-direction: column;
+            @media screen and (max-width: $medium) {
+                margin-left: -30px;
+            }
         }
 
         .payment-box {
@@ -68,7 +80,8 @@
 }
 .payments-info-container {
     width: 100%;
-    display: inherit;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .payment-form-input {

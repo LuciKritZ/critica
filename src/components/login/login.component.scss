@@ -6,6 +6,7 @@
     display: flex !important;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 .loginBtn {
     box-shadow: none !important;
@@ -13,4 +14,18 @@
     div {
         background: none !important;
     }
+}
+.bibliophiles {
+    height: 180px;
+    opacity: 80%;
+    margin-top: 20px;
+}
+.app-title {
+    color: var(--dark-color);
+    font-weight: 600;
+    font-size: 18px;
+}
+.app-name {
+    font-weight: 700;
+    font-size: 22px;
 }

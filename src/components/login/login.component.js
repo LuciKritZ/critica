@@ -6,6 +6,7 @@ import MESSAGES from '../../utils/messages.utils';
 import { useAuth } from '../../providers/auth-provider.providers';
 import LoadingIndicator from '../loading-indicator/loading-indicator.component';
 import './login.component.scss';
+import Bibliophiles from '../../assets/bibliophiles.svg';
 
 const Login = ({ onSignIn }) => {
     const { signIn } = useAuth();
@@ -27,10 +28,16 @@ const Login = ({ onSignIn }) => {
 
     return (
         <Row className="login-container">
-            <Col className="login-body" xs={10}>
-                LOGIN
+            <Col className="login-body" xs={12}>
+                <div className="app-title">
+                    <span className="app-name">Critica</span> - Place for bibliophiles.
+                </div>
+                <img
+                    src={Bibliophiles}
+                    alt="book lover"
+                    className="bibliophiles" />
             </Col>
-            <Col className="login-body" xs={14}>
+            <Col className="login-body" xs={12}>
                 <GoogleLogin
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                     buttonText="Sign in with Google"

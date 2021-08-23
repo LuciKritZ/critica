@@ -8,6 +8,8 @@ const LoginModalComponent = ({ signInModalStatus, setSignInModalStatus }) => (
                 centered
                 visible={signInModalStatus}
                 footer={null}
+                width={650}
+                height={500}
                 onCancel={() => setSignInModalStatus(false)}
             >
                 <Login onSignIn={() => setSignInModalStatus(false)} />
