@@ -1,0 +1,81 @@
+$medium: 990px;
+
+.profile-page-container {
+    height: calc(100% - 95px);
+}
+
+.w-150 {
+    width: 150px;
+}
+
+.w-80 {
+    width: 80%;
+}
+
+.card-item-grid {
+    margin: 0;
+    padding: 10px 10px 22px 10px !important;
+}
+
+.user-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    .user-name {
+        margin-top: 30px;
+        font-size: 30px;
+        width: 70%;
+        // white-space: nowrap;
+        // overflow: hidden;
+        // text-overflow: ellipsis;
+        display: flex;
+        justify-content: center;
+        word-break: break-word;
+    }
+    .user-image {
+        border-radius: 50%;
+        width: 200px;
+        height: 200px;
+    }
+    .user-joining-date {
+        margin: 10px 0px;
+    }
+}
+
+.h-200 {
+    height: 200px !important;
+}
+
+.user-details-container {
+    .user-details-heading {
+        margin-right: 40px;
+        @media screen and (max-width: $medium) {
+            text-align: center;
+            margin-right: unset;
+        }
+        .heading-title {
+            margin-bottom: 0.25em;
+        }
+        .divider {
+            margin-top: 10px;
+        }
+    }
+    .user-field {
+        display: flex;
+        @media screen and (max-width: $medium) {
+            display: block;
+        }
+        .input-title {
+            width: 200px;
+        }
+        .input-value {
+            width: calc(100% - 200px - 40px);
+        }
+        .input-edit-icon {
+            width: 40px;
+            justify-content: flex-end;
+            display: flex;
+        }
+    }
+}

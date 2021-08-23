@@ -13,3 +13,13 @@ export const updateUser = async (request) => {
 
     return response.data;
 };
+
+export const getBooks = async (userId) => {
+    const response = await axios.get(`${BASE_URL}/userbook/getbooks`, {
+        params: {
+            id: userId,
+        },
+    });
+
+    return response.data;
+};

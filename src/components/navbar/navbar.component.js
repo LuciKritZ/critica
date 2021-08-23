@@ -146,7 +146,7 @@ const Navbar = () => {
                     <CustomInput
                         search
                         onSearch={() => history.push(AppRoute.SEARCH)}
-                        label="Search field"
+                        label="Search"
                     />
                 </Col>
                 <Col xs={4} md={0} sm={5} className="menu-container">
@@ -175,7 +175,7 @@ const Navbar = () => {
                             close={() => setUserMenuPopoverStatus(!userMenuPopoverStatus)}
                         >
                             <Avatar
-                                className={image ? 'user-image-container' : 'user-avatar'}
+                                className={image ? 'user-image' : 'user-avatar'}
                                 size="large"
                                 src={
                                     <div
@@ -183,7 +183,7 @@ const Navbar = () => {
                                             setUserMenuPopoverStatus(!userMenuPopoverStatus)
                                         }
                                     >
-                                        <img className="user-image" src={image} alt="User" />
+                                        <img src={image} alt="User" />
                                     </div>
                                 }
                                 icon={

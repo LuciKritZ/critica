@@ -23,7 +23,7 @@ const useAuthStore = create(
                     userId: userCode,
                     isAdmin: isAdmin || false,
                     role: DEFAULT_ROLES_ARRAY[+role - 1],
-                    image,
+                    image: image.toString().replace('=s96-c', ''),
                     email,
                     isPremium: isPremiumUser,
                 });

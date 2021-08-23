@@ -10,6 +10,10 @@ const MESSAGES = {
         FAILURE: 'Unable to log in.',
         LOGOUT_SUCCESS: 'You have been logged out.',
     },
+    USER: {
+        SUCCESS: 'Succesfully updated your data.',
+        FAILURE: 'Unable to update your data.',
+    },
     DURATION: 3,
 };
 

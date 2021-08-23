@@ -16,6 +16,7 @@ const CustomInput = (props) => {
     }
     return (
         <Input
+            // eslint-disable-next-line react/jsx-props-no-spreading
             {...props}
             addonBefore={props.addonBefore}
             addonAfter={props.addonAfter}
