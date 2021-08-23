@@ -2,8 +2,9 @@
 @import "./mixins";
 
 .btn-primary {
-    @include buttons(var(--primary-button-color), var(--primary-button-hover-color));
+    @include buttons(var(--dark-color), var(--dark-80-color));
 }
+
 // --secondary-button-border-color: #dde2e4;
 //     --secondary-button-color: #fff;
 //     --secondary-button-hover-color: #d9d9d9;
@@ -11,11 +12,13 @@
     @include buttons(var(--secondary-button-color), var(--body-bg));
     color: var(--dark-80-color);
     border-color: var(--dark-80-color);
+
     &:hover {
         color: var(--dark-80-color);
         border-color: var(--dark-80-color);
     }
 }
+
 .form-input {
     border-color: var(--border-color);
     border-radius: var(--border-radius);
@@ -23,7 +26,8 @@
     border-color: var(--border-color);
     color: var(--dark-color);
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
         border-color: #5b6b88;
     }
 }
@@ -36,6 +40,28 @@
     background-color: var(--body-bg);
     padding: 16px;
 }
+
 ul {
     margin-top: 0;
-  }
+}
+
+.no-books-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+    margin: 20px;
+    flex-direction: column;
+    background-color: var(--selected-comments-background);
+
+    // opacity: 80%;
+    .no-books-img {
+        height: 200px;
+    }
+
+    .no-books-title {
+        margin-top: 20px;
+        font-size: 16px;
+        color: var(--dark-color);
+    }
+}

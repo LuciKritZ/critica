@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Button } from 'antd';
 import React from 'react';
+import { DeleteOutlined, LoadingOutlined } from '@ant-design/icons';
 import ImageComponent from '../imageComponent/image.component';
 import RatingComponent from '../ratingComponent/rating.component';
 import './bookCard.component.scss';
@@ -13,12 +14,19 @@ const BookCardComponent = ({
     buttonString,
     isShowButton = false,
     redirect = false,
+    isRemoving= false,
 }) => {
     const redirectFunc = () => {
         if (redirect) {
             appHistory.push(`/books/${redirect}`);
         }
     };
+
+    const deleteFunc = (event) => {
+        event.stopPropagation();
+        buttonFunc();
+    };
+    
     return (
         <>
             <div className="card-book">
@@ -34,9 +42,11 @@ const BookCardComponent = ({
                                 <Button
                                     danger
                                     style={{ width: '100%' }}
-                                    onClick={() => buttonFunc(bookInfo.url)}
+                                    onClick={(event) => deleteFunc(event)}
+                                    disabled={isRemoving}
                                 >
-                                    {buttonString}
+                                    {buttonString} <DeleteOutlined /> 
+                                    {isRemoving ? <LoadingOutlined /> : ''}
                                 </Button>
                             </div>
                         ) : (

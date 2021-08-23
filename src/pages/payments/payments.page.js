@@ -2,13 +2,14 @@
 import React, { useState } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import './payments.scss';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, notification } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import useAuthStore from '../../stores/auth.store';
 import { appHistory } from '../../utils/history.utils';
 import { useAuth } from '../../providers/auth-provider.providers';
 import { AppRoute } from '../../utils/router.utils';
+import MESSAGES from '../../utils/messages.utils';
 
 const iframeStyles = {};
 
@@ -28,6 +29,11 @@ const Payments = () => {
     const elements = useElements();
 
     const activatePremium = () => {
+        notification.success({
+            message: MESSAGES.LABELS.SUCCESS,
+            description: MESSAGES.AUTHENTICATION.PAYMENT_SUCCESS,
+            duration: MESSAGES.DURATION,
+        });
         axios
             .put(`${process.env.REACT_API_URL}user`, {
                 id: userId,
@@ -71,7 +77,6 @@ const Payments = () => {
                 },
             );
 
-            console.log(confirmCardPayments, confirmCardPayments.error, 'error');
             if (confirmCardPayments.error) {
                 setCheckoutError(confirmCardPayments.error.message);
                 setProcessingTo(false);
@@ -131,7 +136,8 @@ const Payments = () => {
                                                         {
                                                             required: true,
                                                             whitespace: true,
-                                                            message: 'Email is missing',
+                                                            // message: 'Email is missing',
+                                                            type: 'email'
                                                         },
                                                     ]}
                                                 >

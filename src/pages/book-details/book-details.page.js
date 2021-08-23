@@ -8,6 +8,7 @@ import {
     LikeOutlined,
     UserOutlined,
     LikeFilled,
+    LoadingOutlined,
 } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -19,6 +20,7 @@ import NoReview from '../../assets/noReviews.png';
 import LikeLoading from '../../assets/likeLoading.svg';
 import { useAuth } from '../../providers/auth-provider.providers';
 import DeleteModal from '../../components/deleteModal/deleteModal';
+import LoginModalComponent from '../../components/loginModal/loginModal.component';
 
 const { TextArea } = Input;
 
@@ -26,6 +28,7 @@ let constCriticsReviewData = [];
 let reviewId = '';
 const BookDetails = () => {
     const { id } = useParams();
+    const [signInModalStatus, setSignInModalStatus] = useState(false);
     const { authenticated, userId, role, image } = useAuth();
     const [starsPercentage, setStarsPercentage] = useState([]);
     const [criticsReviewData, setCriticsReviewData] = useState([]);
@@ -37,9 +40,17 @@ const BookDetails = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [myReview, setMyReview] = useState(false);
     const [editReviewId, setEditReviewId] = useState(null);
+    const [bookMarkUpdate, setBookMarkUpdate] = useState(false);
+    const [completeBookUpdate, setCompleteBookUpdate] = useState(false);
+    const [myReviewUpate, setMyReviewUpate] = useState(false);
 
     // for bookread and bookmark apis
     const updateBookStatus = (bookStatus, isStatus) => {
+        if(bookStatus === 1) {
+            setBookMarkUpdate(true);
+        } else if (bookStatus === 2) {
+            setCompleteBookUpdate(true);
+        }
         if (authenticated && userId) {
             axios
                 .put(`${process.env.REACT_API_URL}userbook/userbookdetails`, {
@@ -58,18 +69,22 @@ const BookDetails = () => {
                             const constBookData = bookData;
                             constBookData.isInWishlist = !constBookData.isInWishlist;
                             setBookData({ ...constBookData });
+                            setBookMarkUpdate(false);
                             break;
                         }
                         case 2: {
                             const constBookData = bookData;
                             constBookData.isRead = !constBookData.isRead;
                             setBookData({ ...constBookData });
+                            setCompleteBookUpdate(false);
                             break;
                         }
                         default:
                             break;
                     }
-                });
+                })
+        } else {
+            setSignInModalStatus(true);
         }
     };
 
@@ -114,8 +129,8 @@ const BookDetails = () => {
                     bookID: id,
                     ...(authenticated &&
                         userId && {
-                            userID: userId,
-                        }),
+                        userID: userId,
+                    }),
                 },
             })
             .then((response) => {
@@ -149,6 +164,7 @@ const BookDetails = () => {
                     setMyReview(myReviewIndex !== -1 && true);
                     setCriticsReviewData(reviewsData);
                     setEditReviewId(null);
+                    setMyReviewUpate(false);
                     constCriticsReviewData = cloneDeep(reviewsData);
                 }
             })
@@ -165,32 +181,36 @@ const BookDetails = () => {
     // authenticated, userId
     // commments like api call
     const likeFunc = (reviewData, index) => {
-        const constCriticsReview = criticsReviewData;
-        constCriticsReview[index].isLoading = true;
-        setCriticsReviewData([...constCriticsReview]);
-        axios
-            .put(`${process.env.REACT_API_URL}reviewlike`, {
+        if (!authenticated) {
+            setSignInModalStatus(true);
+        } else {
+            const constCriticsReview = criticsReviewData;
+            constCriticsReview[index].isLoading = true;
+            setCriticsReviewData([...constCriticsReview]);
+            axios.put(`${process.env.REACT_API_URL}reviewlike`, {
                 id: reviewData.id,
                 isLiked: !reviewData.userLike,
-                userID: userId,
+                userID: userId
             })
-            .then(() => {
-                if (constCriticsReview[index].userLike) {
-                    constCriticsReview[index].totalLikes -= 1;
-                } else {
-                    constCriticsReview[index].totalLikes += 1;
-                }
-                constCriticsReview[index].isLoading = false;
-                constCriticsReview[index].userLike = !constCriticsReview[index].userLike;
-                setCriticsReviewData([...constCriticsReview]);
-            });
-    };
+                .then(() => {
+                    if (constCriticsReview[index].userLike) {
+                        constCriticsReview[index].totalLikes -= 1;
+                    } else {
+                        constCriticsReview[index].totalLikes += 1;
+                    }
+                    constCriticsReview[index].isLoading = false;
+                    constCriticsReview[index].userLike = !constCriticsReview[index].userLike;
+                    setCriticsReviewData([...constCriticsReview]);
+                })
+        }
+    }
 
     // add reviews
     const addReview = (values) => {
         if (!averageRating) {
             setIsShowRatingError(true);
         } else {
+            setMyReviewUpate(true);
             const criticData = values;
             criticData.rating = averageRating;
             axios
@@ -214,9 +234,9 @@ const BookDetails = () => {
         if (!averageRating) {
             setIsShowRatingError(true);
         } else {
+            setMyReviewUpate(true);
             const criticData = values;
             criticData.rating = averageRating;
-            console.log(criticData, '/review, add reviews');
             axios
                 .put(`${process.env.REACT_API_URL}review/${editReviewId}`, {
                     rating: averageRating,
@@ -320,26 +340,24 @@ const BookDetails = () => {
                 </div>
                 <div className="criticsComment">{reviewData.comment}</div>
                 <div className="criticsLikes">
-                    {reviewData.isLoading ? (
-                        <div style={{ paddingLeft: 15 }}>
-                            <img src={LikeLoading} alt="loading" style={{ width: 30 }} />
-                        </div>
-                    ) : (
-                        <>
-                            <Button
-                                type="text"
-                                className="bookStatusBtn likesIcon"
-                                onClick={() => likeFunc(reviewData, index)}
-                            >
-                                {reviewData.userLike ? (
-                                    <LikeFilled className="likesIcon likes-font-size" />
-                                ) : (
-                                    <LikeOutlined className="likesIcon likes-font-size" />
-                                )}
-                            </Button>
-                            <div className="totalLikes"> {reviewData.totalLikes}</div>
-                        </>
-                    )}
+                    {
+                        reviewData.isLoading ?
+                            <div style={{ paddingLeft: 15 }}>
+                                <img src={LikeLoading} alt="loading" style={{ width: 30 }} />
+                            </div> :
+                            <>
+                                <Button type="text"
+                                    className="bookStatusBtn likesIcon"
+                                    onClick={() => likeFunc(reviewData, index)}>
+                                    {
+                                        reviewData.userLike ?
+                                            <LikeFilled className="likesIcon likes-font-size" />
+                                            : <LikeOutlined className="likesIcon likes-font-size" />
+                                    }
+                                </Button>
+                                <div className="totalLikes"> {reviewData.totalLikes}</div>
+                            </>
+                    }
                     {reviewData.userID === userId && (
                         <>
                             <Button
@@ -367,10 +385,15 @@ const BookDetails = () => {
 
     return (
         <>
+
+            <LoginModalComponent
+                signInModalStatus={signInModalStatus}
+                setSignInModalStatus={setSignInModalStatus} />
             <DeleteModal
                 showDeleteModal={isModalVisible}
                 modalVisibleFunc={showDeleteModalFunc}
                 onSave={onDelete}
+                okButtonProps={{className: 'btn-primary'}}
                 message="Are you sure you want to delete your review?"
             />
             <div className="wrapper">
@@ -403,19 +426,23 @@ const BookDetails = () => {
                                 <div>
                                     <Button
                                         type={bookData.isInWishlist ? 'primary' : 'text'}
+                                        className={bookData.isInWishlist ? 'btn btn-primary' : 'btn '}
                                         style={{ marginLeft: '0px' }}
-                                        className="btn"
                                         onClick={() => updateBookStatus(1, !bookData.isInWishlist)}
+                                        disabled={bookMarkUpdate}
                                     >
                                         {bookData.isInWishlist ? 'Book Marked' : 'Book Mark'}
+                                        {bookMarkUpdate ? <LoadingOutlined /> : ''}
                                     </Button>
                                     <Button
                                         type={bookData.isRead ? 'primary' : 'text'}
-                                        className="btn"
+                                        className={bookData.isRead ? 'btn btn-primary' : 'btn '}
                                         style={{ marginLeft: '10px' }}
                                         onClick={() => updateBookStatus(2, !bookData.isRead)}
+                                        disabled={completeBookUpdate}
                                     >
                                         {bookData.isRead ? 'Book Completed' : 'Incomplete'}
+                                        {completeBookUpdate ? <LoadingOutlined /> : ''}
                                     </Button>
                                 </div>
                             </div>
@@ -552,11 +579,13 @@ const BookDetails = () => {
                                                         <Button
                                                             type="primary"
                                                             htmlType="submit"
-                                                            className="bookStatusBtn"
+                                                            className="btn btn-primary"
+                                                            disabled={myReviewUpate}
                                                         >
                                                             {editReviewId
                                                                 ? 'Update Review'
                                                                 : 'Add Review'}
+                                                            {myReviewUpate ? <LoadingOutlined /> : ''}
                                                         </Button>
                                                     </div>
                                                 </Form>

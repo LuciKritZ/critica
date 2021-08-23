@@ -56,7 +56,11 @@ const UserMenu = ({ closeMenu }) => {
             avatar: <LogoutOutlined size="small" />,
             onClick: () => {
                 signOut();
-                if (pathname === AppRoute.PROFILE) {
+                if (pathname === AppRoute.PROFILE 
+                    || pathname === AppRoute.ADMIN_PANEL
+                    || pathname === AppRoute.BOOKMARKS
+                    || pathname === AppRoute.PAYMENT
+                    || pathname === AppRoute.MY_BOOKS) {
                     history.push(AppRoute.HOMEPAGE);
                 }
             },
