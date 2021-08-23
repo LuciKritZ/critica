@@ -16,7 +16,6 @@ import { AppRoute } from '../../utils/router.utils';
 import './navbar.component.scss';
 import LoginModalComponent from '../loginModal/loginModal.component';
 
-const searchValue = '';
 const Navbar = () => {
     const [openDrawer, setOpenDrawer] = useState(false);
     const [signInModalStatus, setSignInModalStatus] = useState(false);

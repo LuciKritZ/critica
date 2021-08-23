@@ -42,9 +42,7 @@ const MyProfile = () => {
             history.push(AppRoute.HOMEPAGE);
         }
         const books = await getBooks(userId);
-        if (typeof books === 'object') {
-            setTotalBooksRead(books.length);
-        }
+        setTotalBooksRead(books.total);
         setLoading(false);
     };
 
