@@ -42,7 +42,7 @@ const Navbar = () => {
             name: 'Try Premium',
             onClick: () => redirectToPremium(),
             className: 'try-premium-btn',
-            show: !user.isPremium,
+            show: !user.userDetails?.isPremium,
         },
         {
             name: 'Sign In',
