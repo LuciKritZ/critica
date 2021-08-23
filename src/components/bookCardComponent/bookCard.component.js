@@ -51,7 +51,9 @@ const BookCardComponent = ({
                             </div>
                         ) : (
                             <div>
-                                <RatingComponent rating={bookInfo.averageRating} />
+                                <RatingComponent 
+                                rating={bookInfo.averageRating ? bookInfo.averageRating : 0} 
+                                isRatingChangeAllowed={false} />
                                 <span className="book-ratings">({bookInfo.totalComments})</span>
                             </div>
                         )}
