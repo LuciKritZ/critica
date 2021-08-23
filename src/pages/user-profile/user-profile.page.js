@@ -72,7 +72,7 @@ const MyProfile = () => {
     };
 
     const updateName = async (data) => {
-        if (user && user.userDetails) {
+        if (user && user.userDetails && data.firstName !== "" && data.lastName !== "") {
             await updateUser({
                 id: user.userDetails.id.toString(),
                 data,
@@ -95,8 +95,25 @@ const MyProfile = () => {
                     refreshUser();
                     updateEditFieldsState('name', false);
                 });
+        } else if (data.firstName === "") {
+            notification.error({
+                message: MESSAGES.LABELS.ERROR,
+                description: 'First Name is empty',
+                duration: MESSAGES.DURATION,
+            })
+        } else if (data.lastName === "") {
+            notification.error({
+                message: MESSAGES.LABELS.ERROR,
+                description: 'Last Name is empty.',
+                duration: MESSAGES.DURATION,
+            })
         }
     };
+
+    function disabledDate(current) {
+        const dayEnd = moment().endOf('day');
+        return !(dayEnd.isAfter(current));
+    }
 
     const updateUserDetails = async (keyName, value) => {
         if (user && user.userDetails) {
@@ -218,6 +235,7 @@ const MyProfile = () => {
                             <div className="input-value">
                                 {editFields.dateOfBirth ? (
                                     <DatePicker
+                                        disabledDate={disabledDate}
                                         value={userDetails.birthDate}
                                         onChange={(date, dateString) => {
                                             updateUserDetailState('birthdate', dateString);

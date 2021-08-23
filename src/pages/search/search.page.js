@@ -59,7 +59,7 @@ const Search = ({ location }) => {
             .post(`${process.env.REACT_API_URL}books/filtered?limit=8&offset=${offset}`, { filter: filterObj })
             .then((response) => {
                 setBookInfo([...bookInfo, ...response.data.data]);
-                if (!response.data.total) {
+                if (!response.data.total || response.data.total < 8 ) {
                     setHasMore(false);
                 }
             })
