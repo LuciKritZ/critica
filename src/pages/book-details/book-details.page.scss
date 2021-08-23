@@ -1,3 +1,4 @@
+@import 'src/scss/mixins.scss';
 .wrapper {
     display: flex;
     flex-flow: row;
@@ -279,4 +280,8 @@
 }
 .pb-30px {
     padding-bottom: 30px;
+}
+
+.ant-btn-primary {
+    @include buttons(var(--dark-color), var(--dark-80-color));
 }

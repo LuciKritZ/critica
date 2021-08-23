@@ -8,6 +8,7 @@ import {
     LikeOutlined,
     UserOutlined,
     LikeFilled,
+    LoadingOutlined,
 } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -39,9 +40,17 @@ const BookDetails = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [myReview, setMyReview] = useState(false);
     const [editReviewId, setEditReviewId] = useState(null);
+    const [bookMarkUpdate, setBookMarkUpdate] = useState(false);
+    const [completeBookUpdate, setCompleteBookUpdate] = useState(false);
+    const [myReviewUpate, setMyReviewUpate] = useState(false);
 
     // for bookread and bookmark apis
     const updateBookStatus = (bookStatus, isStatus) => {
+        if(bookStatus === 1) {
+            setBookMarkUpdate(true);
+        } else if (bookStatus === 2) {
+            setCompleteBookUpdate(true);
+        }
         if (authenticated && userId) {
             axios
                 .put(`${process.env.REACT_API_URL}userbook/userbookdetails`, {
@@ -60,12 +69,14 @@ const BookDetails = () => {
                             const constBookData = bookData;
                             constBookData.isInWishlist = !constBookData.isInWishlist;
                             setBookData({ ...constBookData });
+                            setBookMarkUpdate(false);
                             break;
                         }
                         case 2: {
                             const constBookData = bookData;
                             constBookData.isRead = !constBookData.isRead;
                             setBookData({ ...constBookData });
+                            setCompleteBookUpdate(false);
                             break;
                         }
                         default:
@@ -153,6 +164,7 @@ const BookDetails = () => {
                     setMyReview(myReviewIndex !== -1 && true);
                     setCriticsReviewData(reviewsData);
                     setEditReviewId(null);
+                    setMyReviewUpate(false);
                     constCriticsReviewData = cloneDeep(reviewsData);
                 }
             })
@@ -198,6 +210,7 @@ const BookDetails = () => {
         if (!averageRating) {
             setIsShowRatingError(true);
         } else {
+            setMyReviewUpate(true);
             const criticData = values;
             criticData.rating = averageRating;
             axios
@@ -221,9 +234,9 @@ const BookDetails = () => {
         if (!averageRating) {
             setIsShowRatingError(true);
         } else {
+            setMyReviewUpate(true);
             const criticData = values;
             criticData.rating = averageRating;
-            console.log(criticData, '/review, add reviews');
             axios
                 .put(`${process.env.REACT_API_URL}review/${editReviewId}`, {
                     rating: averageRating,
@@ -345,23 +358,6 @@ const BookDetails = () => {
                                 <div className="totalLikes"> {reviewData.totalLikes}</div>
                             </>
                     }
-                    {
-                        reviewData.userID === userId &&
-                        <>
-                            <Button
-                                type="text"
-                                className="bookStatusBtn likesIcon"
-                                onClick={() => likeFunc(reviewData, index)}
-                            >
-                                {reviewData.userLike ? (
-                                    <LikeFilled className="likesIcon likes-font-size" />
-                                ) : (
-                                    <LikeOutlined className="likesIcon likes-font-size" />
-                                )}
-                            </Button>
-                            <div className="totalLikes"> {reviewData.totalLikes}</div>
-                        </>
-                    )}
                     {reviewData.userID === userId && (
                         <>
                             <Button
@@ -397,6 +393,7 @@ const BookDetails = () => {
                 showDeleteModal={isModalVisible}
                 modalVisibleFunc={showDeleteModalFunc}
                 onSave={onDelete}
+                okButtonProps={{className: 'btn-primary'}}
                 message="Are you sure you want to delete your review?"
             />
             <div className="wrapper">
@@ -429,19 +426,23 @@ const BookDetails = () => {
                                 <div>
                                     <Button
                                         type={bookData.isInWishlist ? 'primary' : 'text'}
+                                        className={bookData.isInWishlist ? 'btn btn-primary' : 'btn '}
                                         style={{ marginLeft: '0px' }}
-                                        className="btn"
                                         onClick={() => updateBookStatus(1, !bookData.isInWishlist)}
+                                        disabled={bookMarkUpdate}
                                     >
                                         {bookData.isInWishlist ? 'Book Marked' : 'Book Mark'}
+                                        {bookMarkUpdate ? <LoadingOutlined /> : ''}
                                     </Button>
                                     <Button
                                         type={bookData.isRead ? 'primary' : 'text'}
-                                        className="btn"
+                                        className={bookData.isRead ? 'btn btn-primary' : 'btn '}
                                         style={{ marginLeft: '10px' }}
                                         onClick={() => updateBookStatus(2, !bookData.isRead)}
+                                        disabled={completeBookUpdate}
                                     >
                                         {bookData.isRead ? 'Book Completed' : 'Incomplete'}
+                                        {completeBookUpdate ? <LoadingOutlined /> : ''}
                                     </Button>
                                 </div>
                             </div>
@@ -578,11 +579,13 @@ const BookDetails = () => {
                                                         <Button
                                                             type="primary"
                                                             htmlType="submit"
-                                                            className="bookStatusBtn"
+                                                            className="btn btn-primary"
+                                                            disabled={myReviewUpate}
                                                         >
                                                             {editReviewId
                                                                 ? 'Update Review'
                                                                 : 'Add Review'}
+                                                            {myReviewUpate ? <LoadingOutlined /> : ''}
                                                         </Button>
                                                     </div>
                                                 </Form>

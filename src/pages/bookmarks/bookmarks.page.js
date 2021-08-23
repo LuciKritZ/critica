@@ -5,6 +5,7 @@ import ContentLoader from 'react-content-loader';
 import BookCardComponent from '../../components/bookCardComponent/bookCard.component';
 import { useAuth } from '../../providers/auth-provider.providers';
 import './bookmarks.page.scss';
+import Bookshelves from '../../assets/bookshelves.svg';
 
 const Bookmarks = () => {
     // skeleton Hardcoded values
@@ -23,6 +24,7 @@ const Bookmarks = () => {
     const [bookDataInfo, setBookDataInfo] = useState({});
     const { authenticated, userId } = useAuth();
     const [isLoading, setisLoading] = useState(false);
+    const [isRemoving, setisRemoving] = useState(false);
     const fetchBookData = () => {
         setisLoading(true);
         axios
@@ -49,8 +51,8 @@ const Bookmarks = () => {
     };
 
     const removeBookmark = (e, bookData, index) => {
-        // e.stopPropagation();
         if (authenticated && userId) {
+            setisRemoving(true);
             axios
                 .put(`${process.env.REACT_API_URL}userbook/userbookdetails`, {
                     bookID: bookData.id,
@@ -61,6 +63,7 @@ const Bookmarks = () => {
                     const constBookData = bookDataInfo;
                     constBookData.splice(index, 1);
                     setBookDataInfo([...constBookData]);
+                    setisRemoving(false);
                 });
         }
     };
@@ -74,51 +77,60 @@ const Bookmarks = () => {
         <div className="wrapper">
             <div className="container">
                 <div className="category-title">My Bookmarks</div>
-                <div className="book-container">
-                    {isLoading ? (
-                        <ContentLoader
-                            speed={speed}
-                            width={columns * coverWidthWithPadding}
-                            height={rows * coverHeightWithPadding}
-                        >
-                            {covers.map((g, i) => {
-                                const vy =
-                                    Math.floor(i / columns) * coverHeightWithPadding + initial;
-                                const vx =
-                                    ((i * coverWidthWithPadding) %
-                                        (columns * coverWidthWithPadding)) +
-                                    initial;
-                                return (
-                                    <rect
-                                        key={i.toString()}
-                                        x={vx}
-                                        y={vy}
-                                        rx="0"
-                                        ry="0"
-                                        width={coverWidth}
-                                        height={coverHeight}
-                                    />
-                                );
-                            })}
-                        </ContentLoader>
-                    ) : (
-                        <>
-                            {bookDataInfo.length &&
-                                bookDataInfo.map((eachBookInfo, index) => (
-                                    <BookCardComponent
-                                        bookInfo={eachBookInfo}
-                                        key={eachBookInfo.id}
-                                        isShowButton
-                                        // redirect={eachBookInfo.id}
-                                        buttonFunc={(e) => {
-                                            removeBookmark(e, eachBookInfo, index);
-                                        }}
-                                        buttonString="Remove from Bookmark"
-                                    />
-                                ))}
-                        </>
-                    )}
-                </div>
+                {isLoading ? (
+                    <ContentLoader
+                        speed={speed}
+                        width={columns * coverWidthWithPadding}
+                        height={rows * coverHeightWithPadding}
+                    >
+                        {covers.map((g, i) => {
+                            const vy =
+                                Math.floor(i / columns) * coverHeightWithPadding + initial;
+                            const vx =
+                                ((i * coverWidthWithPadding) %
+                                    (columns * coverWidthWithPadding)) +
+                                initial;
+                            return (
+                                <rect
+                                    key={i.toString()}
+                                    x={vx}
+                                    y={vy}
+                                    rx="0"
+                                    ry="0"
+                                    width={coverWidth}
+                                    height={coverHeight}
+                                />
+                            );
+                        })}
+                    </ContentLoader>
+                ) : (
+                    <>
+                        {bookDataInfo.length ?
+                            <> <div className="book-container">{bookDataInfo.map((eachBookInfo, index) => (
+                                <BookCardComponent
+                                    bookInfo={eachBookInfo}
+                                    key={eachBookInfo.id}
+                                    isShowButton
+                                    redirect={eachBookInfo.id}
+                                    isRemoving={isRemoving}
+                                    buttonFunc={(e) => {
+                                        removeBookmark(e, eachBookInfo, index);
+                                    }}
+                                    buttonString="Delete"
+                                />
+                            ))}</div></>
+                            :
+                            <>
+                                <div className="no-books-container">
+                                    <img src={Bookshelves} alt="no books" className="no-books-img" />
+                                    <span className="no-books-title">
+                                        No Book Mark Found
+                                    </span>
+                                </div>
+                            </>
+                        }
+                    </>
+                )}
             </div>
         </div>
     );

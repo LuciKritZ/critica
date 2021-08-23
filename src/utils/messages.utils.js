@@ -9,6 +9,7 @@ const MESSAGES = {
         ERROR: 'Something went wrong.',
         FAILURE: 'Unable to log in.',
         LOGOUT_SUCCESS: 'You have been logged out.',
+        PAYMENT_SUCCESS: 'Payment Successfull. Premium memership activated.'
     },
     DURATION: 3,
 };

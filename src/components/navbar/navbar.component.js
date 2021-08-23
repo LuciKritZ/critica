@@ -16,6 +16,7 @@ import { AppRoute } from '../../utils/router.utils';
 import './navbar.component.scss';
 import LoginModalComponent from '../loginModal/loginModal.component';
 
+let searchValue = '';
 const Navbar = () => {
     const [openDrawer, setOpenDrawer] = useState(false);
     const [signInModalStatus, setSignInModalStatus] = useState(false);
@@ -30,6 +31,11 @@ const Navbar = () => {
             history.push(AppRoute.PAYMENT)
         } else {
             setSignInModalStatus(true);
+        }
+    }
+    const searchRedirect = (event) => {
+        if(event) {
+            history.push(`${AppRoute.SEARCH}?search=${event}`);
         }
     }
     const navbarButtons = [
@@ -78,6 +84,7 @@ const Navbar = () => {
                 if (pathname === AppRoute.PROFILE 
                     || pathname === AppRoute.ADMIN_PANEL
                     || pathname === AppRoute.BOOKMARKS
+                    || pathname === AppRoute.PAYMENT
                     || pathname === AppRoute.MY_BOOKS) {
                     history.push(AppRoute.HOMEPAGE);
                 }
@@ -148,7 +155,7 @@ const Navbar = () => {
                 <Col md={7} lg={10} xl={10} xs={16} className="search-container">
                     <CustomInput
                         search
-                        onSearch={() => history.push(AppRoute.SEARCH)}
+                        onSearch={(event) => searchRedirect(event)}
                         label="Search Books"
                     />
                 </Col>

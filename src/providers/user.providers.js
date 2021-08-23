@@ -11,7 +11,7 @@ export const UserProvider = ({ children }) => {
         role: null,
         isPremium: false,
         isAdmin: false,
-        isCritic: false,
+        isCritic: false
     });
 
     const refreshUser = async () => {
