@@ -11,6 +11,7 @@ import { useAuth } from '../../providers/auth-provider.providers';
 import { AppRoute } from '../../utils/router.utils';
 import MESSAGES from '../../utils/messages.utils';
 import BookLover from '../../assets/bookLover.svg';
+import { useUserInfo } from '../../providers/user.providers';
 
 const iframeStyles = {};
 
@@ -22,6 +23,7 @@ const cardElementOpts = {
 const Payments = () => {
     const [form] = Form.useForm();
     const { userId } = useAuth();
+    const { refreshUser } = useUserInfo();
     const [isProcessing, setProcessingTo] = useState(false);
     const [checkoutError, setCheckoutError] = useState();
 
@@ -44,6 +46,7 @@ const Payments = () => {
             })
             .then(() => {
                 setPremiumUser(true);
+                refreshUser();
                 appHistory.push(AppRoute.HOMEPAGE);
             });
     };
@@ -101,17 +104,14 @@ const Payments = () => {
                             <div className="premium-text">
                                 <div className="category-title">
                                     <ul>
-                                        <li>
-                                            Monthly Mail recommending list of books
-                                        </li>
-                                        <li>
-                                            Many more features to come ...
-                                        </li>
+                                        <li>Monthly Mail recommending list of books</li>
+                                        <li>Many more features to come ...</li>
                                     </ul>
                                     <img
                                         src={BookLover}
                                         alt="book lover"
-                                        className="book-lover-img" />
+                                        className="book-lover-img"
+                                    />
                                 </div>
                             </div>
                             <div className="premium-form">
@@ -151,7 +151,7 @@ const Payments = () => {
                                                             required: true,
                                                             whitespace: true,
                                                             // message: 'Email is missing',
-                                                            type: 'email'
+                                                            type: 'email',
                                                         },
                                                     ]}
                                                 >

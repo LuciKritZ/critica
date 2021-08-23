@@ -28,16 +28,13 @@ const Login = ({ onSignIn }) => {
 
     return (
         <Row className="login-container">
-            <Col className="login-body" xs={12}>
+            <Col className="login-body" md={12} xs={24}>
                 <div className="app-title">
                     <span className="app-name">Critica</span> - Place for bibliophiles.
                 </div>
-                <img
-                    src={Bibliophiles}
-                    alt="book lover"
-                    className="bibliophiles" />
+                <img src={Bibliophiles} alt="book lover" className="bibliophiles" />
             </Col>
-            <Col className="login-body" xs={12}>
+            <Col className="login-body" md={12} xs={24}>
                 <GoogleLogin
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                     buttonText="Sign in with Google"
