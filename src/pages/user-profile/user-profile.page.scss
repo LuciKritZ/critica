@@ -2,6 +2,13 @@ $medium: 990px;
 
 .profile-page-container {
     height: calc(100% - 95px);
+    .cross-icon {
+        color: #ff4d4f !important;
+    }
+}
+
+.w-200 {
+    width: 200px;
 }
 
 .w-150 {
@@ -26,12 +33,15 @@ $medium: 990px;
         margin-top: 30px;
         font-size: 30px;
         width: 70%;
-        // white-space: nowrap;
-        // overflow: hidden;
-        // text-overflow: ellipsis;
         display: flex;
         justify-content: center;
         word-break: break-word;
+        .space-container {
+            .ant-space-item {
+                display: flex;
+                justify-content: center;
+            }
+        }
     }
     .user-image {
         border-radius: 50%;
@@ -68,14 +78,37 @@ $medium: 990px;
         }
         .input-title {
             width: 200px;
+            display: flex;
+            justify-content: space-between;
+            .field-buttons-mobile {
+                display: none;
+                @media screen and (max-width: $medium) {
+                    display: flex;
+                }
+            }
+            @media screen and (max-width: $medium) {
+                width: auto;
+            }
         }
         .input-value {
             width: calc(100% - 200px - 40px);
+            @media screen and (max-width: $medium) {
+                width: auto;
+            }
         }
         .input-edit-icon {
             width: 40px;
             justify-content: flex-end;
             display: flex;
+            .check-icon {
+                color: #52c41a;
+            }
+            .cross-icon {
+                color: #ff4d4f;
+            }
+            @media screen and (max-width: $medium) {
+                display: none;
+            }
         }
     }
 }

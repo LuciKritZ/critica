@@ -48,7 +48,9 @@ const MyProfile = () => {
 
     useEffect(() => {
         if (user && user.userDetails) {
+            setLoading(true);
             setUserDetails(user.userDetails);
+            setLoading(false);
         }
     }, [user]);
 
@@ -72,7 +74,12 @@ const MyProfile = () => {
     };
 
     const updateName = async (data) => {
-        if (user && user.userDetails && data.firstName !== "" && data.lastName !== "") {
+        if (
+            user &&
+            user.userDetails &&
+            data.firstName.toString().trim() !== '' &&
+            data.lastName.toString().trim() !== ''
+        ) {
             await updateUser({
                 id: user.userDetails.id.toString(),
                 data,
@@ -95,32 +102,33 @@ const MyProfile = () => {
                     refreshUser();
                     updateEditFieldsState('name', false);
                 });
-        } else if (data.firstName === "") {
+        } else if (data.firstName.toString().trim() === '') {
             notification.error({
                 message: MESSAGES.LABELS.ERROR,
                 description: 'First Name is empty',
                 duration: MESSAGES.DURATION,
-            })
-        } else if (data.lastName === "") {
+            });
+        } else if (data.lastName.toString().trim() === '') {
             notification.error({
                 message: MESSAGES.LABELS.ERROR,
                 description: 'Last Name is empty.',
                 duration: MESSAGES.DURATION,
-            })
+            });
         }
     };
 
-    function disabledDate(current) {
+    const disabledDate = (current) => {
         const dayEnd = moment().endOf('day');
-        return !(dayEnd.isAfter(current));
-    }
+        return !dayEnd.isAfter(current);
+    };
 
     const updateUserDetails = async (keyName, value) => {
         if (user && user.userDetails) {
             await updateUser({
                 id: user.userDetails.id.toString(),
                 data: {
-                    [keyName.toString()]: value,
+                    [keyName.toString()]:
+                        keyName !== 'accomplishment' ? value.toString().trim() : value,
                 },
             })
                 .then(() =>
@@ -141,6 +149,25 @@ const MyProfile = () => {
         }
     };
 
+    const renderButtons = (editFieldKey, userDetailsKey, userDetailsValue) =>
+        editFields[editFieldKey] ? (
+            <Space direction="horizontal">
+                <CheckOutlined
+                    className="check-icon"
+                    onClick={() => {
+                        updateUserDetails(userDetailsKey, userDetailsValue);
+                        updateEditFieldsState(editFieldKey, false);
+                    }}
+                />
+                <CloseOutlined
+                    className="cross-icon"
+                    onClick={() => updateEditFieldsState(editFieldKey, false)}
+                />
+            </Space>
+        ) : (
+            <EditOutlined onClick={() => updateEditFieldsState(editFieldKey, true)} />
+        );
+
     if (loading && !user && !user.userDetails) {
         return <LoadingIndicator />;
     }
@@ -156,7 +183,10 @@ const MyProfile = () => {
                                 onClick={() => updateEditFieldsState('name', true)}
                             />
                         ) : (
-                            <CloseOutlined onClick={() => updateEditFieldsState('name', false)} />
+                            <CloseOutlined
+                                className="cross-icon"
+                                onClick={() => updateEditFieldsState('name', false)}
+                            />
                         ),
                     ]}
                 >
@@ -174,14 +204,15 @@ const MyProfile = () => {
                             {!editFields.name ? (
                                 `${user.userDetails.firstName} ${user.userDetails.lastName}`
                             ) : (
-                                <Space direction="vertical">
+                                <Space direction="vertical" className="space-container">
                                     <Input
                                         placeholder="First Name"
                                         value={userDetails.firstName}
                                         onChange={(e) =>
                                             updateUserDetailState('firstName', e.target.value)
                                         }
-                                        className="w-150"
+                                        className="w-200"
+                                        maxLength={100}
                                     />
                                     <Input
                                         placeholder="Last Name"
@@ -189,9 +220,11 @@ const MyProfile = () => {
                                         onChange={(e) =>
                                             updateUserDetailState('lastName', e.target.value)
                                         }
-                                        className="w-150"
+                                        className="w-200"
+                                        maxLength={100}
                                     />
                                     <CustomButton
+                                        className="j-center"
                                         title="Update Name"
                                         onClick={() =>
                                             updateName({
@@ -231,7 +264,16 @@ const MyProfile = () => {
                 <UserCard title="User Details">
                     <Row>
                         <Col xs={24} className="user-field">
-                            <div className="input-title">Date of Birth</div>
+                            <div className="input-title">
+                                Date of Birth
+                                <div className="field-buttons-mobile">
+                                    {renderButtons(
+                                        'dateOfBirth',
+                                        'birthdate',
+                                        userDetails?.birthdate,
+                                    )}
+                                </div>
+                            </div>
                             <div className="input-value">
                                 {editFields.dateOfBirth ? (
                                     <DatePicker
@@ -250,28 +292,7 @@ const MyProfile = () => {
                                 )}
                             </div>
                             <div className="input-edit-icon">
-                                {editFields.dateOfBirth ? (
-                                    <Space direction="horizontal">
-                                        <CheckOutlined
-                                            onClick={() => {
-                                                updateUserDetails(
-                                                    'birthdate',
-                                                    userDetails.birthdate,
-                                                );
-                                                updateEditFieldsState('dateOfBirth', false);
-                                            }}
-                                        />
-                                        <CloseOutlined
-                                            onClick={() =>
-                                                updateEditFieldsState('dateOfBirth', false)
-                                            }
-                                        />
-                                    </Space>
-                                ) : (
-                                    <EditOutlined
-                                        onClick={() => updateEditFieldsState('dateOfBirth', true)}
-                                    />
-                                )}
+                                {renderButtons('dateOfBirth', 'birthdate', userDetails?.birthdate)}
                             </div>
                         </Col>
                         <Divider className="user-divider" />
@@ -287,7 +308,12 @@ const MyProfile = () => {
                         </Col>
                         <Divider className="user-divider" />
                         <Col xs={24} className="user-field">
-                            <div className="input-title">Gender</div>
+                            <div className="input-title">
+                                Gender
+                                <div className="field-buttons-mobile">
+                                    {renderButtons('gender', 'gender', userDetails?.gender)}
+                                </div>
+                            </div>
                             <div className="input-value">
                                 {editFields.gender ? (
                                     <Select
@@ -304,28 +330,17 @@ const MyProfile = () => {
                                 )}
                             </div>
                             <div className="input-edit-icon">
-                                {editFields.gender ? (
-                                    <Space direction="horizontal">
-                                        <CheckOutlined
-                                            onClick={() => {
-                                                updateUserDetails('gender', userDetails.gender);
-                                                updateEditFieldsState('gender', false);
-                                            }}
-                                        />
-                                        <CloseOutlined
-                                            onClick={() => updateEditFieldsState('gender', false)}
-                                        />
-                                    </Space>
-                                ) : (
-                                    <EditOutlined
-                                        onClick={() => updateEditFieldsState('gender', true)}
-                                    />
-                                )}
+                                {renderButtons('gender', 'gender', userDetails?.gender)}
                             </div>
                         </Col>
                         <Divider className="user-divider" />
                         <Col xs={24} className="user-field">
-                            <div className="input-title">Favorite Quote</div>
+                            <div className="input-title">
+                                Favorite Quote
+                                <div className="field-buttons-mobile">
+                                    {renderButtons('favoriteQuote', 'quote', userDetails?.quote)}
+                                </div>
+                            </div>
                             <div className="input-value">
                                 {editFields.favoriteQuote ? (
                                     <Input
@@ -335,31 +350,14 @@ const MyProfile = () => {
                                         onChange={(e) =>
                                             updateUserDetailState('quote', e.target.value)
                                         }
+                                        maxLength={500}
                                     />
                                 ) : (
                                     user.userDetails?.quote
                                 )}
                             </div>
                             <div className="input-edit-icon">
-                                {editFields.favoriteQuote ? (
-                                    <Space direction="horizontal">
-                                        <CheckOutlined
-                                            onClick={() => {
-                                                updateUserDetails('quote', userDetails.quote);
-                                                updateEditFieldsState('favoriteQuote', false);
-                                            }}
-                                        />
-                                        <CloseOutlined
-                                            onClick={() =>
-                                                updateEditFieldsState('favoriteQuote', false)
-                                            }
-                                        />
-                                    </Space>
-                                ) : (
-                                    <EditOutlined
-                                        onClick={() => updateEditFieldsState('favoriteQuote', true)}
-                                    />
-                                )}
+                                {renderButtons('favoriteQuote', 'quote', userDetails?.quote)}
                             </div>
                         </Col>
                         <Divider className="user-divider" />
@@ -369,52 +367,54 @@ const MyProfile = () => {
                         </Col>
                         <Divider className="user-divider" />
                         <Col xs={24} className="user-field">
-                            <div className="input-title">Accomplishments</div>
+                            <div className="input-title">
+                                Accomplishments
+                                <div className="field-buttons-mobile">
+                                    {renderButtons(
+                                        'accomplishment',
+                                        'accomplishment',
+                                        userDetails?.accomplishment,
+                                    )}
+                                </div>
+                            </div>
                             <div className="input-value">
                                 {editFields.accomplishment ? (
-                                    <TextArea
-                                        className="w-80"
-                                        placeholder="Accomplishments"
-                                        value={userDetails.accomplishment}
-                                        onChange={(e) =>
-                                            updateUserDetailState('accomplishment', e.target.value)
-                                        }
-                                        autoSize={{ minRows: 3, maxRows: 5 }}
-                                    />
+                                    <>
+                                        <TextArea
+                                            className="w-80"
+                                            placeholder="Accomplishments"
+                                            value={userDetails.accomplishment}
+                                            onChange={(e) =>
+                                                updateUserDetailState(
+                                                    'accomplishment',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            autoSize={{ minRows: 3, maxRows: 5 }}
+                                            maxLength={500}
+                                        />
+                                        {user.userDetails?.accomplishment?.length}
+                                    </>
                                 ) : (
                                     user.userDetails?.accomplishment
                                 )}
                             </div>
                             <div className="input-edit-icon">
-                                {editFields.accomplishment ? (
-                                    <Space direction="horizontal">
-                                        <CheckOutlined
-                                            onClick={() => {
-                                                updateUserDetails(
-                                                    'accomplishment',
-                                                    userDetails.accomplishment,
-                                                );
-                                                updateEditFieldsState('accomplishment', false);
-                                            }}
-                                        />
-                                        <CloseOutlined
-                                            onClick={() =>
-                                                updateEditFieldsState('accomplishment', false)
-                                            }
-                                        />
-                                    </Space>
-                                ) : (
-                                    <EditOutlined
-                                        onClick={() =>
-                                            updateEditFieldsState('accomplishment', true)
-                                        }
-                                    />
+                                {renderButtons(
+                                    'accomplishment',
+                                    'accomplishment',
+                                    userDetails?.accomplishment,
                                 )}
                             </div>
                         </Col>
                         <Divider className="user-divider" />
                         <Col xs={24} className="user-field">
-                            <div className="input-title">About Me</div>
+                            <div className="input-title">
+                                About Me
+                                <div className="field-buttons-mobile">
+                                    {renderButtons('aboutMe', 'aboutMe', userDetails?.aboutMe)}
+                                </div>
+                            </div>
                             <div className="input-value">
                                 {editFields.aboutMe ? (
                                     <TextArea
@@ -425,29 +425,14 @@ const MyProfile = () => {
                                             updateUserDetailState('aboutMe', e.target.value)
                                         }
                                         autoSize={{ minRows: 3, maxRows: 5 }}
+                                        maxLength={500}
                                     />
                                 ) : (
                                     user.userDetails?.aboutMe
                                 )}
                             </div>
                             <div className="input-edit-icon">
-                                {editFields.aboutMe ? (
-                                    <Space direction="horizontal">
-                                        <CheckOutlined
-                                            onClick={() => {
-                                                updateUserDetails('aboutMe', userDetails.aboutMe);
-                                                updateEditFieldsState('aboutMe', false);
-                                            }}
-                                        />
-                                        <CloseOutlined
-                                            onClick={() => updateEditFieldsState('aboutMe', false)}
-                                        />
-                                    </Space>
-                                ) : (
-                                    <EditOutlined
-                                        onClick={() => updateEditFieldsState('aboutMe', true)}
-                                    />
-                                )}
+                                {renderButtons('aboutMe', 'aboutMe', userDetails?.aboutMe)}
                             </div>
                         </Col>
                     </Row>
@@ -455,7 +440,7 @@ const MyProfile = () => {
             </Col>
         </Row>
     ) : (
-        <LoadingIndicator />
+        <LoadingIndicator fullScreen />
     );
 };
 
