@@ -96,7 +96,7 @@ const BookDetails = () => {
         if (!current) {
             return 0;
         }
-        return (100 * current) / total;
+        return ((100 * current) / total).toFixed(2);
     };
 
     // count percentage for rating bar
@@ -445,7 +445,7 @@ const BookDetails = () => {
                                         starSpacing="1px"
                                         rating={bookData.averageRating ? bookData.averageRating : 0}
                                     />
-                                    <span> {bookData.averageRating} </span>
+                                    <span> {bookData.averageRating?.toFixed(2)} </span>
                                     <span className="book-total-reviews">
                                         {bookData.totalComments} reviews
                                     </span>
@@ -488,7 +488,7 @@ const BookDetails = () => {
                                             starSpacing="2px"
                                             rating={bookData.averageRating ? bookData.averageRating : 0}
                                         />
-                                        <span> {bookData.averageRating} </span>
+                                        <span> {bookData.averageRating?.toFixed(2)} </span>
                                     </div>
                                     <div className="book-total-reviews">
                                         {bookData.totalComments} total reviews

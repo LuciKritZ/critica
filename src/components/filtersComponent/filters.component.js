@@ -5,21 +5,6 @@ import './filters.component.scss';
 
 const { Panel } = Collapse;
 
-// const authorName = [
-//     { id: 1, name: 'Charles Dickens' },
-//     { id: 2, name: 'Rabindranath tagore' },
-//     { id: 3, name: 'Peter Lynch' },
-//     { id: 4, name: 'Warren Buffet' },
-//     { id: 5, name: 'Raghuram rajan' },
-// ];
-// const genreLists = [
-//     { label: 'Sci-Fi', value: 1 },
-//     { label: 'Fantsy', value: 2 },
-//     { label: 'Fiction', value: 3 },
-//     { label: 'Non-fiction', value: 4 },
-//     { label: 'Biography', value: 5 },
-// ];
-
 // TODO:
 // p-2 search, show more
 // p-3 reusability

@@ -148,7 +148,7 @@ const Navbar = () => {
                 setSignInModalStatus={setSignInModalStatus}
             />
             <Row span={24} className="navbar-panel">
-                <Col lg={2} md={3} sm={3} xs={4} className="logo-container">
+                <Col lg={5} md={3} sm={3} xs={4} className="logo-container">
                     <div className="logo-title" onClick={() => history.push(AppRoute.HOMEPAGE)}>
                         <img src={Logo} alt="Logo" className="logo" />
                         <span className="company-title">Crítica</span>
@@ -176,7 +176,7 @@ const Navbar = () => {
                         {returnNavbarButtons(true)}
                     </CustomDrawer>
                 </Col>
-                <Col xs={0} sm={8} md={14} lg={12} xl={12} className="button-container">
+                <Col xs={0} sm={8} md={14} lg={9} xl={9} className="button-container">
                     {returnNavbarButtons()}
                     {authenticated && (
                         <CustomPopover

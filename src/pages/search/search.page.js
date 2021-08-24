@@ -26,10 +26,11 @@ const Search = ({ location }) => {
             .get(`${process.env.REACT_API_URL}genres`)
             .then((response) => {
                 const genreArray = [];
-                response.data.data.forEach((eachGenre, index) => {
+                response.data.data.forEach((eachGenre) => {
+                    const genreIndex = +Object.keys(eachGenre)[0];
                     genreArray.push({
-                        label: eachGenre[index + 1],
-                        value: index + 1,
+                        label: eachGenre[genreIndex],
+                        value: genreIndex,
                     });
                 });
                 setGenres(genreArray);
@@ -41,10 +42,11 @@ const Search = ({ location }) => {
             .get(`${process.env.REACT_API_URL}authors`)
             .then((response) => {
                 const authorArray = [];
-                response.data.data.forEach((eachAuthor, index) => {
+                response.data.data.forEach((eachAuthor) => {
+                    const authorIndex = +Object.keys(eachAuthor)[0];
                     authorArray.push({
-                        name: eachAuthor[index + 1],
-                        id: index + 1,
+                        name: eachAuthor[authorIndex],
+                        id: authorIndex ,
                     });
                     // return
                 });
