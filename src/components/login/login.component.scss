@@ -13,6 +13,10 @@
 
     div {
         background: none !important;
+        display: flex;
+        @media screen and (max-width: 450px) {
+            margin-right: 0px !important;
+        }
     }
 }
 .bibliophiles {
