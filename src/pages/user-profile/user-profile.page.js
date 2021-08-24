@@ -149,6 +149,32 @@ const MyProfile = () => {
         }
     };
 
+    const updateUserCritic = async (keyName, value) => {
+        if (user && user.userDetails) {
+            await updateUser({
+                id: user.userDetails.id.toString(),
+                data: {
+                    makeCriticRequest: 1,
+                },
+            })
+                .then(() =>
+                    notification.success({
+                        message: MESSAGES.LABELS.SUCCESS,
+                        description: MESSAGES.USER.SUCCESS,
+                        duration: MESSAGES.DURATION,
+                    }),
+                )
+                .catch(() =>
+                    notification.error({
+                        message: MESSAGES.LABELS.ERROR,
+                        description: MESSAGES.USER.FAILURE,
+                        duration: MESSAGES.DURATION,
+                    }),
+                )
+                .finally(() => refreshUser());
+        }
+    };
+
     const renderButtons = (editFieldKey, userDetailsKey, userDetailsValue) =>
         editFields[editFieldKey] ? (
             <Space direction="horizontal">
@@ -253,7 +279,7 @@ const MyProfile = () => {
                         <Col xs={24} className="user-image-container">
                             <CustomButton
                                 title="Make me a critic"
-                                onClick={() => updateUserDetails('makeCriticRequest', 1)}
+                                onClick={() => updateUserCritic('makeCriticRequest', 1)}
                                 className="try-premium-btn"
                             />
                         </Col>
