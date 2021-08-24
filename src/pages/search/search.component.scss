@@ -1,17 +1,27 @@
 // @import 'src/scss/variables.scss';
 @import 'src/scss/mixins.scss';
+
 .search-wrapper {
     display: flex;
     flex-flow: row;
     height: 100%;
     min-height: 100vh;
+    @media screen and (max-width: 450px) {
+        flex-wrap: wrap;
+    }
     // background-color: var(--body-bg);
     .filter-container {
         width: 18.66%;
         margin-right: 16px;
         background-color: var(--body-color);
         box-shadow: var(--box-background-shadow);
+
+        @media screen and (max-width: 450px) {
+            width: 100%;
+            margin-right: 0px;
+        }
     }
+
     .book-container {
         align-items: center;
         display: flex;
@@ -25,7 +35,15 @@
         box-shadow: var(--box-background-shadow);
         // remove this
         justify-content: space-around;
+
+        @media screen and (max-width: 450px) {
+            max-width: 100%;
+            width: 100%;
+            min-height: 100%;
+            margin-top: 16px;
+        }
     }
+
     .no-books-container {
         display: flex;
         justify-content: center;
@@ -35,18 +53,23 @@
         margin: 20px;
         flex-direction: column;
         background-color: var(--selected-comments-background);
-    
+
         // opacity: 80%;
         .no-books-img {
             height: 200px;
+
+            @media screen and (max-width: 450px) {
+                height: 150px;
+            }
         }
-    
+
         .no-books-title {
             margin-top: 20px;
             font-size: 16px;
             color: var(--dark-color);
         }
     }
+
     .ant-btn-primary {
         @include buttons(var(--dark-color), var(--dark-80-color));
     }

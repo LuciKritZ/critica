@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable max-len */
-import { Button, Progress, Tag, Input, Form, Avatar } from 'antd';
+import { Button, Progress, Tag, Input, Form, Avatar, notification } from 'antd';
 import axios from 'axios';
 import {
     DeleteOutlined,
@@ -21,6 +21,7 @@ import LikeLoading from '../../assets/likeLoading.svg';
 import { useAuth } from '../../providers/auth-provider.providers';
 import DeleteModal from '../../components/deleteModal/deleteModal';
 import LoginModalComponent from '../../components/loginModal/loginModal.component';
+import MESSAGES from '../../utils/messages.utils';
 
 const { TextArea } = Input;
 
@@ -46,7 +47,7 @@ const BookDetails = () => {
 
     // for bookread and bookmark apis
     const updateBookStatus = (bookStatus, isStatus) => {
-        if(bookStatus === 1) {
+        if (bookStatus === 1) {
             setBookMarkUpdate(true);
         } else if (bookStatus === 2) {
             setCompleteBookUpdate(true);
@@ -82,8 +83,10 @@ const BookDetails = () => {
                         default:
                             break;
                     }
-                })
+                });
         } else {
+            setBookMarkUpdate(false);
+            setCompleteBookUpdate(false);
             setSignInModalStatus(true);
         }
     };
@@ -129,8 +132,8 @@ const BookDetails = () => {
                     bookID: id,
                     ...(authenticated &&
                         userId && {
-                        userID: userId,
-                    }),
+                            userID: userId,
+                        }),
                 },
             })
             .then((response) => {
@@ -166,6 +169,12 @@ const BookDetails = () => {
                     setEditReviewId(null);
                     setMyReviewUpate(false);
                     constCriticsReviewData = cloneDeep(reviewsData);
+                } else {
+                    setMyReview(false);
+                    setCriticsReviewData([]);
+                    setEditReviewId(null);
+                    setMyReviewUpate(false);
+                    constCriticsReviewData = cloneDeep([]);
                 }
             })
             .catch((error) => {
@@ -187,11 +196,12 @@ const BookDetails = () => {
             const constCriticsReview = criticsReviewData;
             constCriticsReview[index].isLoading = true;
             setCriticsReviewData([...constCriticsReview]);
-            axios.put(`${process.env.REACT_API_URL}reviewlike`, {
-                id: reviewData.id,
-                isLiked: !reviewData.userLike,
-                userID: userId
-            })
+            axios
+                .put(`${process.env.REACT_API_URL}reviewlike`, {
+                    id: reviewData.id,
+                    isLiked: !reviewData.userLike,
+                    userID: userId,
+                })
                 .then(() => {
                     if (constCriticsReview[index].userLike) {
                         constCriticsReview[index].totalLikes -= 1;
@@ -201,9 +211,9 @@ const BookDetails = () => {
                     constCriticsReview[index].isLoading = false;
                     constCriticsReview[index].userLike = !constCriticsReview[index].userLike;
                     setCriticsReviewData([...constCriticsReview]);
-                })
+                });
         }
-    }
+    };
 
     // add reviews
     const addReview = (values) => {
@@ -213,19 +223,27 @@ const BookDetails = () => {
             setMyReviewUpate(true);
             const criticData = values;
             criticData.rating = averageRating;
-            axios.post(`${process.env.REACT_API_URL}review`, {
-                rating: averageRating,
-                comment: criticData.comment,
-                bookID: id,
-                userID: userId
-            }).then(() => {
-                fetchBooksData();
-                fetchReviewsData();
-                // form.setFieldsValue({ comment: '' });
-                // setAverageRating(0);
-            }).catch((error) => {
-                console.log(error);
-            })
+            axios
+                .post(`${process.env.REACT_API_URL}review`, {
+                    rating: averageRating,
+                    comment: criticData.comment,
+                    bookID: id,
+                    userID: userId,
+                })
+                .then(() => {
+                    fetchBooksData();
+                    fetchReviewsData();
+                    notification.success({
+                        message: MESSAGES.LABELS.SUCCESS,
+                        description: 'Review successfully added',
+                        duration: MESSAGES.DURATION,
+                    });
+                    // form.setFieldsValue({ comment: '' });
+                    // setAverageRating(0);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
     };
 
@@ -246,6 +264,11 @@ const BookDetails = () => {
                 .then(() => {
                     fetchBooksData();
                     fetchReviewsData();
+                    notification.success({
+                        message: MESSAGES.LABELS.SUCCESS,
+                        description: 'Review successfully updated',
+                        duration: MESSAGES.DURATION,
+                    });
                 })
                 .catch((error) => {
                     console.log(error);
@@ -293,15 +316,24 @@ const BookDetails = () => {
 
     const onDelete = () => {
         // constReason = reason;
-        axios.delete(`${process.env.REACT_API_URL}review/${reviewId}`)
+        axios
+            .delete(`${process.env.REACT_API_URL}review/${reviewId}`)
             .then(() => {
                 fetchReviewsData();
                 fetchBooksData();
                 setIsModalVisible(false);
                 form.setFieldsValue({ comment: '' });
                 setAverageRating(0);
+                notification.success({
+                    message: MESSAGES.LABELS.SUCCESS,
+                    description: 'Review successfully deleted',
+                    duration: MESSAGES.DURATION,
+                });
             })
-    }
+            .catch((error) => {
+                console.log(error, 'ee');
+            });
+    };
 
     const deleteComment = (reviewData) => {
         reviewId = reviewData.id;
@@ -337,29 +369,31 @@ const BookDetails = () => {
                     <RatingComponent
                         starDimension="22px"
                         starSpacing="3px"
-                        rating={reviewData.rating}
+                        rating={reviewData.rating ? reviewData.rating : 0}
                     />
                 </div>
                 <div className="criticsComment">{reviewData.comment}</div>
                 <div className="criticsLikes">
-                    {
-                        reviewData.isLoading ?
-                            <div style={{ paddingLeft: 15 }}>
-                                <img src={LikeLoading} alt="loading" style={{ width: 30 }} />
-                            </div> :
-                            <>
-                                <Button type="text"
-                                    className="bookStatusBtn likesIcon"
-                                    onClick={() => likeFunc(reviewData, index)}>
-                                    {
-                                        reviewData.userLike ?
-                                            <LikeFilled className="likesIcon likes-font-size" />
-                                            : <LikeOutlined className="likesIcon likes-font-size" />
-                                    }
-                                </Button>
-                                <div className="totalLikes"> {reviewData.totalLikes}</div>
-                            </>
-                    }
+                    {reviewData.isLoading ? (
+                        <div style={{ paddingLeft: 15 }}>
+                            <img src={LikeLoading} alt="loading" style={{ width: 30 }} />
+                        </div>
+                    ) : (
+                        <>
+                            <Button
+                                type="text"
+                                className="bookStatusBtn likesIcon"
+                                onClick={() => likeFunc(reviewData, index)}
+                            >
+                                {reviewData.userLike ? (
+                                    <LikeFilled className="likesIcon likes-font-size" />
+                                ) : (
+                                    <LikeOutlined className="likesIcon likes-font-size" />
+                                )}
+                            </Button>
+                            <div className="totalLikes"> {reviewData.totalLikes}</div>
+                        </>
+                    )}
                     {reviewData.userID === userId && (
                         <>
                             <Button
@@ -387,15 +421,15 @@ const BookDetails = () => {
 
     return (
         <>
-
             <LoginModalComponent
                 signInModalStatus={signInModalStatus}
-                setSignInModalStatus={setSignInModalStatus} />
+                setSignInModalStatus={setSignInModalStatus}
+            />
             <DeleteModal
                 showDeleteModal={isModalVisible}
                 modalVisibleFunc={showDeleteModalFunc}
                 onSave={onDelete}
-                okButtonProps={{className: 'btn-primary'}}
+                okButtonProps={{ className: 'btn-primary' }}
                 message="Are you sure you want to delete your review?"
             />
             <div className="book-detail-wrapper">
@@ -417,7 +451,7 @@ const BookDetails = () => {
                                     <RatingComponent
                                         starDimension="19px"
                                         starSpacing="1px"
-                                        rating={bookData.averageRating}
+                                        rating={bookData.averageRating ? bookData.averageRating : 0}
                                     />
                                     <span> {bookData.averageRating} </span>
                                     <span className="book-total-reviews">
@@ -428,7 +462,9 @@ const BookDetails = () => {
                                 <div>
                                     <Button
                                         type={bookData.isInWishlist ? 'primary' : 'text'}
-                                        className={bookData.isInWishlist ? 'btn btn-primary' : 'btn '}
+                                        className={
+                                            bookData.isInWishlist ? 'btn btn-primary' : 'btn '
+                                        }
                                         style={{ marginLeft: '0px' }}
                                         onClick={() => updateBookStatus(1, !bookData.isInWishlist)}
                                         disabled={bookMarkUpdate}
@@ -443,7 +479,7 @@ const BookDetails = () => {
                                         onClick={() => updateBookStatus(2, !bookData.isRead)}
                                         disabled={completeBookUpdate}
                                     >
-                                        {bookData.isRead ? 'Book Completed' : 'Incomplete'}
+                                        {bookData.isRead ? 'Book Completed' : 'Complete'}
                                         {completeBookUpdate ? <LoadingOutlined /> : ''}
                                     </Button>
                                 </div>
@@ -460,7 +496,9 @@ const BookDetails = () => {
                                         <RatingComponent
                                             starDimension="22px"
                                             starSpacing="2px"
-                                            rating={bookData.averageRating}
+                                            rating={
+                                                bookData.averageRating ? bookData.averageRating : 0
+                                            }
                                         />
                                         <span> {bookData.averageRating} </span>
                                     </div>
@@ -536,7 +574,7 @@ const BookDetails = () => {
                                                             onChangeRatingFunc={onChangeRating}
                                                             starDimension="22px"
                                                             starSpacing="3px"
-                                                            rating={averageRating}
+                                                            rating={averageRating || 0}
                                                         />
                                                         {isShowRatingError ? (
                                                             <span
@@ -587,7 +625,11 @@ const BookDetails = () => {
                                                             {editReviewId
                                                                 ? 'Update Review'
                                                                 : 'Add Review'}
-                                                            {myReviewUpate ? <LoadingOutlined /> : ''}
+                                                            {myReviewUpate ? (
+                                                                <LoadingOutlined />
+                                                            ) : (
+                                                                ''
+                                                            )}
                                                         </Button>
                                                     </div>
                                                 </Form>

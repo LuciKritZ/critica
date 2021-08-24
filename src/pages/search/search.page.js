@@ -7,6 +7,7 @@ import FiltersComponent from '../../components/filtersComponent/filters.componen
 import InfiniteScrollComponent from '../../components/infiniteScrollComponent/infiniteScroll.component';
 import './search.component.scss';
 import Bookshelves from '../../assets/bookshelves.svg';
+import LikeLoading from '../../assets/likeLoading.svg';
 
 let offset = 0;
 const Search = ({ location }) => {
@@ -16,7 +17,7 @@ const Search = ({ location }) => {
     const [genres, setGenres] = useState([]);
     const [authors, setAuthors] = useState([]);
     const [hasMore, setHasMore] = useState(true);
-    // eslint-disable-next-line no-unused-vars
+    const [isLoadingData, setIsLoadingData] = useState(false);
     const [filterConstObj, setFilterObj] = useState({});
 
     useEffect(() => {
@@ -59,18 +60,37 @@ const Search = ({ location }) => {
             .post(`${process.env.REACT_API_URL}books/filtered?limit=8&offset=${offset}`, { filter: filterObj })
             .then((response) => {
                 setBookInfo([...bookInfo, ...response.data.data]);
-                if (!response.data.total || response.data.total < 8 ) {
+                if (!response.data.total || response.data.total < 8) {
                     setHasMore(false);
                 }
             })
             .catch((error) => {
                 console.log('Something went wrong', error);
+            }).finally(() => {
+                setIsLoadingData(false);
+            });
+    };
+    const searchfetchBooks = (filterObj) => {
+        axios
+            .post(`${process.env.REACT_API_URL}books/filtered?limit=8&offset=${offset}`, { filter: filterObj })
+            .then((response) => {
+                setBookInfo([...response.data.data]);
+                if (!response.data.total || response.data.total < 8) {
+                    setHasMore(false);
+                }
+            })
+            .catch((error) => {
+                console.log('Something went wrong', error);
+            }).finally(() => {
+                setIsLoadingData(false);
             });
     };
 
     useEffect(() => {
         if (search) {
-            fetchBooks({ title: search });
+            setBookInfo([]);
+            setIsLoadingData(true);
+            searchfetchBooks({ title: search });
         }
     }, [search]);
 
@@ -92,15 +112,16 @@ const Search = ({ location }) => {
     };
     const fetchMoreData = () => {
         // setBookInfo([...bookInfo, ...bookDataInfo]);
-        offset += 1;
+        offset += 8;
         applyFilters(filterConstObj);
     };
 
     const applyExtraFilters = (filterObj) => {
         setBookInfo([]);
+        setIsLoadingData(true);
         applyFilters(filterObj);
     }
-    
+
     const LoaderFunc = () => (
         <h4
             style={{
@@ -110,7 +131,7 @@ const Search = ({ location }) => {
                 display: 'flex',
             }}
         >
-            Loading...
+            <img src={LikeLoading} alt="loading" style={{ width: 30 }} />
         </h4>
     );
     return (
@@ -124,34 +145,46 @@ const Search = ({ location }) => {
                     />
                 </div>
                 <div className="book-container">
-                    {bookInfo.length ? (
-                        <InfiniteScrollComponent
-                            hasMore={hasMore}
-                            bookLength={bookInfo.length}
-                            fetchData={fetchMoreData}
-                            LoaderFunc={LoaderFunc}
-                            render={() =>
-                                bookInfo.map((eachBookInfo) => (
-                                    <BookCardComponent
-                                        bookInfo={eachBookInfo}
-                                        redirect={eachBookInfo.id}
-                                        key={eachBookInfo.id}
+                    {
+                        isLoadingData ?
+                            <>
+                                {
+                                    LoaderFunc()
+                                }
+                            </>
+                            :
+                            <>
+                                {bookInfo && bookInfo.length ? (
+                                    <InfiniteScrollComponent
+                                        hasMore={hasMore}
+                                        bookLength={bookInfo.length}
+                                        fetchData={fetchMoreData}
+                                        LoaderFunc={LoaderFunc}
+                                        render={() =>
+                                            bookInfo.map((eachBookInfo) => (
+                                                <BookCardComponent
+                                                    bookInfo={eachBookInfo}
+                                                    redirect={eachBookInfo.id}
+                                                    key={eachBookInfo.id}
+                                                />
+                                            ))
+                                        }
                                     />
-                                ))
-                            }
-                        />
 
-                    ) : (
-                        <div className="no-books-container">
-                            <img
-                                src={Bookshelves}
-                                alt="no books"
-                                className="no-books-img" />
-                            <span className="no-books-title">
-                                No Books Found
-                            </span>
-                        </div>
-                    )}
+                                ) : (
+                                    <div className="no-books-container">
+                                        <img
+                                            src={Bookshelves}
+                                            alt="no books"
+                                            className="no-books-img" />
+                                        <span className="no-books-title">
+                                            No Books Found
+                                        </span>
+                                    </div>
+                                )}
+                            </>
+                    }
+
                 </div>
             </div>
         </>

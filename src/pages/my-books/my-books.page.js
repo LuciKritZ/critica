@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import ContentLoader from 'react-content-loader';
+import { isMobileOnly } from "react-device-detect";
 import BookCardComponent from '../../components/bookCardComponent/bookCard.component';
 import { useAuth } from '../../providers/auth-provider.providers';
 import './my-books.page.scss';
@@ -9,7 +10,7 @@ import Bookshelves from '../../assets/bookshelves.svg';
 const MyBooks = () => {
     // skeleton Hardcoded values
     const rows = 1;
-    const columns = 6;
+    const columns = isMobileOnly ? 1: 6;
     const coverHeight = 300;
     const coverWidth = 195;
     const padding = 15;
