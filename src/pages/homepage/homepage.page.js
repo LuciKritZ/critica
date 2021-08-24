@@ -1,18 +1,18 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import 'react-multi-carousel/lib/styles.css';
+import { isMobileOnly } from "react-device-detect";
 import ContentLoader from 'react-content-loader';
 import ImageComponent from '../../components/imageComponent/image.component';
 import './homepage.page.scss';
 import CarouselComponent from '../../components/carouselComponent/carousel.component';
-
 // TODO:
 // p-1 only single skeleton
 // P-3 Add flipkart like genre horizontal scroll bar which redirects to search page.
 const Homepage = () => {
     // skeleton Hardcoded values
     const rows = 1;
-    const columns = 6;
+    const columns = isMobileOnly ? 1 : 6;
     const coverHeight = 300;
     const coverWidth = 195;
     const padding = 15;

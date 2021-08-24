@@ -1,4 +1,5 @@
 @import 'src/scss/mixins.scss';
+$small: 450px;
 .book-detail-wrapper {
     display: flex;
     flex-flow: row;
@@ -23,11 +24,18 @@
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: space-evenly;
+                @media screen and (max-width: $small) {
+                    width: 95%;
+                    min-width: 95%;
+                }
 
                 .bookImgContainer {
                     width: 50%;
                     display: flex;
                     justify-content: center;
+                    @media screen and (max-width: $small) {
+                        width: 100%;
+                    }
                 }
 
                 .bookDataContainer {
@@ -38,12 +46,17 @@
                     flex-direction: column;
                     padding-left: 10%;
                     margin-top: 5px;
-
+                    @media screen and (max-width: $small) {
+                        width: 100%;
+                    }
                     .bookTitle {
                         width: 300px;
                         font-size: 26px;
                         color: var(--dark-color);
                         font-weight: 600;
+                        @media screen and (max-width: $small) {
+                            width: 200px;
+                        }
                     }
 
                     .bookAuthor {
@@ -51,6 +64,9 @@
                         font-size: 21px;
                         color: var(--dark-color);
                         font-weight: 600;
+                        @media screen and (max-width: $small) {
+                            width: 200px;
+                        }
                     }
 
                     .book-ratings {
@@ -61,6 +77,9 @@
                         font-size: 14px;
                         color: var(--light-color);
                         margin-left: 20px;
+                        @media screen and (max-width: $small) {
+                            // margin-left: 10px;
+                        }
                     }
 
                     .bookDetails {
@@ -68,6 +87,9 @@
                         width: 300px;
                         font-size: 14px;
                         color: var(--light-color);
+                        @media screen and (max-width: $small) {
+                            width: 200px;
+                        }
                     }
 
                     .bookStatusBtn {
@@ -91,19 +113,27 @@
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: center;
-
+                @media screen and (max-width: $small) {
+                    width: 100%;
+                    min-width: 100%;
+                }
                 .ratingRow {
                     display: flex;
                     flex-wrap: wrap;
                     justify-content: center;
                     width: 50%;
-
+                    @media screen and (max-width: $small) {
+                        width: 100%;
+                    }
                     .ratingData {
                         display: flex;
                         flex-direction: column;
                         margin: 7px auto;
                         width: 275px;
-
+                        @media screen and (max-width: $small) {
+                            width: 250px;
+                            align-items: center;
+                        }
                         // align-items: center;
                         .rating-title {
                             font-size: 20px;
@@ -133,9 +163,15 @@
                 .ratingBar {
                     width: 50%;
                     margin: 7px auto;
-
+                    @media screen and (max-width: $small) {
+                        width: 100%;
+                    }
                     .eachRatingBar {
                         display: flex;
+
+                        @media screen and (max-width: $small) {
+                            justify-content: center;
+                        }
                     }
 
                     .starName {
@@ -145,7 +181,9 @@
                     .ant-progress-outer {
                         margin-bottom: 10px;
                         width: 350px;
-
+                        @media screen and (max-width: $small) {
+                            width: 100%;
+                        }
                         .ant-progress-inner {
                             border-radius: 2px;
                             border: 1px solid #afafaf;
@@ -182,7 +220,9 @@
 
                 .reviewConatiner {
                     width: 75%;
-
+                    @media screen and (max-width: $small) {
+                        width: 90%;
+                    }
                     .criticsReview {
                         display: flex;
                         flex-direction: row;
@@ -190,6 +230,9 @@
                         padding: 13px;
                         .criticsImg {
                             margin-right: 20px;
+                            @media screen and (max-width: $small) {
+                                margin-right: 13px;
+                            }
                         }
 
                         .crticsName {
@@ -236,6 +279,11 @@
                 height: 50px;
                 width: 50px;
                 line-height: 50px;
+                @media screen and (max-width: $small) {
+                    width: 30px;
+                    height: 30px;
+                line-height: 30px;
+                }
             }
             .my-review {
                 background-color: var(--body-bg);
@@ -284,4 +332,9 @@
 
 .ant-btn-primary {
     @include buttons(var(--dark-color), var(--dark-80-color));
+}
+.ant-progress-line  {
+    @media screen and (max-width: $small) {
+        width: 70% !important;
+    }
 }

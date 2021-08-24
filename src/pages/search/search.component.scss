@@ -39,6 +39,9 @@
         // opacity: 80%;
         .no-books-img {
             height: 200px;
+            @media screen and (max-width: 450px) {
+                height: 150px;
+            }
         }
     
         .no-books-title {
