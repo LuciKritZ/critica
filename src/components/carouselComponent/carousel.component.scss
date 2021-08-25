@@ -1,4 +1,13 @@
 .carousel-container {
     margin: 10px 10px 30px 10px;
     min-height: 300px;
+    .react-multi-carousel-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .image-class {
+        width: 200px;
+        height: 300px;
+    }
 }
