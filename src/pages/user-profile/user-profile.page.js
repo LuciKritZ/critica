@@ -149,7 +149,7 @@ const MyProfile = () => {
         }
     };
 
-    const updateUserCritic = async (keyName, value) => {
+    const updateUserCritic = async () => {
         if (user && user.userDetails) {
             await updateUser({
                 id: user.userDetails.id.toString(),
@@ -279,7 +279,7 @@ const MyProfile = () => {
                         <Col xs={24} className="user-image-container">
                             <CustomButton
                                 title="Make me a critic"
-                                onClick={() => updateUserCritic('makeCriticRequest', 1)}
+                                onClick={() => updateUserCritic()}
                                 className="try-premium-btn"
                             />
                         </Col>

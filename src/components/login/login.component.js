@@ -7,6 +7,17 @@ import { useAuth } from '../../providers/auth-provider.providers';
 import LoadingIndicator from '../loading-indicator/loading-indicator.component';
 import './login.component.scss';
 import Bibliophiles from '../../assets/bibliophiles.svg';
+import CustomButton from '../../custom/button/button.custom';
+
+const formData = {
+    profileObj: {
+        givenName: "Test",
+        familyName: "Test",
+        email: "test@test.com",
+        // eslint-disable-next-line max-len
+        imageUrl: "https://lh3.googleusercontent.com/a/AATXAJw2pIV9gpY2d_Bkso1H98R7MU26E2lHZcZyN9MU=s96-c"
+    }
+};
 
 const Login = ({ onSignIn }) => {
     const { signIn } = useAuth();
@@ -21,6 +32,16 @@ const Login = ({ onSignIn }) => {
             setLoading(false);
         }
     };
+
+    const handleGuestLogin = () => {
+        setLoading(true);
+        try {
+            signIn(formData);
+            onSignIn();
+        } finally {
+            setLoading(false);
+        }
+    }
 
     if (loading) {
         return <LoadingIndicator />;
@@ -49,6 +70,11 @@ const Login = ({ onSignIn }) => {
                         })
                     }
                     cookiePolicy="single_host_origin"
+                />
+                <CustomButton
+                    className="btn-center width-220 "
+                    title="Login As Guest"
+                    onClick={() => handleGuestLogin()}
                 />
             </Col>
         </Row>
